@@ -1,42 +1,79 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:mobile_anw/views/pages/case_page.dart';
+import 'package:mobile_anw/views/pages/search_page.dart';
+import 'package:mobile_anw/views/pages/home_page.dart';
+import 'package:mobile_anw/views/pages/grouping_page.dart';
+import 'package:mobile_anw/views/pages/scaffold_with_nested_navigation.dart';
 
-class Navigate {
-  //Funktion setzt neue Seite auf den Stapel um zu dieser Seite zu navigieren
-  // (Navigation zu einer neuen Seite innerhalb der App)
-  static Future pushPage(BuildContext context, Widget page) async {
-    return await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (BuildContext context) {
-          return page;
-        },
-      ),
-    );
-  }
+// private navigators (underscore makes it private)
+final _rootNavigatorKey = GlobalKey<NavigatorState>();
+final _shellNavigatorHomeKey = GlobalKey<NavigatorState>(debugLabel: 'shellHome');
+final _shellNavigatorSearchKey = GlobalKey<NavigatorState>(debugLabel: 'shellSearch');
+final _shellNavigatorCaseKey = GlobalKey<NavigatorState>(debugLabel: 'shellCase');
 
-  // (Popup-Fenster, die den gesamten Bildschirm bedecken)
-  static pushPageDialog(BuildContext context, Widget page) async {
-    return await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (BuildContext context) {
-          return page;
-        },
-        fullscreenDialog: true,
-      ),
-    );
-  }
-
-  // Funktion ersetzt die aktuelle Seite im Stapel durch die neue Seite
-  // (Für Registrierungsvorgänge wenn vorherige Seite nicht mehr benötigt wird)
-  static pushPageReplacement(BuildContext context, Widget page) async {
-    return await Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (BuildContext context) {
-          return page;
-        },
-      ),
-    );
-  }
-}
+final goRouter = GoRouter(
+  initialLocation: '/home',
+  navigatorKey: _rootNavigatorKey,
+  debugLogDiagnostics: true,
+  routes: [
+    StatefulShellRoute.indexedStack(
+      builder: (context, state, navigationShell) {
+        return ScaffoldWithNestedNavigation(navigationShell: navigationShell);
+      },
+      branches: [
+        StatefulShellBranch(
+          navigatorKey: _shellNavigatorHomeKey,
+          routes: [
+            GoRoute(
+              path: '/home',
+              pageBuilder: (context, state) => const NoTransitionPage(
+                child: HomePage(),
+              ),
+              /*routes: [
+                GoRoute(
+                  path: 'details',
+                  builder: (context, state) => const DetailsScreen(label: 'DetailHome'),
+                ),
+              ],*/
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          navigatorKey: _shellNavigatorSearchKey,
+          routes: [
+            GoRoute(
+              path: '/search',
+              pageBuilder: (context, state) => const NoTransitionPage(
+                child: SearchPage(/*label: 'SearchP', detailsPath: '/search/details'*/),
+              ),
+              routes: [
+                GoRoute(
+                  path: 'grouping',
+                  builder: (context, state) => const GroupingPage(),
+                ),
+              ],
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          navigatorKey: _shellNavigatorCaseKey,
+          routes: [
+            GoRoute(
+              path: '/case',
+              pageBuilder: (context, state) => const NoTransitionPage(
+                child: CasePage(label: 'CaseP'),
+              ),
+              routes: [
+                GoRoute(
+                  path: 'grouping',
+                  builder: (context, state) => const GroupingPage(),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ],
+    ),
+  ],
+);

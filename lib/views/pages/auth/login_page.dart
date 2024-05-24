@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_anw/views/pages/background/screen_background.dart';
-
-import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class Login extends StatelessWidget {
+  final GoRouter goRouter;
+
+  const Login({Key? key, required this.goRouter}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,18 +42,15 @@ class Login extends StatelessWidget {
           const SizedBox(height: 20.0),
           ElevatedButton(
             onPressed: () {
-              // Do login logic here
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => ScreenBackground()),
-              );
+              // Todo: login logic
+              //goRouter.go('/home');
             },
             child: const Text('Login'),
           ),
           const SizedBox(height: 10.0),
           TextButton(
             onPressed: () {
-              // Do forgot password logic here
+              // TOdo: logic for password forgotten
             },
             child: const Text('Forgot Password?'),
           ),
@@ -73,4 +72,3 @@ class Login extends StatelessWidget {
     );
   }
 }
-
