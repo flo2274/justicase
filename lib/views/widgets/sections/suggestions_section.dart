@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_anw/views/widgets/cards/middle_card.dart';
 import 'package:mobile_anw/views/widgets/cards/small_card.dart';
-import 'package:mobile_anw/views/widgets/headings/primary_heading.dart';
+import 'package:mobile_anw/views/widgets/texts/headings/large_heading.dart';
 
 class SuggestionsSection extends StatelessWidget {
   // Beispiel-Datensatz
@@ -17,7 +17,7 @@ class SuggestionsSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const PrimaryHeading(
+          const LargeHeading(
             text: 'Vorschläge',
           ),
           const SizedBox(height: 10.0), // Abstand zwischen Überschrift und Karten

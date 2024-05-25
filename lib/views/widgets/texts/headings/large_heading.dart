@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class SecondaryHeading extends StatelessWidget {
+class LargeHeading extends StatelessWidget {
   final String text;
 
-  const SecondaryHeading({
+  const LargeHeading({
     Key? key,
     required this.text,
   }) : super(key: key);
@@ -12,9 +12,10 @@ class SecondaryHeading extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-        fontWeight: FontWeight.bold,
+      style: Theme.of(context).textTheme.labelLarge?.copyWith(
+        fontWeight: FontWeight.normal,
       ),
     );
   }
 }
+

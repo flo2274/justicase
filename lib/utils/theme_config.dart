@@ -31,21 +31,22 @@ class ThemeConfig {
       unselectedItemColor: Colors.grey[500],
     ),
     textTheme: TextTheme(
-      titleLarge: TextStyle( // Changed from headlineLarge to headline6
+      labelLarge: TextStyle( // Changed from headlineLarge to headline6
         fontSize: 26.0,
         fontWeight: FontWeight.bold,
-        color: secondary,
+        color: Colors.yellow,
       ),
-      titleMedium: TextStyle( // Changed from displayMedium to subtitle1
-        fontSize: 20.0,
+      labelMedium: TextStyle( // Changed from displayMedium to subtitle1
+        fontSize: 16.0,
         fontWeight: FontWeight.bold,
-        color: accent1,
+        color: Colors.green,
       ),
-      bodyMedium: TextStyle(
-        fontSize: 30.0,
+      labelSmall: TextStyle(
+        fontSize: 16.0,
         fontWeight: FontWeight.normal,
-        color: secondary,
+        color: Colors.purple,
       ),
+
     ),
     // Todo: colorScheme missing?
   );
