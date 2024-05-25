@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-class PrimaryHeading extends StatelessWidget {
+class SecondaryHeading extends StatelessWidget {
   final String text;
   final double fontSize;
   final FontWeight fontWeight;
 
-  const PrimaryHeading({
+  const SecondaryHeading({
     Key? key,
     required this.text,
-    this.fontSize = 20.0,
+    this.fontSize = 16.0,
     this.fontWeight = FontWeight.bold,
   }) : super(key: key);
 
