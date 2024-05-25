@@ -3,6 +3,7 @@ import 'package:mobile_anw/views/widgets/cards/middle_card.dart';
 import 'package:mobile_anw/views/widgets/cards/small_card.dart';
 import 'package:mobile_anw/views/widgets/headings/primary_heading.dart';
 
+
 class CategorySection extends StatelessWidget {
   // Beispiel-Datensatz
   final List<String> categories = [

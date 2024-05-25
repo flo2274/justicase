@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_anw/views/widgets/headings/primary_heading.dart';
 
 class CreateCasePage extends StatefulWidget {
   const CreateCasePage({Key? key}) : super(key: key);
@@ -38,6 +39,9 @@ class _CreateCasePageState extends State<CreateCasePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const PrimaryHeading(
+              text: 'Neuen Fall für Unternehmen erstellen',
+            ),
             TextFormField(
               decoration: const InputDecoration(
                 labelText: 'Name des Unternehmens',

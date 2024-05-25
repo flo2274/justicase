@@ -9,6 +9,7 @@ import 'package:mobile_anw/views/pages/home_page.dart';
 import 'package:mobile_anw/views/pages/search_page.dart';
 import 'package:mobile_anw/views/pages/scaffold_with_nested_navigation.dart';
 import 'package:mobile_anw/utils/router.dart';
+import 'package:mobile_anw/utils/theme_config.dart';
 
 void main() {
   runApp(const MyApp());
@@ -22,13 +23,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp.router(
       routerConfig: goRouter,
       debugShowCheckedModeBanner: false,
-      theme: _buildThemeData(ThemeConfig.lightTheme),
-    );
-  }
-  ThemeData _buildThemeData(ThemeData theme) {
-    return theme.copyWith(
-      textTheme: GoogleFonts.sourceSansProTextTheme(
-        theme.textTheme,
+      theme: ThemeConfig.lightTheme.copyWith(
+        textTheme: GoogleFonts.sourceSansProTextTheme(
+          ThemeConfig.lightTheme.textTheme,
+        ),
       ),
     );
   }
