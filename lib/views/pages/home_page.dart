@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_anw/views/widgets/category_section.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -14,14 +15,21 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: const Center(child: Text('JUSTICASE')),
       ),
-      body: const Center(
-        child: Text(
-          'Home',
-          style: TextStyle(
-            fontSize: 20.0,
-            color: Colors.grey,
-            fontFamily: 'PTSerif',
-          ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            CategorySection(),
+            const Text(
+              'Home',
+              style: TextStyle(
+                fontSize: 20.0,
+                color: Colors.grey,
+                fontFamily: 'PTSerif',
+              ),
+            ),
+          ],
         ),
       ),
     );

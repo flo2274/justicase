@@ -50,7 +50,7 @@ class Login extends StatelessWidget {
           const SizedBox(height: 10.0),
           TextButton(
             onPressed: () {
-              // TOdo: logic for password forgotten
+              // Todo: logic for password forgotten
             },
             child: const Text('Forgot Password?'),
           ),
