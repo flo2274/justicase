@@ -2,13 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:mobile_anw/views/widgets/middle_card.dart';
 import 'package:mobile_anw/views/widgets/small_card.dart';
 
-class CategorySection extends StatelessWidget {
+class SuggestionsSection extends StatelessWidget {
   // Beispiel-Datensatz
-  final List<String> categories = [
-    'Category 1',
-    'Category 2',
-    'Category 3',
-    'Category 4',
+  final List<String> suggestions = [
+    'Suggestion 1',
+    'Suggestion 2',
   ];
 
   @override
@@ -19,7 +17,7 @@ class CategorySection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            'Kategorien',
+            'Vorschläge',
             style: TextStyle(
               fontSize: 20.0,
               fontWeight: FontWeight.bold,
@@ -29,16 +27,8 @@ class CategorySection extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              SmallCard(name: categories[0]),
-              SmallCard(name: categories[1]),
-            ],
-          ),
-          const SizedBox(height: 16.0), // Abstand zwischen den Reihen
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              SmallCard(name: categories[2]),
-              SmallCard(name: categories[3]),
+              MiddleCard(name: suggestions[0]),
+              MiddleCard(name: suggestions[1]),
             ],
           ),
         ],

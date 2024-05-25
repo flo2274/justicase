@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_anw/views/widgets/category_section.dart';
+import 'package:mobile_anw/views/widgets/suggestions_section.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -21,6 +22,7 @@ class _HomePageState extends State<HomePage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             CategorySection(),
+            SuggestionsSection(),
             const Text(
               'Home',
               style: TextStyle(
