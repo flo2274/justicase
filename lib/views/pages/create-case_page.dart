@@ -31,7 +31,7 @@ class _CreateCasePageState extends State<CreateCasePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Create Case'),
+        title: const Center(child: Text('JUSTICASE')),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -40,7 +40,7 @@ class _CreateCasePageState extends State<CreateCasePage> {
           children: [
             TextFormField(
               decoration: const InputDecoration(
-                labelText: 'Company Name',
+                labelText: 'Name des Unternehmens',
               ),
               onChanged: (value) {
                 setState(() {
@@ -48,10 +48,26 @@ class _CreateCasePageState extends State<CreateCasePage> {
                 });
               },
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 30),
+            DropdownButtonFormField<String>(
+              value: _selectedForm.isNotEmpty ? _selectedForm : null,
+              hint: const Text('Unternehmensform auswählen'),
+              items: _forms.map((form) {
+                return DropdownMenuItem(
+                  value: form,
+                  child: Text(form),
+                );
+              }).toList(),
+              onChanged: (value) {
+                setState(() {
+                  _selectedForm = value!;
+                });
+              },
+            ),
+            const SizedBox(height: 30),
             DropdownButtonFormField<String>(
               value: _selectedCategory.isNotEmpty ? _selectedCategory : null,
-              hint: const Text('Select Category'),
+              hint: const Text('Branche auswählen'),
               items: _categories.map((category) {
                 return DropdownMenuItem(
                   value: category,
@@ -63,31 +79,6 @@ class _CreateCasePageState extends State<CreateCasePage> {
                   _selectedCategory = value!;
                 });
               },
-            ),
-            const SizedBox(height: 20),
-            Text(
-              'Company Form:',
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            const SizedBox(height: 10),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: _forms.map((form) {
-                return Row(
-                  children: [
-                    Radio<String>(
-                      value: form,
-                      groupValue: _selectedForm,
-                      onChanged: (value) {
-                        setState(() {
-                          _selectedForm = value!;
-                        });
-                      },
-                    ),
-                    Text(form),
-                  ],
-                );
-              }).toList(),
             ),
             const SizedBox(height: 20),
             ElevatedButton(

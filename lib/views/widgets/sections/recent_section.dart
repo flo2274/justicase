@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_anw/views/widgets/cards/middle_card.dart';
 import 'package:mobile_anw/views/widgets/cards/small_card.dart';
+import 'package:mobile_anw/views/widgets/headings/primary_heading.dart';
 
 class RecentSection extends StatelessWidget {
   // Beispiel-Datensatz
@@ -18,12 +19,8 @@ class RecentSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Aktuell',
-            style: TextStyle(
-              fontSize: 20.0,
-              fontWeight: FontWeight.bold,
-            ),
+          const PrimaryHeading(
+            text: 'Aktuell',
           ),
           const SizedBox(height: 10.0), // Abstand zwischen Überschrift und Karten
           Row(
