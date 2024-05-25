@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_anw/views/widgets/middle_card.dart';
-import 'package:mobile_anw/views/widgets/small_card.dart';
+import 'package:mobile_anw/views/widgets/cards/middle_card.dart';
+import 'package:mobile_anw/views/widgets/cards/small_card.dart';
 
 class SuggestionsSection extends StatelessWidget {
   // Beispiel-Datensatz

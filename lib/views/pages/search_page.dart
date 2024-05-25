@@ -83,10 +83,20 @@ class _SearchPageState extends State<SearchPage> {
                   title: Text(suggestion.name),
                 );
               },
-              onSelected: (Company suggestion) {
+              onSelected: (Company suggestion) {//Todo: change Navigation to goRouter
                 Navigator.of(context).push<void>(
                   MaterialPageRoute(
                     builder: (context) => CompanyPage(company: suggestion),
+                  ),
+                );
+              },
+              emptyBuilder: (context) {
+                return InkWell(
+                  onTap: () {
+                    context.go('/search/createCase');
+                  },
+                  child: const ListTile(
+                    title: const Text('Neuen Fall erstellen'),
                   ),
                 );
               },

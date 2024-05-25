@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile_anw/views/pages/case_page.dart';
+import 'package:mobile_anw/views/pages/create-case_page.dart';
 import 'package:mobile_anw/views/pages/search_page.dart';
 import 'package:mobile_anw/views/pages/home_page.dart';
 import 'package:mobile_anw/views/pages/grouping_page.dart';
@@ -51,6 +52,10 @@ final goRouter = GoRouter(
                 GoRoute(
                   path: 'grouping',
                   builder: (context, state) => const GroupingPage(),
+                ),
+                GoRoute(
+                  path: 'createCase',
+                  builder: (context, state) => const CreateCasePage(),
                 ),
               ],
             ),
