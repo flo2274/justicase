@@ -53,17 +53,21 @@ class _CreateCasePageState extends State<CreateCasePage> {
                 ),
                 _buildCompanyInfoBox(),
                 _buildCaseInfoBox(),
-                const InfoText(text: 'Mit * gekennteichnete Felder sind Pflichtfelder'),
+                const SizedBox(height: 10),
+                const InfoText(text: 'Die mit * gekennteichneten Felder sind Pflichtfelder'),
                 const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      _formKey.currentState!.save();
-                      _createCompany();
-                    }
-                  },
-                  child: const Text('Erstelle Fall'),
+                Center(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        _formKey.currentState!.save();
+                        _createCompany();
+                      }
+                    },
+                    child: const Text('Erstellen'),
+                  ),
                 ),
+                const SizedBox(height: 20),
               ],
             ),
           ),
@@ -139,7 +143,6 @@ class _CreateCasePageState extends State<CreateCasePage> {
 
   Widget _buildCaseInfoBox() {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 20),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.grey[100],
@@ -149,11 +152,11 @@ class _CreateCasePageState extends State<CreateCasePage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SmallHeading(
-            text: 'Fallspezifische Informationen',
+            text: 'Ihre Informationen',
           ),
           TextFormField(
             decoration: const InputDecoration(
-              labelText: 'Ihr Vorname',
+              labelText: '*Ihr Vorname',
             ),
             validator: (value) {
               if (value == null || value.isEmpty) {
@@ -168,7 +171,7 @@ class _CreateCasePageState extends State<CreateCasePage> {
           const SizedBox(height: 10),
           TextFormField(
             decoration: const InputDecoration(
-              labelText: 'Ihr Nachname',
+              labelText: '*Ihr Nachname',
             ),
             validator: (value) {
               if (value == null || value.isEmpty) {
@@ -183,7 +186,7 @@ class _CreateCasePageState extends State<CreateCasePage> {
           const SizedBox(height: 10),
           TextFormField(
             decoration: const InputDecoration(
-              labelText: 'Beschreibung',
+              labelText: 'Beschreibung des Falls',
             ),
             maxLines: 3,
             onChanged: (value) {
