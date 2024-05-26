@@ -25,12 +25,12 @@ class ThemeConfig {
       ),
     ),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
-      selectedIconTheme: IconThemeData(size: 40),
-      unselectedIconTheme: IconThemeData(size: 40),
+      selectedIconTheme: const IconThemeData(size: 40),
+      unselectedIconTheme: const IconThemeData(size: 40),
       selectedItemColor: secondary,
       unselectedItemColor: Colors.grey[500],
     ),
-    textTheme: TextTheme(
+    textTheme: const TextTheme(/*
       labelLarge: TextStyle( // Changed from headlineLarge to headline6
         fontSize: 26.0,
         fontWeight: FontWeight.bold,
@@ -45,8 +45,7 @@ class ThemeConfig {
         fontSize: 16.0,
         fontWeight: FontWeight.normal,
         color: Colors.purple,
-      ),
-
+      ),*/
     ),
     // Todo: colorScheme missing?
   );

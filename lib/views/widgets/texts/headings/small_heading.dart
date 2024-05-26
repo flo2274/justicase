@@ -8,12 +8,13 @@ class SmallHeading extends StatelessWidget {
     required this.text,
   }) : super(key: key);
 
-  @override
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: Theme.of(context).textTheme.labelMedium?.copyWith(
+      style: const TextStyle(
+        fontSize: 18.0,
         fontWeight: FontWeight.normal,
+        color: Colors.black,
       ),
     );
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_anw/views/widgets/texts/headings/large_heading.dart';
 import 'package:mobile_anw/views/widgets/texts/headings/small_heading.dart';
+import 'package:mobile_anw/views/widgets/texts/info_text.dart';
 
 class CreateCasePage extends StatefulWidget {
   const CreateCasePage({Key? key}) : super(key: key);
@@ -48,10 +49,11 @@ class _CreateCasePageState extends State<CreateCasePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const LargeHeading(
-                  text: 'Neuen Fall für Unternehmen erstellen',
+                  text: 'Neuen Fall erstellen',
                 ),
                 _buildCompanyInfoBox(),
                 _buildCaseInfoBox(),
+                const InfoText(text: 'Mit * gekennteichnete Felder sind Pflichtfelder'),
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
@@ -86,7 +88,7 @@ class _CreateCasePageState extends State<CreateCasePage> {
           ),
           TextFormField(
             decoration: const InputDecoration(
-              labelText: 'Name des Unternehmens',
+              labelText: '*Name des Unternehmens',
             ),
             validator: (value) {
               if (value == null || value.isEmpty) {
@@ -101,7 +103,7 @@ class _CreateCasePageState extends State<CreateCasePage> {
           const SizedBox(height: 10),
           DropdownButtonFormField<String>(
             value: _selectedForm.isNotEmpty ? _selectedForm : null,
-            hint: const Text('Unternehmensform auswählen'),
+            hint: const Text('*Unternehmensform auswählen'),
             items: _forms.map((form) {
               return DropdownMenuItem(
                 value: form,
@@ -117,7 +119,7 @@ class _CreateCasePageState extends State<CreateCasePage> {
           const SizedBox(height: 10),
           DropdownButtonFormField<String>(
             value: _selectedCategory.isNotEmpty ? _selectedCategory : null,
-            hint: const Text('Branche auswählen'),
+            hint: const Text('*Branche auswählen'),
             items: _categories.map((category) {
               return DropdownMenuItem(
                 value: category,

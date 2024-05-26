@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class BodyText extends StatelessWidget {
+class AlertText extends StatelessWidget {
   final String text;
 
-  const BodyText({
+  const AlertText({
     Key? key,
     required this.text,
   }) : super(key: key);
@@ -12,9 +12,9 @@ class BodyText extends StatelessWidget {
     return Text(
       text,
       style: const TextStyle(
-        fontSize: 12.0,
+        fontSize: 20.0,
         fontWeight: FontWeight.normal,
-        color: Colors.black,
+        color: Colors.red,
       ),
     );
   }

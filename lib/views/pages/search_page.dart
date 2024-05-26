@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile_anw/views/widgets/texts/alert_text.dart';
 
 class Company {
   final String name;
@@ -96,7 +97,7 @@ class _SearchPageState extends State<SearchPage> {
                     context.go('/search/createCase');
                   },
                   child: const ListTile(
-                    title: const Text('Neuen Fall erstellen'),
+                    title: AlertText(text: 'Kein Fall gefunden. Neu erstellen'),
                   ),
                 );
               },
