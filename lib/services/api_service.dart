@@ -15,13 +15,18 @@ class ApiService {
     }
   }
 
-  static Future<void> createUser(User user) async {
+  static Future<void> createUser(String username, String password,
+      String email) async {
     final response = await http.post(
       Uri.parse('$baseUrl/users'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
-      body: jsonEncode(user.toJson()),
+      body: jsonEncode({
+        'username': username,
+        'password': password,
+        'email': email,
+      }),
     );
 
     if (response.statusCode == 201 || response.statusCode == 200) {

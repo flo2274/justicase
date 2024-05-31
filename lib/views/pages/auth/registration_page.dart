@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_anw/services/api_service.dart';
 import 'package:mobile_anw/models/user.dart';
+import 'package:go_router/go_router.dart';
 
 class RegistrationPage extends StatefulWidget {
   @override
@@ -8,8 +9,9 @@ class RegistrationPage extends StatefulWidget {
 }
 
 class _RegistrationPageState extends State<RegistrationPage> {
-  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -23,18 +25,23 @@ class _RegistrationPageState extends State<RegistrationPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextField(
-              controller: _nameController,
-              decoration: InputDecoration(labelText: 'Name'),
+              controller: _usernameController,
+              decoration: const InputDecoration(labelText: 'Benutzername'),
+            ),
+            SizedBox(height: 8.0),
+            TextField(
+              controller: _passwordController,
+              decoration: const InputDecoration(labelText: 'Passwort'),
             ),
             SizedBox(height: 8.0),
             TextField(
               controller: _emailController,
-              decoration: InputDecoration(labelText: 'E-Mail'),
+              decoration: const InputDecoration(labelText: 'E-Mail'),
             ),
             SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: _registerUser,
-              child: Text('Registrieren'),
+              child: const Text('Registrieren'),
             ),
           ],
         ),
@@ -43,23 +50,19 @@ class _RegistrationPageState extends State<RegistrationPage> {
   }
 
   void _registerUser() async {
-    final name = _nameController.text;
+    final username = _usernameController.text;
+    final password = _passwordController.text;
     final email = _emailController.text;
 
-    if (name.isNotEmpty && email.isNotEmpty) {
-      final newUser = User(
-        id: 0,
-        name: name,
-        email: email,
-      );
-
+    if (username.isNotEmpty && password.isNotEmpty && email.isNotEmpty) {
       try {
-        await ApiService.createUser(newUser);
+        await ApiService.createUser(username, password, email);
         print('Benutzer wurde erfolgreich erstellt.');
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text('Benutzer wurde erfolgreich erstellt.'),
         ));
-        Navigator.pop(context);
+        // Nach erfolgreicher Registrierung zur Home-Seite innerhalb der StatefulShellRoute navigieren
+        context.go('/home');
       } catch (e) {
         print('Fehler beim Erstellen des Benutzers: $e');
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -67,8 +70,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
         ));
       }
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Bitte geben Sie Name und E-Mail ein.'),
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Bitte geben Sie Benutzername, Passwort und E-Mail ein.'),
       ));
     }
   }
