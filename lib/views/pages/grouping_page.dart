@@ -62,19 +62,25 @@ class TabEnrolled extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        padding: const EdgeInsets.all(16.0),
-        color: Colors.green[50],
-        child: const Text(
-          'Content of Enrolled',
-          style: TextStyle(
-            fontSize: 18.0,
-            color: Colors.green,
-            fontFamily: 'PTSerif',
+    final List<Map<String, String>> contacts = [
+      {'name': 'John Doe', 'phone': '123-456-7890'},
+      {'name': 'Jane Smith', 'phone': '987-654-3210'},
+      {'name': 'Sam Johnson', 'phone': '555-555-5555'},
+      {'name': 'Lucy Brown', 'phone': '444-444-4444'},
+    ];
+
+    return ListView.builder(
+      padding: const EdgeInsets.all(16.0),
+      itemCount: contacts.length,
+      itemBuilder: (BuildContext context, int index) {
+        return Card(
+          child: ListTile(
+            leading: Icon(Icons.person),
+            title: Text(contacts[index]['name']!),
+            subtitle: Text(contacts[index]['phone']!),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }
