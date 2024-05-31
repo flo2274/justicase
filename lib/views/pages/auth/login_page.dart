@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class Login extends StatelessWidget {
-  final GoRouter goRouter;
+class LoginPage extends StatelessWidget {
 
-  const Login({Key? key, required this.goRouter}) : super(key: key);
+
+  const LoginPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +53,12 @@ class Login extends StatelessWidget {
               // Todo: logic for password forgotten
             },
             child: const Text('Forgot Password?'),
+          ),
+          TextButton(
+            onPressed: () {
+              context.go('/registration');
+            },
+            child: const Text('Register'),
           ),
           const SizedBox(height: 10.0),
           Row(

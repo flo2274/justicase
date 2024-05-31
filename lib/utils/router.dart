@@ -7,6 +7,7 @@ import 'package:mobile_anw/views/pages/home_page.dart';
 import 'package:mobile_anw/views/pages/grouping_page.dart';
 import 'package:mobile_anw/views/pages/scaffold_with_nested_navigation.dart';
 import 'package:mobile_anw/views/pages/auth/registration_page.dart';
+import 'package:mobile_anw/views/pages/auth/login_page.dart';
 
 // private navigators (underscore makes it private)
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -15,13 +16,17 @@ final _shellNavigatorSearchKey = GlobalKey<NavigatorState>(debugLabel: 'shellSea
 final _shellNavigatorCaseKey = GlobalKey<NavigatorState>(debugLabel: 'shellCase');
 
 final goRouter = GoRouter(
-  initialLocation: '/login',
+  initialLocation: '/registration',
   navigatorKey: _rootNavigatorKey,
   debugLogDiagnostics: true,
   routes: [
     GoRoute(
-      path: '/login',
+      path: '/registration',
       builder: (context, state) => RegistrationPage(),
+    ),
+    GoRoute(
+      path: '/login',
+      builder: (context, state) => const LoginPage(),
     ),
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {

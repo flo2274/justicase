@@ -38,10 +38,16 @@ class _RegistrationPageState extends State<RegistrationPage> {
               controller: _emailController,
               decoration: const InputDecoration(labelText: 'E-Mail'),
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: _registerUser,
               child: const Text('Registrieren'),
+            ),
+            TextButton(
+              onPressed: () {
+                context.go('/login');
+              },
+              child: const Text('Login'),
             ),
           ],
         ),
@@ -61,7 +67,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text('Benutzer wurde erfolgreich erstellt.'),
         ));
-        // Nach erfolgreicher Registrierung zur Home-Seite innerhalb der StatefulShellRoute navigieren
         context.go('/home');
       } catch (e) {
         print('Fehler beim Erstellen des Benutzers: $e');
