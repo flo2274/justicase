@@ -1,14 +1,14 @@
 class User {
   final int id; // Nicht erforderlich beim Erstellen eines neuen Benutzers
   final String username;
-  final String password;
   final String email;
+  final String password;
   final DateTime createdAt;
 
   User({
     required this.username,
-    required this.password,
     required this.email,
+    required this.password,
     required this.createdAt,
     this.id = 0, // Standardwert 0, wird vom Server zugewiesen
   });
@@ -17,8 +17,8 @@ class User {
     return User(
       id: json['id'] as int,
       username: json['username'] as String,
-      password: json['password'] as String,
       email: json['email'] as String,
+      password: json['password'] as String,
       createdAt: DateTime.parse(json['createdAt'] as String),
     );
   }
@@ -27,8 +27,8 @@ class User {
     return {
       'id': id,
       'username': username,
-      'password': password,
       'email': email,
+      'password': password,
       'createdAt': createdAt.toIso8601String(),
     };
   }

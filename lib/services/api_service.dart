@@ -1,7 +1,76 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:mobile_anw/models/user.dart';
 
+class APIService {
+  static const String baseURL = 'http://localhost:3000';
+  static const String registerURL = '$baseURL/register';
+  static const String loginURL = '$baseURL/login';
+  static const String usersURL = '$baseURL/users';
+
+  static final storage = FlutterSecureStorage();
+
+  static Future<bool> register(String username, String email, String password) async {
+    final response = await http.post(
+      Uri.parse(registerURL),
+      body: jsonEncode({
+        'username': username,
+        'email': email,
+        'password': password,
+      }),
+      headers: {'Content-Type': 'application/json'},
+    );
+
+    if (response.statusCode == 201 || response.statusCode == 200) {
+      return true;
+    } else {
+      throw Exception('Failed to register');
+    }
+  }
+
+  static Future<bool> login(String email, String password) async {
+    final response = await http.post(
+      Uri.parse(loginURL),
+      body: jsonEncode({'email': email, 'password': password}),
+      headers: {'Content-Type': 'application/json'},
+    );
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      final data = jsonDecode(response.body);
+      await storage.write(key: 'token', value: data['token']);
+      return true;
+    } else {
+      print(response.statusCode);
+      throw Exception('Failed to login');
+    }
+  }
+
+  static Future<String?> getToken() async {
+    return await storage.read(key: 'token');
+  }
+
+  static Future<void> logout() async {
+    await storage.delete(key: 'token');
+  }
+
+  static Future<List<User>> getUsers() async {
+    final token = await getToken();
+    final response = await http.get(
+      Uri.parse(usersURL),
+      headers: {'Authorization': 'Bearer $token'},
+    );
+
+    if (response.statusCode == 200) {
+      final List<dynamic> usersJson = jsonDecode(response.body);
+      return usersJson.map((json) => User.fromJson(json)).toList();
+    } else {
+      throw Exception('Failed to load users');
+    }
+  }
+}
+
+/*
 class ApiService {
   static const String baseUrl = 'http://192.168.2.100:3000';
 
@@ -37,4 +106,4 @@ class ApiService {
       throw Exception('Failed to create user');
     }
   }
-}
+}*/
