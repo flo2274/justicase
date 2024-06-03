@@ -8,6 +8,7 @@ import 'package:mobile_anw/views/pages/grouping_page.dart';
 import 'package:mobile_anw/views/pages/scaffold_with_nested_navigation.dart';
 import 'package:mobile_anw/views/pages/auth/registration_page.dart';
 import 'package:mobile_anw/views/pages/auth/login_page.dart';
+import 'dart:developer';
 
 // private navigators (underscore makes it private)
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -41,12 +42,6 @@ final goRouter = GoRouter(
               pageBuilder: (context, state) => const NoTransitionPage(
                 child: HomePage(),
               ),
-              /*routes: [
-                GoRoute(
-                  path: 'details',
-                  builder: (context, state) => const DetailsScreen(label: 'DetailHome'),
-                ),
-              ],*/
             ),
           ],
         ),
