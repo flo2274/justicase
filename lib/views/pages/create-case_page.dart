@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_anw/views/widgets/texts/headings/large_heading.dart';
 import 'package:mobile_anw/views/widgets/texts/headings/small_heading.dart';
 import 'package:mobile_anw/views/widgets/texts/info_text.dart';
+import 'package:mobile_anw/services/api_service.dart';
 
 class CreateCasePage extends StatefulWidget {
   const CreateCasePage({Key? key}) : super(key: key);
@@ -201,11 +202,38 @@ class _CreateCasePageState extends State<CreateCasePage> {
   }
 
 
-  void _createCompany() {
-    print('Company Name: $_companyName');
-    print('Category: $_selectedCategory');
-    print('Form: $_selectedForm');
-    print('First Name: $_yourFirstName');
-    print('Last Name: $_yourLastName');
+  void _createCompany() async {
+    try {
+      final bool success = await APIService.createCase(
+        _companyName,
+        _selectedForm,
+        _selectedCategory,
+      );
+      if (success) {
+        // Fall erfolgreich erstellt
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Fall erfolgreich erstellt'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      } else {
+        // Fall konnte nicht erstellt werden
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Fehler beim Erstellen des Falls'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } catch (e) {
+      // Fehler beim API-Aufruf
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Fehler: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 }
