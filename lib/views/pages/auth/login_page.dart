@@ -34,116 +34,90 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Login'),
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            TextField(
-              controller: _emailController,
-              decoration: InputDecoration(labelText: 'Email'),
-            ),
-            TextField(
-              controller: _passwordController,
-              obscureText: true,
-              decoration: InputDecoration(labelText: 'Password'),
-            ),
-            SizedBox(height: 16.0),
-            ElevatedButton(
-              onPressed: _login,
-              child: Text('Login'),
-            ),
-            TextButton(
-              onPressed: () {
-                context.go('/registration');
-              },
-              child: const Text('Register'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-
-/*
-class LoginPage extends StatelessWidget {
-  const LoginPage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const Text(
-              'Justicase',
-              style: TextStyle(fontSize: 40.0, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 30.0),
-            _buildForm(context),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildForm(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.8,
-      child: Column(
+      body: Column(
         children: [
-          TextFormField(
-            decoration: const InputDecoration(labelText: 'Email'),
+          Container(
+            color: Colors.grey,
+            width: double.infinity,
+            padding: EdgeInsets.all(35.0),
+            child: Column(
+              children: [
+                Text(
+                  'JUSTICE FOR YOUR CASE',
+                  style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold, color: Colors.white54),
+                ),
+                SizedBox(height: 20.0),
+                Text(
+                  'WERDEN SIE TEIL UNSERER BEWEGUNG FÜR GERECHTIGKEIT',
+                  style: TextStyle(fontSize: 12.0, color: Colors.white54),
+                ),
+              ],
+            ),
           ),
-          const SizedBox(height: 20.0),
-          TextFormField(
-            decoration: const InputDecoration(labelText: 'Password'),
-            obscureText: true,
+          AppBar(
+            title: Text('Willkommen bei Justicase'),
+            backgroundColor: Colors.transparent,
+            elevation: 0,
           ),
-          const SizedBox(height: 20.0),
-          ElevatedButton(
-            onPressed: () {
-              // Todo: login logic
-              //goRouter.go('/home');
-            },
-            child: const Text('Login'),
-          ),
-          const SizedBox(height: 10.0),
-          TextButton(
-            onPressed: () {
-              // Todo: logic for password forgotten
-            },
-            child: const Text('Forgot Password?'),
-          ),
-          TextButton(
-            onPressed: () {
-              context.go('/registration');
-            },
-            child: const Text('Register'),
-          ),
-          const SizedBox(height: 10.0),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text("Don't have an account?"),
-              TextButton(
-                onPressed: () {
-                  // Navigate to registration page
-                },
-                child: const Text('Register'),
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    'Email-Adresse',
+                    style: TextStyle(fontSize: 12.0),
+                  ),
+                  TextField(
+                    controller: _emailController,
+                    decoration: InputDecoration(
+                      hintText: 'Deine E-Mail-Adresse',
+                      hintStyle: TextStyle(color: Colors.grey),
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  SizedBox(height: 16.0),
+                  Text(
+                    'Passwort',
+                    style: TextStyle(fontSize: 12.0),
+                  ),
+                  TextField(
+                    controller: _passwordController,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      hintText: 'Dein Passwort',
+                      hintStyle: TextStyle(color: Colors.grey),
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  SizedBox(height: 16.0),
+                  ElevatedButton(
+                    onPressed: _login,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.deepPurple,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(0),
+                      ),
+                      padding: EdgeInsets.symmetric(vertical: 16.0),
+                    ),
+                    child: Text(
+                      'Login',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      context.go('/registration');
+                    },
+                    child: const Text('Register'),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ],
       ),
     );
   }
-}*/
-
+}
