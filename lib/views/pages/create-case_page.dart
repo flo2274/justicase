@@ -16,8 +16,6 @@ class _CreateCasePageState extends State<CreateCasePage> {
   String _companyName = '';
   String _selectedCategory = '';
   String _selectedForm = '';
-  String _yourFirstName = '';
-  String _yourLastName = '';
   String _yourCaseDescription = '';
 
   final List<String> _categories = [
@@ -32,7 +30,7 @@ class _CreateCasePageState extends State<CreateCasePage> {
     'GmbH',
     'AG',
     'Einzelunternehmen',
-    'Gesellschaft bürgerlichen Rechts (GbR)',
+    'GbR',
   ];
 
   @override
@@ -62,7 +60,7 @@ class _CreateCasePageState extends State<CreateCasePage> {
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         _formKey.currentState!.save();
-                        _createCompany();
+                        _createCase();
                       }
                     },
                     child: const Text('Erstellen'),
@@ -155,39 +153,10 @@ class _CreateCasePageState extends State<CreateCasePage> {
           const SmallHeading(
             text: 'Ihre Informationen',
           ),
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: '*Ihr Vorname',
-            ),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Bitte geben Sie Ihren Vornamen ein';
-              }
-              return null;
-            },
-            onSaved: (value) {
-              _yourFirstName = value!;
-            },
-          ),
           const SizedBox(height: 10),
           TextFormField(
             decoration: const InputDecoration(
-              labelText: '*Ihr Nachname',
-            ),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Bitte geben Sie Ihren Nachnamen ein';
-              }
-              return null;
-            },
-            onSaved: (value) {
-              _yourLastName = value!;
-            },
-          ),
-          const SizedBox(height: 10),
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Beschreibung des Falls',
+              labelText: 'Beschreibung des Falls für das Forum',
             ),
             maxLines: 3,
             onChanged: (value) {
@@ -201,8 +170,7 @@ class _CreateCasePageState extends State<CreateCasePage> {
     );
   }
 
-
-  void _createCompany() async {
+  void _createCase() async {
     try {
       final bool success = await APIService.createCase(
         _companyName,
@@ -210,7 +178,7 @@ class _CreateCasePageState extends State<CreateCasePage> {
         _selectedCategory,
       );
       if (success) {
-        // Fall erfolgreich erstellt
+        // Case successfully created
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Fall erfolgreich erstellt'),
@@ -218,7 +186,7 @@ class _CreateCasePageState extends State<CreateCasePage> {
           ),
         );
       } else {
-        // Fall konnte nicht erstellt werden
+        // Failed to create case
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Fehler beim Erstellen des Falls'),
@@ -227,7 +195,7 @@ class _CreateCasePageState extends State<CreateCasePage> {
         );
       }
     } catch (e) {
-      // Fehler beim API-Aufruf
+      // Error during API call
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Fehler: $e'),

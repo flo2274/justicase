@@ -7,7 +7,6 @@ class CasePage extends StatefulWidget {
     Key? key,
   }) : super(key: key);
 
-  /// The label to display in the center of the screen.
   final String label;
 
   @override

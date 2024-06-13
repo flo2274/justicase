@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mobile_anw/models/user.dart';
 
 class APIService {
@@ -40,6 +41,11 @@ class APIService {
     if (response.statusCode == 200 || response.statusCode == 201) {
       final data = jsonDecode(response.body);
       await storage.write(key: 'token', value: data['token']);
+
+      // Save username to shared preferences
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('username', data['user']['username']);
+
       return true;
     } else {
       print(response.statusCode);
@@ -52,7 +58,9 @@ class APIService {
   }
 
   static Future<void> logout() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     await storage.delete(key: 'token');
+    await prefs.remove('username');
   }
 
   static Future<List<User>> getUsers() async {
@@ -72,12 +80,17 @@ class APIService {
 
   static Future<bool> createCase(String name, String companyType, String industry) async {
     final token = await getToken();
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? username = prefs.getString('username');
+
     final response = await http.post(
       Uri.parse(casesURL),
       body: jsonEncode({
         'name': name,
         'companyType': companyType,
         'industry': industry,
+        'victim': username, // Using the authenticated user's username as victim
       }),
       headers: {
         'Content-Type': 'application/json',
@@ -92,6 +105,7 @@ class APIService {
     }
   }
 }
+
 
 /*
 class ApiService {
