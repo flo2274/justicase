@@ -13,6 +13,35 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  List<Map<String, dynamic>> _cases = [];
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchCases();
+  }
+
+  void _fetchCases() async {
+    try {
+      List<Map<String, dynamic>> cases = await APIService.getAllCases();
+      setState(() {
+        _cases = cases;
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Fehler beim Abrufen der Fälle: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
   void _logout() {
     APIService.logout();
     context.go('/login');
@@ -32,15 +61,17 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
+      body: _isLoading
+          ? Center(child: CircularProgressIndicator())
+          : SingleChildScrollView(
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               CategorySection(),
-              SuggestionsSection(),
-              RecentSection(),
+              SuggestionsSection(cases: _cases),
+              RecentSection(cases: _cases),
               const Text(
                 'Home',
                 style: TextStyle(

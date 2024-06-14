@@ -10,6 +10,7 @@ class APIService {
   static const String loginURL = '$baseURL/login';
   static const String usersURL = '$baseURL/users';
   static const String casesURL = '$baseURL/cases';
+  static const String myCasesURL = '$baseURL/getmycases';
 
   static final storage = FlutterSecureStorage();
 
@@ -104,43 +105,35 @@ class APIService {
       throw Exception('Failed to create case');
     }
   }
-}
 
-
-/*
-class ApiService {
-  static const String baseUrl = 'http://192.168.2.100:3000';
-
-  static Future<List<User>> getUsers() async {
-    final response = await http.get(Uri.parse('$baseUrl/users'));
-    if (response.statusCode == 200) {
-      final List<dynamic> responseData = jsonDecode(response.body);
-      return responseData.map((data) => User.fromJson(data)).toList();
-    } else {
-      throw Exception('Failed to load users');
-    }
-  }
-
-  static Future<void> createUser(String username, String password,
-      String email) async {
-    final response = await http.post(
-      Uri.parse('$baseUrl/users'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode({
-        'username': username,
-        'password': password,
-        'email': email,
-      }),
+  static Future<List<Map<String, dynamic>>> getAllCases() async {
+    final token = await getToken();
+    final response = await http.get(
+      Uri.parse(casesURL),
+      headers: {'Authorization': 'Bearer $token'},
     );
 
-    if (response.statusCode == 201 || response.statusCode == 200) {
-      print('User created successfully: ${response.body}');
+    if (response.statusCode == 200) {
+      final List<dynamic> casesJson = jsonDecode(response.body);
+      return casesJson.cast<Map<String, dynamic>>();
     } else {
-      print('Failed to create user: ${response.statusCode}');
-      print('Response body: ${response.body}');
-      throw Exception('Failed to create user');
+      throw Exception('Failed to load cases');
     }
   }
-}*/
+
+  static Future<List<Map<String, dynamic>>> getMyCases() async {
+    final token = await getToken();
+    final response = await http.get(
+      Uri.parse(myCasesURL),
+      headers: {'Authorization': 'Bearer $token'},
+    );
+
+    if (response.statusCode == 200) {
+      final List<dynamic> casesJson = jsonDecode(response.body);
+      return casesJson.cast<Map<String, dynamic>>();
+    } else {
+      throw Exception('Failed to load my cases');
+    }
+  }
+}
+

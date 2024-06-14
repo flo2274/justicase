@@ -14,19 +14,20 @@ class CreateCasePage extends StatefulWidget {
 class _CreateCasePageState extends State<CreateCasePage> {
   final _formKey = GlobalKey<FormState>();
   String _companyName = '';
-  String _selectedCategory = '';
-  String _selectedForm = '';
+  String _selectedIndustry = '';
+  String _selectedCompanyType = '';
   String _yourCaseDescription = '';
 
-  final List<String> _categories = [
+  final List<String> _industries = [
     'Technologie',
     'Gesundheitswesen',
     'Bildung',
     'Finanzen',
     'Einzelhandel',
+    'Online',
   ];
 
-  final List<String> _forms = [
+  final List<String> _companyTypes = [
     'GmbH',
     'AG',
     'Einzelunternehmen',
@@ -53,7 +54,7 @@ class _CreateCasePageState extends State<CreateCasePage> {
                 _buildCompanyInfoBox(),
                 _buildCaseInfoBox(),
                 const SizedBox(height: 10),
-                const InfoText(text: 'Die mit * gekennteichneten Felder sind Pflichtfelder'),
+                const InfoText(text: 'Die mit * gekennzeichneten Felder sind Pflichtfelder'),
                 const SizedBox(height: 20),
                 Center(
                   child: ElevatedButton(
@@ -80,7 +81,7 @@ class _CreateCasePageState extends State<CreateCasePage> {
       margin: const EdgeInsets.symmetric(vertical: 20),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.grey[100],
+        color: Colors.white,
         borderRadius: BorderRadius.circular(10),
       ),
       child: Column(
@@ -105,33 +106,33 @@ class _CreateCasePageState extends State<CreateCasePage> {
           ),
           const SizedBox(height: 10),
           DropdownButtonFormField<String>(
-            value: _selectedForm.isNotEmpty ? _selectedForm : null,
+            value: _selectedCompanyType.isNotEmpty ? _selectedCompanyType : null,
             hint: const Text('*Unternehmensform auswählen'),
-            items: _forms.map((form) {
+            items: _companyTypes.map((companyType) {
               return DropdownMenuItem(
-                value: form,
-                child: Text(form),
+                value: companyType,
+                child: Text(companyType),
               );
             }).toList(),
             onChanged: (value) {
               setState(() {
-                _selectedForm = value!;
+                _selectedCompanyType = value!;
               });
             },
           ),
           const SizedBox(height: 10),
           DropdownButtonFormField<String>(
-            value: _selectedCategory.isNotEmpty ? _selectedCategory : null,
+            value: _selectedIndustry.isNotEmpty ? _selectedIndustry : null,
             hint: const Text('*Branche auswählen'),
-            items: _categories.map((category) {
+            items: _industries.map((industry) {
               return DropdownMenuItem(
-                value: category,
-                child: Text(category),
+                value: industry,
+                child: Text(industry),
               );
             }).toList(),
             onChanged: (value) {
               setState(() {
-                _selectedCategory = value!;
+                _selectedIndustry = value!;
               });
             },
           ),
@@ -144,7 +145,7 @@ class _CreateCasePageState extends State<CreateCasePage> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.grey[100],
+        color: Colors.white,
         borderRadius: BorderRadius.circular(10),
       ),
       child: Column(
@@ -174,8 +175,8 @@ class _CreateCasePageState extends State<CreateCasePage> {
     try {
       final bool success = await APIService.createCase(
         _companyName,
-        _selectedForm,
-        _selectedCategory,
+        _selectedCompanyType,
+        _selectedIndustry,
       );
       if (success) {
         // Case successfully created
