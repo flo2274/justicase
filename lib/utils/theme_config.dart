@@ -7,7 +7,7 @@ class ThemeConfig {
   static Color primary = Colors.white;
   static Color blueAccent = Color(0xFF003CFF); // Elegantes Dunkelblau
   static Color blackAccent = Colors.black;
-  static Color lightGreyAccent = Color(0xFFD9D9D9);
+  static Color lightGreyAccent = Color(0xFFA2A1A1);
   static Color darkGreyAccent = Color(0xFF5E5E5E);
   static Color yellowAccent = Colors.yellow;
   static Color textPrimary = Colors.black;

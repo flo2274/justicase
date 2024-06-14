@@ -18,9 +18,10 @@ class _CreateCasePageState extends State<CreateCasePage> {
   String _selectedCompanyType = '';
   String _yourCaseDescription = '';
 
+  // Todo make global
   final List<String> _industries = [
     'Technologie',
-    'Gesundheitswesen',
+    'Gesundheit',
     'Bildung',
     'Finanzen',
     'Einzelhandel',

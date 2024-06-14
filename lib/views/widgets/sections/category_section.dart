@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_anw/views/widgets/cards/middle_card.dart';
 import 'package:mobile_anw/views/widgets/cards/small_card.dart';
 import 'package:mobile_anw/views/widgets/texts/headings/large_heading.dart';
 
-// Todo@Mike : zu den kategorien icons auf der rechten seite hinzufügen
-
 class CategorySection extends StatelessWidget {
 
+  //Todo make global
   final List<String> _industries = [
     'Technologie',
-    'Gesundheitswesen',
+    'Gesundheit',
     'Bildung',
     'Finanzen',
     'Einzelhandel',
@@ -19,7 +17,7 @@ class CategorySection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(20.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -30,24 +28,30 @@ class CategorySection extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              SmallCard(name: _industries[0]),
-              SmallCard(name: _industries[1]),
+              Expanded(
+                child: SmallCard(name: _industries[0]),
+              ),
+              Expanded(
+                child: SmallCard(name: _industries[1]),
+              ),
+              Expanded(
+                child: SmallCard(name: _industries[2]),
+              ),
             ],
           ),
-          const SizedBox(height: 16.0), // Abstand zwischen den Reihen
+          const SizedBox(height: 10.0), // Abstand zwischen den Reihen
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              SmallCard(name: _industries[2]),
-              SmallCard(name: _industries[3]),
-            ],
-          ),
-          const SizedBox(height: 16.0), // Abstand zwischen den Reihen
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              SmallCard(name: _industries[4]),
-              SmallCard(name: _industries[5]),
+              Expanded(
+                child: SmallCard(name: _industries[3]),
+              ),
+              Expanded(
+                child: SmallCard(name: _industries[4]),
+              ),
+              Expanded(
+                child: SmallCard(name: _industries[5]),
+              ),
             ],
           ),
         ],

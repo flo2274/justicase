@@ -13,7 +13,7 @@ class LargeHeading extends StatelessWidget {
     return Text(
       text,
       style: const TextStyle(
-        fontSize: 24.0,
+        fontSize: 20.0,
         fontWeight: FontWeight.bold,
         color: Colors.black,
       ),

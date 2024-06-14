@@ -12,7 +12,7 @@ class SmallHeading extends StatelessWidget {
     return Text(
       text,
       style: const TextStyle(
-        fontSize: 18.0,
+        fontSize: 16.0,
         fontWeight: FontWeight.normal,
         color: Colors.black,
       ),
