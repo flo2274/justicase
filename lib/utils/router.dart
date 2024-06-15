@@ -57,12 +57,6 @@ final goRouter = GoRouter(
               ),
               routes: [
                 GoRoute(
-                  path: 'grouping',
-                  builder: (context, state) => GroupingPage(
-                    caseInfo: state.extra as Case,
-                  ),
-                ),
-                GoRoute(
                   path: 'createCase',
                   builder: (context, state) => const CreateCasePage(),
                 ),
