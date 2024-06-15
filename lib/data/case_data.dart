@@ -5,7 +5,7 @@ class CaseData {
     'Bildung',
     'Finanzen',
     'Einzelhandel',
-    'Online',
+    'Onlineshop',
   ];
 
   static final List<String> companyTypes = [

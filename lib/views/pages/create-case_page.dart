@@ -1,6 +1,4 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:mobile_anw/models/case.dart';
 import 'package:mobile_anw/services/api_service.dart';
 import 'package:mobile_anw/views/widgets/texts/headings/large_heading.dart';
@@ -20,7 +18,8 @@ class CreateCasePage extends StatefulWidget {
 class _CreateCasePageState extends State<CreateCasePage> {
   final _formKey = GlobalKey<FormState>();
   String _yourCaseDescription = '';
-  Case _newCase = Case(); // Neues Case-Objekt initialisieren
+  Case _newCase = Case(companyType: '', industry: '');
+  // Initialize with empty values
   bool _isLoading = false;
 
   @override
@@ -91,6 +90,7 @@ class _CreateCasePageState extends State<CreateCasePage> {
           ),
           const SizedBox(height: 10),
           TextFormField(
+            initialValue: _newCase.name ?? '',
             decoration: const InputDecoration(
               labelText: '*Name des Unternehmens',
             ),
@@ -106,7 +106,7 @@ class _CreateCasePageState extends State<CreateCasePage> {
           ),
           const SizedBox(height: 10),
           DropdownButtonFormField<String>(
-            value: _newCase.companyType!.isNotEmpty ? _newCase.companyType : null,
+            value: _newCase.companyType?.isNotEmpty == true ? _newCase.companyType : null,
             hint: const Text('*Unternehmensform auswählen'),
             items: CaseData.companyTypes.map((companyType) {
               return DropdownMenuItem(
@@ -116,7 +116,7 @@ class _CreateCasePageState extends State<CreateCasePage> {
             }).toList(),
             onChanged: (value) {
               setState(() {
-                _newCase.companyType = value!;
+                _newCase.companyType = value ?? ''; // Handle null case
               });
             },
             validator: (value) {
@@ -128,7 +128,7 @@ class _CreateCasePageState extends State<CreateCasePage> {
           ),
           const SizedBox(height: 10),
           DropdownButtonFormField<String>(
-            value: _newCase.industry!.isNotEmpty ? _newCase.industry : null,
+            value: _newCase.industry?.isNotEmpty == true ? _newCase.industry : null,
             hint: const Text('*Branche auswählen'),
             items: CaseData.industries.map((industry) {
               return DropdownMenuItem(
@@ -138,7 +138,7 @@ class _CreateCasePageState extends State<CreateCasePage> {
             }).toList(),
             onChanged: (value) {
               setState(() {
-                _newCase.industry = value!;
+                _newCase.industry = value ?? ''; // Handle null case
               });
             },
             validator: (value) {
@@ -192,10 +192,12 @@ class _CreateCasePageState extends State<CreateCasePage> {
   }
 
   void _createCase() async {
+    setState(() {
+      _isLoading = true;
+    });
+
     try {
-      final bool success = await APIService.createCase(
-        _newCase,
-      );
+      final bool success = await APIService.createCase(_newCase);
       if (success) {
         // Case successfully created
         ScaffoldMessenger.of(context).showSnackBar(
@@ -221,6 +223,10 @@ class _CreateCasePageState extends State<CreateCasePage> {
           backgroundColor: Colors.red,
         ),
       );
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 }

@@ -2,9 +2,9 @@ import 'user.dart';
 
 class Case {
   final int? id;
-  late final String? name;
-  late final String? companyType;
-  late final String? industry;
+  String? name;
+  String? companyType;
+  String? industry;
   final DateTime? createdAt;
   final List<User>? users; // List of users associated with this case
 
@@ -32,8 +32,6 @@ class Case {
     );
   }
 
-  set description(String description) {}
-
   Map<String, dynamic> toJson() {
     List<Map<String, dynamic>>? usersJson = users?.map((u) => u.toJson()).toList();
     return {
@@ -46,3 +44,4 @@ class Case {
     };
   }
 }
+
