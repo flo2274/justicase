@@ -7,6 +7,7 @@ import 'package:mobile_anw/views/widgets/texts/info_text.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../data/case_data.dart';
+import '../widgets/texts/field_text.dart';
 
 class CreateCasePage extends StatefulWidget {
   const CreateCasePage({Key? key}) : super(key: key);
@@ -107,7 +108,7 @@ class _CreateCasePageState extends State<CreateCasePage> {
           const SizedBox(height: 10),
           DropdownButtonFormField<String>(
             value: _newCase.companyType?.isNotEmpty == true ? _newCase.companyType : null,
-            hint: const Text('*Unternehmensform auswählen'),
+            hint: const FieldText(text: '*Unternehmensform auswählen'),
             items: CaseData.companyTypes.map((companyType) {
               return DropdownMenuItem(
                 value: companyType,
@@ -129,7 +130,7 @@ class _CreateCasePageState extends State<CreateCasePage> {
           const SizedBox(height: 10),
           DropdownButtonFormField<String>(
             value: _newCase.industry?.isNotEmpty == true ? _newCase.industry : null,
-            hint: const Text('*Branche auswählen'),
+            hint: const FieldText(text: '*Branche auswählen'),
             items: CaseData.industries.map((industry) {
               return DropdownMenuItem(
                 value: industry,

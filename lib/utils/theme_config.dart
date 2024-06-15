@@ -51,6 +51,12 @@ class ThemeConfig {
         fontWeight: FontWeight.bold,
         color: textSecondary,
       ),
+      bodyMedium: TextStyle( // This is the default text style for DropdownMenuItem
+        fontSize: 12.0,
+        fontWeight: FontWeight.normal,
+        color: textPrimary,
+      ),
+      headlineMedium: TextStyle(fontSize: 16.0, fontWeight: FontWeight.normal, color: textPrimary),
     ),
     inputDecorationTheme: InputDecorationTheme(
       hintStyle: const TextStyle(color: textSecondary), // Hinweisfarbe für Textfelder
