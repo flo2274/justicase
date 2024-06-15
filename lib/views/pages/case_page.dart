@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile_anw/models/case.dart';
 import 'package:mobile_anw/services/api_service.dart';
+import 'package:mobile_anw/utils/emoji_helper.dart'; // Annahme des Dateipfads
 
 class CasePage extends StatefulWidget {
   const CasePage({
@@ -45,17 +46,25 @@ class _CasePageState extends State<CasePage> {
         title: const Center(child: Text('JUSTICASE')),
       ),
       body: ListView.builder(
+        padding: const EdgeInsets.all(16.0),
         itemCount: _myCases.length,
         itemBuilder: (BuildContext context, int index) {
-          return ListTile(
-            title: Text(_myCases[index].name!),
-            subtitle: Text(_myCases[index].companyType ?? ''),
-            onTap: () {
-              context.go(
-                '/case/grouping',
-                extra: _myCases[index],
-              );
-            },
+          return Card(
+            child: ListTile(
+              leading: Icon(
+                EmojiHelper.getIndustryIcon(_myCases[index].industry ?? ''),
+                size: 30, // Icon-Größe
+              ),
+              title: Text(_myCases[index].name!), // Fallname
+              subtitle: Text(_myCases[index].companyType ?? ''), // Unternehmenstyp (falls vorhanden)
+              onTap: () {
+                // Navigieren zur GroupingPage mit dem ausgewählten Fall
+                context.go(
+                  '/case/grouping',
+                  extra: _myCases[index],
+                );
+              },
+            ),
           );
         },
       ),
