@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mobile_anw/services/api_service.dart'; // Annahme: Dies ist der richtige Import für Ihre APIService-Datei
+import 'package:mobile_anw/services/api_service.dart';
 
 class CasePage extends StatefulWidget {
   const CasePage({
@@ -51,9 +51,10 @@ class _CasePageState extends State<CasePage> {
             title: Text(_myCases[index]['name']),
             subtitle: Text(_myCases[index]['companyType']),
             onTap: () {
-              // Implementieren Sie die Navigation zur Detailseite des Falls hier
-              // context.go('/case/${_myCases[index]['id']}');
-              // Beispiel für den Zugriff auf die ID: _myCases[index]['id']
+              context.go(
+                '/case/grouping',
+                extra: _myCases[index],
+              );
             },
           );
         },

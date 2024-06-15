@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 
-class GroupingPage extends StatefulWidget {
-  const GroupingPage({Key? key}) : super(key: key);
+class GroupingPage extends StatelessWidget {
+  final Map<String, dynamic> caseInfo;
 
-  @override
-  _GroupingPageState createState() => _GroupingPageState();
-}
+  const GroupingPage({Key? key, required this.caseInfo}) : super(key: key);
 
-class _GroupingPageState extends State<GroupingPage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -22,10 +19,10 @@ class _GroupingPageState extends State<GroupingPage> {
             ],
           ),
         ),
-        body: const TabBarView(
+        body: TabBarView(
           children: [
-            TabForum(), // First tab content
-            TabEnrolled(), // Second tab content
+            TabForum(caseInfo: caseInfo), // First tab content
+            TabEnrolled(caseInfo: caseInfo), // Second tab content
           ],
         ),
       ),
@@ -35,7 +32,9 @@ class _GroupingPageState extends State<GroupingPage> {
 
 // Content for the first tab
 class TabForum extends StatelessWidget {
-  const TabForum({Key? key}) : super(key: key);
+  final Map<String, dynamic> caseInfo;
+
+  const TabForum({Key? key, required this.caseInfo}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -43,9 +42,9 @@ class TabForum extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(16.0),
         color: Colors.blue[50],
-        child: const Text(
-          'Content of Forum',
-          style: TextStyle(
+        child: Text(
+          'Content of Forum for case: ${caseInfo['name']}',
+          style: const TextStyle(
             fontSize: 18.0,
             color: Colors.blue,
             fontFamily: 'PTSerif',
@@ -58,7 +57,9 @@ class TabForum extends StatelessWidget {
 
 // Content for the second tab
 class TabEnrolled extends StatelessWidget {
-  const TabEnrolled({Key? key}) : super(key: key);
+  final Map<String, dynamic> caseInfo;
+
+  const TabEnrolled({Key? key, required this.caseInfo}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
