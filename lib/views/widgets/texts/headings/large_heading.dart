@@ -12,11 +12,7 @@ class LargeHeading extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: const TextStyle(
-        fontSize: 20.0,
-        fontWeight: FontWeight.bold,
-        color: Colors.black,
-      ),
+      style: Theme.of(context).textTheme.titleLarge,
     );
   }
 }

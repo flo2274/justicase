@@ -4,6 +4,9 @@ import 'package:mobile_anw/views/widgets/sections/suggestions_section.dart';
 import 'package:mobile_anw/views/widgets/sections/recent_section.dart';
 import 'package:mobile_anw/services/api_service.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile_anw/views/widgets/texts/headings/large_heading.dart';
+import 'package:mobile_anw/views/widgets/texts/headings/middle_heading.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -15,11 +18,21 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   List<Map<String, dynamic>> _cases = [];
   bool _isLoading = true;
+  String _username = '';
 
   @override
   void initState() {
     super.initState();
     _fetchCases();
+    _fetchUsername();
+  }
+
+  void _fetchUsername() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? username = prefs.getString('username');
+    setState(() {
+      _username = username ?? '';
+    });
   }
 
   void _fetchCases() async {
@@ -70,16 +83,18 @@ class _HomePageState extends State<HomePage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               CategorySection(),
+              const SizedBox(height: 20.0),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: MiddleHeading(
+                      text: 'Wilkommen zurück $_username',
+                    ),
+                  ),
+              ),
               SuggestionsSection(cases: _cases),
               RecentSection(cases: _cases),
-              const Text(
-                'Home',
-                style: TextStyle(
-                  fontSize: 20.0,
-                  color: Colors.grey,
-                  fontFamily: 'PTSerif',
-                ),
-              ),
             ],
           ),
         ),

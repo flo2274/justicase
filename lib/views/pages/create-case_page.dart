@@ -3,6 +3,7 @@ import 'package:mobile_anw/views/widgets/texts/headings/large_heading.dart';
 import 'package:mobile_anw/views/widgets/texts/headings/small_heading.dart';
 import 'package:mobile_anw/views/widgets/texts/info_text.dart';
 import 'package:mobile_anw/services/api_service.dart';
+import 'package:mobile_anw/data/case_data.dart'; // Import der ausgelagerten Datenklasse
 
 class CreateCasePage extends StatefulWidget {
   const CreateCasePage({Key? key}) : super(key: key);
@@ -17,23 +18,6 @@ class _CreateCasePageState extends State<CreateCasePage> {
   String _selectedIndustry = '';
   String _selectedCompanyType = '';
   String _yourCaseDescription = '';
-
-  // Todo make global
-  final List<String> _industries = [
-    'Technologie',
-    'Gesundheit',
-    'Bildung',
-    'Finanzen',
-    'Einzelhandel',
-    'Online',
-  ];
-
-  final List<String> _companyTypes = [
-    'GmbH',
-    'AG',
-    'Einzelunternehmen',
-    'GbR',
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -84,6 +68,14 @@ class _CreateCasePageState extends State<CreateCasePage> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),
+        boxShadow: const [
+          BoxShadow(
+            color: Colors.black26,
+            blurRadius: 1.5,
+            spreadRadius: 0.2,
+            offset: Offset(0, 1), // Schatten nach unten verschieben
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -91,6 +83,7 @@ class _CreateCasePageState extends State<CreateCasePage> {
           const SmallHeading(
             text: 'Unternehmensspezifische Informationen',
           ),
+          const SizedBox(height: 10),
           TextFormField(
             decoration: const InputDecoration(
               labelText: '*Name des Unternehmens',
@@ -109,7 +102,7 @@ class _CreateCasePageState extends State<CreateCasePage> {
           DropdownButtonFormField<String>(
             value: _selectedCompanyType.isNotEmpty ? _selectedCompanyType : null,
             hint: const Text('*Unternehmensform auswählen'),
-            items: _companyTypes.map((companyType) {
+            items: CaseData.companyTypes.map((companyType) { // Zugriff auf companyTypes aus CaseData
               return DropdownMenuItem(
                 value: companyType,
                 child: Text(companyType),
@@ -125,7 +118,7 @@ class _CreateCasePageState extends State<CreateCasePage> {
           DropdownButtonFormField<String>(
             value: _selectedIndustry.isNotEmpty ? _selectedIndustry : null,
             hint: const Text('*Branche auswählen'),
-            items: _industries.map((industry) {
+            items: CaseData.industries.map((industry) { // Zugriff auf industries aus CaseData
               return DropdownMenuItem(
                 value: industry,
                 child: Text(industry),
@@ -148,6 +141,14 @@ class _CreateCasePageState extends State<CreateCasePage> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),
+        boxShadow: const [
+          BoxShadow(
+            color: Colors.black26,
+            blurRadius: 1.5,
+            spreadRadius: 0.2,
+            offset: Offset(0, 1),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

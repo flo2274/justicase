@@ -3,6 +3,8 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile_anw/views/widgets/texts/alert_text.dart';
 
+//Todo put searchbar into container
+
 class Company {
   final String name;
 

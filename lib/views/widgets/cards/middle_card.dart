@@ -8,6 +8,10 @@ class MiddleCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      elevation: 2.0, // Höhe des Schattens
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16.0), // Optionale Abrundung der Ecken
+      ),
       child: Container(
         width: MediaQuery.of(context).size.width / 2.5,
         height: 150,
@@ -15,7 +19,7 @@ class MiddleCard extends StatelessWidget {
         padding: const EdgeInsets.only(left: 16.0), // Padding für den Abstand vom linken Rand
         child: Text(
           name,
-          style: const TextStyle(fontSize: 18.0),
+          style: const TextStyle(fontSize: 22.0),
           textAlign: TextAlign.start,
         ),
       ),

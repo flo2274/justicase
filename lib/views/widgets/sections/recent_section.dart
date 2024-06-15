@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_anw/views/widgets/cards/middle_card.dart'; // Import für MiddleCard
-import 'package:mobile_anw/views/widgets/texts/headings/large_heading.dart';
+import 'package:mobile_anw/views/widgets/texts/headings/small_heading.dart';
 
 class RecentSection extends StatelessWidget {
   final List<Map<String, dynamic>> cases;
@@ -13,14 +13,15 @@ class RecentSection extends StatelessWidget {
     final displayCases = cases.length >= 4 ? cases.sublist(0, 4) : cases;
 
     return Padding(
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const LargeHeading(
+          const SizedBox(height: 20.0),
+          const SmallHeading(
             text: 'Aktuell',
           ),
-          const SizedBox(height: 10.0), // Abstand zwischen Überschrift und Karten
+          const SizedBox(height: 5.0), // Abstand zwischen Überschrift und Karten
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: displayCases
@@ -30,7 +31,7 @@ class RecentSection extends StatelessWidget {
             ))
                 .toList(),
           ),
-          const SizedBox(height: 10.0), // Abstand zwischen den Reihen
+          const SizedBox(height: 5.0), // Abstand zwischen den Reihen
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: displayCases
