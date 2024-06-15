@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../../models/case.dart';
+
 class GroupingPage extends StatelessWidget {
-  final Map<String, dynamic> caseInfo;
+  final Case caseInfo; // Use Case instead of Map<String, dynamic>
 
   const GroupingPage({Key? key, required this.caseInfo}) : super(key: key);
 
@@ -32,7 +34,7 @@ class GroupingPage extends StatelessWidget {
 
 // Content for the first tab
 class TabForum extends StatelessWidget {
-  final Map<String, dynamic> caseInfo;
+  final Case caseInfo;
 
   const TabForum({Key? key, required this.caseInfo}) : super(key: key);
 
@@ -43,7 +45,7 @@ class TabForum extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         color: Colors.blue[50],
         child: Text(
-          'Content of Forum for case: ${caseInfo['name']}',
+          'Content of Forum for case: ${caseInfo.name}',
           style: const TextStyle(
             fontSize: 18.0,
             color: Colors.blue,
@@ -57,7 +59,7 @@ class TabForum extends StatelessWidget {
 
 // Content for the second tab
 class TabEnrolled extends StatelessWidget {
-  final Map<String, dynamic> caseInfo;
+  final Case caseInfo;
 
   const TabEnrolled({Key? key, required this.caseInfo}) : super(key: key);
 
@@ -85,3 +87,4 @@ class TabEnrolled extends StatelessWidget {
     );
   }
 }
+

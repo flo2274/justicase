@@ -10,6 +10,8 @@ import 'package:mobile_anw/views/pages/auth/registration_page.dart';
 import 'package:mobile_anw/views/pages/auth/login_page.dart';
 import 'dart:developer';
 
+import '../models/case.dart';
+
 // private navigators (underscore makes it private)
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorHomeKey = GlobalKey<NavigatorState>(debugLabel: 'shellHome');
@@ -57,7 +59,7 @@ final goRouter = GoRouter(
                 GoRoute(
                   path: 'grouping',
                   builder: (context, state) => GroupingPage(
-                    caseInfo: state.extra as Map<String, dynamic>,
+                    caseInfo: state.extra as Case,
                   ),
                 ),
                 GoRoute(
@@ -80,7 +82,7 @@ final goRouter = GoRouter(
                 GoRoute(
                   path: 'grouping',
                   builder: (context, state) => GroupingPage(
-                    caseInfo: state.extra as Map<String, dynamic>,
+                    caseInfo: state.extra as Case,
                   ),
                 ),
               ],
