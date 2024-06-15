@@ -1,6 +1,6 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile_anw/models/case.dart';
 import 'package:mobile_anw/services/api_service.dart';
 
 class CasePage extends StatefulWidget {
@@ -16,7 +16,7 @@ class CasePage extends StatefulWidget {
 }
 
 class _CasePageState extends State<CasePage> {
-  List<Map<String, dynamic>> _myCases = [];
+  List<Case> _myCases = [];
 
   @override
   void initState() {
@@ -26,7 +26,7 @@ class _CasePageState extends State<CasePage> {
 
   Future<void> _loadCases() async {
     try {
-      List<Map<String, dynamic>> myCases = await APIService.getMyCases();
+      List<Case> myCases = await APIService.getMyCases();
       print('Loaded cases: $myCases'); // Debugging-Ausgabe der geladenen Fälle
       setState(() {
         _myCases = myCases;
@@ -48,8 +48,8 @@ class _CasePageState extends State<CasePage> {
         itemCount: _myCases.length,
         itemBuilder: (BuildContext context, int index) {
           return ListTile(
-            title: Text(_myCases[index]['name']),
-            subtitle: Text(_myCases[index]['companyType']),
+            title: Text(_myCases[index].name!),
+            subtitle: Text(_myCases[index].companyType ?? ''),
             onTap: () {
               context.go(
                 '/case/grouping',

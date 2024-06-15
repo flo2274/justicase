@@ -1,9 +1,14 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:mobile_anw/models/case.dart';
+import 'package:mobile_anw/services/api_service.dart';
 import 'package:mobile_anw/views/widgets/texts/headings/large_heading.dart';
 import 'package:mobile_anw/views/widgets/texts/headings/small_heading.dart';
 import 'package:mobile_anw/views/widgets/texts/info_text.dart';
-import 'package:mobile_anw/services/api_service.dart';
-import 'package:mobile_anw/data/case_data.dart'; // Import der ausgelagerten Datenklasse
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../data/case_data.dart';
 
 class CreateCasePage extends StatefulWidget {
   const CreateCasePage({Key? key}) : super(key: key);
@@ -14,10 +19,9 @@ class CreateCasePage extends StatefulWidget {
 
 class _CreateCasePageState extends State<CreateCasePage> {
   final _formKey = GlobalKey<FormState>();
-  String _companyName = '';
-  String _selectedIndustry = '';
-  String _selectedCompanyType = '';
   String _yourCaseDescription = '';
+  Case _newCase = Case(); // Neues Case-Objekt initialisieren
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +45,9 @@ class _CreateCasePageState extends State<CreateCasePage> {
                 const SizedBox(height: 10),
                 const InfoText(text: 'Die mit * gekennzeichneten Felder sind Pflichtfelder'),
                 const SizedBox(height: 20),
-                Center(
+                _isLoading
+                    ? Center(child: CircularProgressIndicator())
+                    : Center(
                   child: ElevatedButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
@@ -95,14 +101,14 @@ class _CreateCasePageState extends State<CreateCasePage> {
               return null;
             },
             onSaved: (value) {
-              _companyName = value!;
+              _newCase.name = value!;
             },
           ),
           const SizedBox(height: 10),
           DropdownButtonFormField<String>(
-            value: _selectedCompanyType.isNotEmpty ? _selectedCompanyType : null,
+            value: _newCase.companyType!.isNotEmpty ? _newCase.companyType : null,
             hint: const Text('*Unternehmensform auswählen'),
-            items: CaseData.companyTypes.map((companyType) { // Zugriff auf companyTypes aus CaseData
+            items: CaseData.companyTypes.map((companyType) {
               return DropdownMenuItem(
                 value: companyType,
                 child: Text(companyType),
@@ -110,15 +116,21 @@ class _CreateCasePageState extends State<CreateCasePage> {
             }).toList(),
             onChanged: (value) {
               setState(() {
-                _selectedCompanyType = value!;
+                _newCase.companyType = value!;
               });
+            },
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Bitte wählen Sie eine Unternehmensform aus';
+              }
+              return null;
             },
           ),
           const SizedBox(height: 10),
           DropdownButtonFormField<String>(
-            value: _selectedIndustry.isNotEmpty ? _selectedIndustry : null,
+            value: _newCase.industry!.isNotEmpty ? _newCase.industry : null,
             hint: const Text('*Branche auswählen'),
-            items: CaseData.industries.map((industry) { // Zugriff auf industries aus CaseData
+            items: CaseData.industries.map((industry) {
               return DropdownMenuItem(
                 value: industry,
                 child: Text(industry),
@@ -126,8 +138,14 @@ class _CreateCasePageState extends State<CreateCasePage> {
             }).toList(),
             onChanged: (value) {
               setState(() {
-                _selectedIndustry = value!;
+                _newCase.industry = value!;
               });
+            },
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Bitte wählen Sie eine Branche aus';
+              }
+              return null;
             },
           ),
         ],
@@ -176,9 +194,7 @@ class _CreateCasePageState extends State<CreateCasePage> {
   void _createCase() async {
     try {
       final bool success = await APIService.createCase(
-        _companyName,
-        _selectedCompanyType,
-        _selectedIndustry,
+        _newCase,
       );
       if (success) {
         // Case successfully created

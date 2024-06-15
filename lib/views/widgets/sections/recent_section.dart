@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_anw/views/widgets/cards/middle_card.dart'; // Import für MiddleCard
 import 'package:mobile_anw/views/widgets/texts/headings/small_heading.dart';
+import 'package:mobile_anw/models/case.dart';
 
 class RecentSection extends StatelessWidget {
-  final List<Map<String, dynamic>> cases;
+  final List<Case> cases;
 
   RecentSection({required this.cases});
 
@@ -25,9 +26,9 @@ class RecentSection extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: displayCases
-                .take(2) // Drei Karten in einer Reihe
+                .take(2) // Zwei Karten in einer Reihe
                 .map((caseItem) => Expanded(
-              child: MiddleCard(name: caseItem['name']),
+              child: MiddleCard(name: caseItem.name ?? ''),
             ))
                 .toList(),
           ),
@@ -36,9 +37,9 @@ class RecentSection extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: displayCases
                 .skip(2)
-                .take(2) // Drei Karten in einer Reihe
+                .take(2) // Zwei Karten in einer Reihe
                 .map((caseItem) => Expanded(
-              child: MiddleCard(name: caseItem['name']),
+              child: MiddleCard(name: caseItem.name ?? ''),
             ))
                 .toList(),
           ),

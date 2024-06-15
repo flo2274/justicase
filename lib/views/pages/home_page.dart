@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_anw/views/widgets/sections/category_section.dart';
-import 'package:mobile_anw/views/widgets/sections/suggestions_section.dart';
-import 'package:mobile_anw/views/widgets/sections/recent_section.dart';
+import 'package:mobile_anw/models/case.dart'; // Import der Case-Klasse
 import 'package:mobile_anw/services/api_service.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile_anw/views/widgets/texts/headings/large_heading.dart';
 import 'package:mobile_anw/views/widgets/texts/headings/middle_heading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:mobile_anw/views/widgets/sections/category_section.dart';
+import 'package:mobile_anw/views/widgets/sections/suggestions_section.dart';
+import 'package:mobile_anw/views/widgets/sections/recent_section.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -16,7 +17,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<Map<String, dynamic>> _cases = [];
+  List<Case> _cases = [];
   bool _isLoading = true;
   String _username = '';
 
@@ -37,7 +38,7 @@ class _HomePageState extends State<HomePage> {
 
   void _fetchCases() async {
     try {
-      List<Map<String, dynamic>> cases = await APIService.getAllCases();
+      List<Case> cases = await APIService.getAllCases();
       setState(() {
         _cases = cases;
         _isLoading = false;
@@ -77,26 +78,23 @@ class _HomePageState extends State<HomePage> {
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              CategorySection(),
-              const SizedBox(height: 20.0),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: MiddleHeading(
-                      text: 'Wilkommen zurück $_username',
-                    ),
-                  ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const SizedBox(height: 20.0),
+            CategorySection(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: MiddleHeading(
+                  text: 'Willkommen zurück, $_username',
+                ),
               ),
-              SuggestionsSection(cases: _cases),
-              RecentSection(cases: _cases),
-            ],
-          ),
+            ),
+            SuggestionsSection(cases: _cases),
+            RecentSection(cases: _cases),
+          ],
         ),
       ),
     );

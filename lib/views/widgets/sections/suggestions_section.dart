@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_anw/views/widgets/cards/middle_card.dart'; // Import für MiddleCard
 import 'package:mobile_anw/views/widgets/texts/headings/small_heading.dart';
+import 'package:mobile_anw/models/case.dart';
 
 class SuggestionsSection extends StatefulWidget {
-  final List<Map<String, dynamic>> cases;
+  final List<Case> cases;
 
   SuggestionsSection({required this.cases});
 
@@ -12,12 +13,11 @@ class SuggestionsSection extends StatefulWidget {
 }
 
 class _SuggestionsSectionState extends State<SuggestionsSection> {
-
-
   @override
   Widget build(BuildContext context) {
     // Nehmen wir an, dass wir nur die nächsten vier Fälle für die Vorschläge verwenden
-    final displayCases = widget.cases.length >= 8 ? widget.cases.sublist(4, 8) : widget.cases.skip(4).take(4).toList();
+    final displayCases =
+    widget.cases.length >= 8 ? widget.cases.sublist(4, 8) : widget.cases.skip(4).take(4).toList();
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -34,7 +34,7 @@ class _SuggestionsSectionState extends State<SuggestionsSection> {
             children: displayCases
                 .take(2) // Zwei Karten in einer Reihe
                 .map((caseItem) => Expanded(
-              child: MiddleCard(name: caseItem['name']),
+              child: MiddleCard(name: caseItem.name ?? ''),
             ))
                 .toList(),
           ),
@@ -45,7 +45,7 @@ class _SuggestionsSectionState extends State<SuggestionsSection> {
                 .skip(2)
                 .take(2) // Zwei Karten in einer Reihe
                 .map((caseItem) => Expanded(
-              child: MiddleCard(name: caseItem['name']),
+              child: MiddleCard(name: caseItem.name ?? ''),
             ))
                 .toList(),
           ),

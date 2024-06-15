@@ -6,7 +6,7 @@ class User {
   final String email;
   final String password;
   final DateTime createdAt;
-  final List<Case>? cases; // Liste von Fällen, denen der Benutzer zugeordnet ist
+  final List<Case> cases; // Liste von Fällen, die diesem Benutzer zugeordnet sind
 
   User({
     required this.id,
@@ -14,7 +14,7 @@ class User {
     required this.email,
     required this.password,
     required this.createdAt,
-    this.cases,
+    required this.cases,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
@@ -23,20 +23,17 @@ class User {
       cases = List<Case>.from(json['cases'].map((caseJson) => Case.fromJson(caseJson)));
     }
     return User(
-      id: json['id'] as int,
-      username: json['username'] as String,
-      email: json['email'] as String,
-      password: json['password'] as String,
-      createdAt: DateTime.parse(json['createdAt'] as String),
+      id: json['id'] ?? 0,
+      username: json['username'] ?? '',
+      email: json['email'] ?? '',
+      password: json['password'] ?? '',
+      createdAt: DateTime.parse(json['createdAt'] ?? ''),
       cases: cases,
     );
   }
 
   Map<String, dynamic> toJson() {
-    List<Map<String, dynamic>>? casesJson;
-    if (cases != null) {
-      casesJson = cases!.map((userCase) => userCase.toJson()).toList();
-    }
+    List<Map<String, dynamic>> casesJson = cases.map((c) => c.toJson()).toList();
     return {
       'id': id,
       'username': username,
@@ -47,6 +44,7 @@ class User {
     };
   }
 }
+
 /*
 class User {
   final int id; // Nicht erforderlich beim Erstellen eines neuen Benutzers

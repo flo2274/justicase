@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mobile_anw/models/user.dart';
+import 'package:mobile_anw/models/case.dart';
 
 class APIService {
   static const String baseURL = 'http://localhost:3000';
@@ -79,7 +80,7 @@ class APIService {
     }
   }
 
-  static Future<bool> createCase(String name, String companyType, String industry) async {
+  static Future<bool> createCase(Case newCase) async {
     final token = await getToken();
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -88,10 +89,10 @@ class APIService {
     final response = await http.post(
       Uri.parse(casesURL),
       body: jsonEncode({
-        'name': name,
-        'companyType': companyType,
-        'industry': industry,
-        'victim': username, // Using the authenticated user's username as victim
+        'name': newCase.name,
+        'companyType': newCase.companyType,
+        'industry': newCase.industry,
+        'victim': username, // Verwendung des Benutzernamens des authentifizierten Benutzers als Opfer
       }),
       headers: {
         'Content-Type': 'application/json',
@@ -106,7 +107,8 @@ class APIService {
     }
   }
 
-  static Future<List<Map<String, dynamic>>> getAllCases() async {
+
+  static Future<List<Case>> getAllCases() async {
     final token = await getToken();
     final response = await http.get(
       Uri.parse(casesURL),
@@ -115,13 +117,14 @@ class APIService {
 
     if (response.statusCode == 200) {
       final List<dynamic> casesJson = jsonDecode(response.body);
-      return casesJson.cast<Map<String, dynamic>>();
+      return casesJson.map((json) => Case.fromJson(json)).toList();
     } else {
+      print(response.statusCode);
       throw Exception('Failed to load cases');
     }
   }
 
-  static Future<List<Map<String, dynamic>>> getMyCases() async {
+  static Future<List<Case>> getMyCases() async {
     final token = await getToken();
     final response = await http.get(
       Uri.parse(myCasesURL),
@@ -130,10 +133,9 @@ class APIService {
 
     if (response.statusCode == 200) {
       final List<dynamic> casesJson = jsonDecode(response.body);
-      return casesJson.cast<Map<String, dynamic>>();
+      return casesJson.map((json) => Case.fromJson(json)).toList();
     } else {
       throw Exception('Failed to load my cases');
     }
   }
 }
-
