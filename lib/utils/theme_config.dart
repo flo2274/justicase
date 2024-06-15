@@ -5,14 +5,14 @@ class ThemeConfig {
   // Farben für das Theme
   static const Color background = Color(0xFFF1F1F3); // Leicht dunkleres Weiß
   static Color primary = Colors.white;
-  static Color blueAccent = Color(0xFF093BBE); // Elegantes Dunkelblau
+  static Color blueAccent = Colors.blue; // Elegantes Dunkelblau
   static Color blackAccent = Colors.black;
   static Color lightGreyAccent = Color(0xFFA2A1A1);
   static Color darkGreyAccent = Color(0xFF5E5E5E);
   static Color yellowAccent = Colors.yellow;
   static const Color textPrimary = Colors.black;
   static const Color textSecondary = Color(0xFF5E5E5E);
-  static const Color? textBlueAccent = Color(0xFF093BBE);
+  static const Color? textBlueAccent = Colors.blue;
 
   static ThemeData lightTheme = ThemeData(
     primaryColor: Color(0xFF6E0F53),

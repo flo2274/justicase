@@ -28,7 +28,7 @@ class RecentSection extends StatelessWidget {
             children: displayCases
                 .take(2) // Zwei Karten in einer Reihe
                 .map((caseItem) => Expanded(
-              child: MiddleCard(name: caseItem.name ?? ''),
+              child: MiddleCard(caseItem: caseItem),
             ))
                 .toList(),
           ),
@@ -39,7 +39,7 @@ class RecentSection extends StatelessWidget {
                 .skip(2)
                 .take(2) // Zwei Karten in einer Reihe
                 .map((caseItem) => Expanded(
-              child: MiddleCard(name: caseItem.name ?? ''),
+              child: MiddleCard(caseItem: caseItem),
             ))
                 .toList(),
           ),

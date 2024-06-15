@@ -83,6 +83,7 @@ class _HomePageState extends State<HomePage> {
           children: [
             const SizedBox(height: 20.0),
             CategorySection(),
+            const SizedBox(height: 20.0),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Align(
@@ -94,6 +95,7 @@ class _HomePageState extends State<HomePage> {
             ),
             SuggestionsSection(cases: _cases),
             RecentSection(cases: _cases),
+            const SizedBox(height: 20.0),
           ],
         ),
       ),
