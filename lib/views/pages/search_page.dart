@@ -2,54 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile_anw/views/widgets/texts/alert_text.dart';
-
-//Todo put searchbar into container
-
-class Company {
-  final String name;
-
-  Company({required this.name});
-}
-
-class CompanyPage extends StatelessWidget {
-  final Company company;
-
-  const CompanyPage({required this.company});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(company.name),
-      ),
-      body: Center(
-        child: Text('Details about ${company.name}'),
-      ),
-    );
-  }
-}
-
-class CompanyService {
-  static List<Company> find(String search) {
-    // Simulated search function
-    return _companies
-        .where((company) => company.name.toLowerCase().contains(search.toLowerCase()))
-        .toList();
-  }
-
-  static final List<Company> _companies = [
-    Company(name: 'Apple'),
-    Company(name: 'Google'),
-    Company(name: 'Microsoft'),
-    Company(name: 'Amazon'),
-    Company(name: 'Facebook'),
-    Company(name: 'Tesla'),
-    Company(name: 'Twitter'),
-    Company(name: 'Netflix'),
-    Company(name: 'Disney'),
-    Company(name: 'Intel'),
-  ];
-}
+import 'package:mobile_anw/models/case.dart';
+import 'package:mobile_anw/services/api_service.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -61,12 +15,35 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   final TextEditingController _controller = TextEditingController();
   final FocusNode _focusNode = FocusNode();
+  List<Case> _cases = [];
 
   @override
   void dispose() {
     _controller.dispose();
     _focusNode.dispose();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchCases();
+  }
+
+  void _fetchCases() async {
+    try {
+      List<Case> cases = await APIService.getAllCases();
+      setState(() {
+        _cases = cases;
+      });
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Fehler beim Abrufen der Fälle: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 
   @override
@@ -79,59 +56,50 @@ class _SearchPageState extends State<SearchPage> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            TypeAheadField<Company>(
-              suggestionsCallback: (search) => CompanyService.find(search),
-              itemBuilder: (context, Company suggestion) {
-                return ListTile(
-                  title: Text(suggestion.name),
-                );
-              },
-              onSelected: (Company suggestion) {//Todo: change Navigation to goRouter
-                Navigator.of(context).push<void>(
-                  MaterialPageRoute(
-                    builder: (context) => CompanyPage(company: suggestion),
-                  ),
-                );
-              },
-              emptyBuilder: (context) {
-                return InkWell(
-                  onTap: () {
-                    context.go('/search/createCase');
-                  },
-                  child: const ListTile(
-                    title: AlertText(text: 'Kein Fall gefunden. Neu erstellen'),
-                  ),
-                );
-              },
-              builder: (context, controller, focusNode) {
-                return TextField(
-                  controller: controller,
-                  focusNode: focusNode,
-                  autofocus: true,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Search...',
-                  ),
-                );
-              },
-            ),
-            Center(//Todo: Remove because only temporary to show routing
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Text('Screen',
-                      style: Theme.of(context).textTheme.titleLarge),
-                  const Padding(padding: EdgeInsets.all(4)),
-                  TextButton(
-                    onPressed: () => context.go('/case/grouping'), // /case/grouping oder /search/grouping
-                    child: const Text('View details'),
-                  ),
-                ],
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: TypeAheadField<Case>(
+                suggestionsCallback: (search) {
+                  if (search.isEmpty) {
+                    return _cases.where((c) => c.name!.toLowerCase().contains(search.toLowerCase())).toList();
+                  }
+                  return _cases.where((c) => c.name!.toLowerCase().contains(search.toLowerCase())).toList();
+                },
+                itemBuilder: (context, Case suggestion) {
+                  return ListTile(
+                    title: Text(suggestion.name!),
+                  );
+                },
+                onSelected: (Case suggestion) {
+                  // Use goRouter to navigate to the selected case
+                  context.go('/case/${suggestion.id}');
+                },
+                emptyBuilder: (context) {
+                  return InkWell(
+                    onTap: () {
+                      context.go('/search/createCase');
+                    },
+                    child: const ListTile(
+                      title: AlertText(text: 'Kein Fall gefunden. Neu erstellen'),
+                    ),
+                  );
+                },
+                builder: (context, controller, focusNode) {
+                  return TextField(
+                    controller: controller,
+                    focusNode: focusNode,
+                    autofocus: true,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: ' Search...',
+                    ),
+                  );
+                },
               ),
             ),
           ],
-        ),
       ),
+    ),
     );
   }
 }
