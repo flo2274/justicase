@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../models/case.dart';
+import '../../models/user.dart';
+import '../../services/api_service.dart';
 
 class GroupingPage extends StatelessWidget {
   final Case caseInfo; // Use Case instead of Map<String, dynamic>
@@ -58,32 +60,95 @@ class TabForum extends StatelessWidget {
 }
 
 // Content for the second tab
-class TabEnrolled extends StatelessWidget {
+class TabEnrolled extends StatefulWidget {
   final Case caseInfo;
 
   const TabEnrolled({Key? key, required this.caseInfo}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final List<Map<String, String>> contacts = [
-      {'name': 'John Doe', 'phone': '123-456-7890'},
-      {'name': 'Jane Smith', 'phone': '987-654-3210'},
-      {'name': 'Sam Johnson', 'phone': '555-555-5555'},
-      {'name': 'Lucy Brown', 'phone': '444-444-4444'},
-    ];
+  _TabEnrolledState createState() => _TabEnrolledState();
+}
 
-    return ListView.builder(
-      padding: const EdgeInsets.all(16.0),
-      itemCount: contacts.length,
-      itemBuilder: (BuildContext context, int index) {
-        return Card(
-          child: ListTile(
-            leading: Icon(Icons.person),
-            title: Text(contacts[index]['name']!),
-            subtitle: Text(contacts[index]['phone']!),
+class _TabEnrolledState extends State<TabEnrolled> {
+  List<User> enrolledUsers = [];
+  late int caseId; // Variable zur Speicherung der Fall-ID
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialisierung der Fall-ID
+    caseId = widget.caseInfo.id!;
+    _loadEnrolledUsers();
+  }
+
+  Future<void> _loadEnrolledUsers() async {
+    try {
+      // Verwendung von caseId, um die Benutzer für den Fall abzurufen
+      List<User> users = await APIService.getUsersByCase(caseId);
+      setState(() {
+        enrolledUsers = users;
+      });
+    } catch (e) {
+      print('Failed to load enrolled users: $e');
+      // Fehlerbehandlung je nach Bedarf
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      children: [
+        // Basic Case Info
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Case Name: ${widget.caseInfo.name}',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 8),
+              Text('Company Type: ${widget.caseInfo.companyType ?? 'N/A'}'),
+              SizedBox(height: 8),
+              Text('Industry: ${widget.caseInfo.industry ?? 'N/A'}'),
+              SizedBox(height: 8),
+              Text('ID: ${widget.caseInfo.id?? 'N/A'}'),
+            ],
           ),
-        );
-      },
+        ),
+
+        // Enrolled Users List
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Enrolled Users:',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 8),
+              enrolledUsers.isEmpty
+                  ? Center(child: Text('No enrolled users found'))
+                  : ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: enrolledUsers.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Card(
+                    child: ListTile(
+                      leading: Icon(Icons.person),
+                      title: Text(enrolledUsers[index].username),
+                      subtitle: Text(enrolledUsers[index].email),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

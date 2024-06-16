@@ -12,6 +12,7 @@ class APIService {
   static const String usersURL = '$baseURL/users';
   static const String casesURL = '$baseURL/cases';
   static const String myCasesURL = '$baseURL/getmycases';
+  static const String usersByCaseURL = '$baseURL/getusersbycase';
 
   static final storage = FlutterSecureStorage();
 
@@ -135,6 +136,21 @@ class APIService {
       return casesJson.map((json) => Case.fromJson(json)).toList();
     } else {
       throw Exception('Failed to load my cases');
+    }
+  }
+
+  static Future<List<User>> getUsersByCase(int caseId) async {
+    final token = await getToken();
+    final response = await http.get(
+      Uri.parse('$usersByCaseURL/$caseId'),
+      headers: {'Authorization': 'Bearer $token'},
+    );
+
+    if (response.statusCode == 200) {
+      final List<dynamic> usersJson = jsonDecode(response.body);
+      return usersJson.map((json) => User.fromJson(json)).toList();
+    } else {
+      throw Exception('Failed to load users by case');
     }
   }
 }
