@@ -6,7 +6,6 @@ class User {
   final String email;
   final String password;
   final DateTime createdAt;
-  final List<Case> cases; // Liste von Fällen, die diesem Benutzer zugeordnet sind
 
   User({
     required this.id,
@@ -14,33 +13,25 @@ class User {
     required this.email,
     required this.password,
     required this.createdAt,
-    required this.cases,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
-    List<Case> cases = [];
-    if (json['cases'] != null) {
-      cases = List<Case>.from(json['cases'].map((caseJson) => Case.fromJson(caseJson)));
-    }
     return User(
       id: json['id'] ?? 0,
       username: json['username'] ?? '',
       email: json['email'] ?? '',
       password: json['password'] ?? '',
       createdAt: DateTime.parse(json['createdAt'] ?? ''),
-      cases: cases,
     );
   }
 
   Map<String, dynamic> toJson() {
-    List<Map<String, dynamic>> casesJson = cases.map((c) => c.toJson()).toList();
     return {
       'id': id,
       'username': username,
       'email': email,
       'password': password,
       'createdAt': createdAt.toIso8601String(),
-      'cases': casesJson,
     };
   }
 }

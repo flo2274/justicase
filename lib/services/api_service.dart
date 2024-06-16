@@ -92,7 +92,6 @@ class APIService {
         'name': newCase.name,
         'companyType': newCase.companyType,
         'industry': newCase.industry,
-        'victim': username, // Verwendung des Benutzernamens des authentifizierten Benutzers als Opfer
       }),
       headers: {
         'Content-Type': 'application/json',
