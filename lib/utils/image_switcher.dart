@@ -8,27 +8,36 @@ class ImageSwitcher extends StatefulWidget {
 
 class _ImageSwitcherState extends State<ImageSwitcher> {
   int _imageIndex = 0;
-  List<String> _imageUrls = [
-    'logo', // Beispiel URL 1
-    'https://via.placeholder.com/300/0000FF/808080' // Beispiel URL 2
+  final List<String> _imageAssets = [
+    'assets/images/logo_icon02.png',
+    'assets/images/logo_icon01.png',
+    'assets/images/logo_icon03.png',
+    'assets/images/logo_icon04.png',
   ];
 
   late Timer _timer;
+  bool _isLastImage = false;
 
   @override
   void initState() {
     super.initState();
     // Starte einen Timer, der alle 2 Sekunden das Bild wechselt
-    _timer = Timer.periodic(Duration(seconds: 2), (timer) {
+    _timer = Timer.periodic(Duration(milliseconds: _isLastImage ? 1000 : 500), (timer) {
       setState(() {
-        _imageIndex = (_imageIndex + 1) % _imageUrls.length;
+        _imageIndex = (_imageIndex + 1) % _imageAssets.length;
+        // Prüfe, ob das letzte Bild angezeigt wird
+        if (_imageIndex == _imageAssets.length - 1) {
+          _isLastImage = true;
+        } else {
+          _isLastImage = false;
+        }
       });
     });
   }
 
   @override
   void dispose() {
-    _timer.cancel(); // Timer abbrechen, um Speicherlecks zu vermeiden
+    _timer.cancel();
     super.dispose();
   }
 
@@ -39,10 +48,10 @@ class _ImageSwitcherState extends State<ImageSwitcher> {
       width: double.infinity,
       height: 200.0,
       child: AnimatedSwitcher(
-        duration: Duration(milliseconds: 500),
-        child: Image.network(
-          _imageUrls[_imageIndex],
-          key: Key(_imageUrls[_imageIndex]), // Verwende Key, um zwischen Bildern zu unterscheiden
+        duration: Duration(milliseconds: _isLastImage ? 600 : 800),
+        child: Image.asset(
+          _imageAssets[_imageIndex],
+          key: Key(_imageAssets[_imageIndex]),
           fit: BoxFit.cover,
         ),
         transitionBuilder: (child, animation) {
