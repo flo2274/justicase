@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:mobile_anw/models/case.dart';
 import 'package:mobile_anw/models/user.dart';
 import 'package:mobile_anw/services/api_service.dart';
-import 'package:mobile_anw/views/widgets/texts/headings/large_heading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../utils/text_theme_config.dart';
 
 class CaseDetailsEnrolled extends StatefulWidget {
   final Case caseInfo;
@@ -137,7 +138,7 @@ class _CaseDetailsEnrolledState extends State<CaseDetailsEnrolled> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const LargeHeading(text: 'Eingetragene User'),
+                      const Text('Eingetragene User', style: MyTextStyles.smallHeading,),
                         SizedBox(height: 8),
                         _isLoading
                             ? Center(child: CircularProgressIndicator())

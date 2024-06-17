@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_anw/utils/text_theme_config.dart';
 import 'package:mobile_anw/views/widgets/cards/mini_card.dart';
-import 'package:mobile_anw/views/widgets/texts/headings/small_heading.dart';
 import 'package:mobile_anw/data/case_data.dart';
 
 class CategorySection extends StatelessWidget {
@@ -13,8 +13,7 @@ class CategorySection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 20.0),
-          const SmallHeading(
-            text: 'Kategorien',
+          const Text('Kategorien', style: MyTextStyles.smallHeading,
           ),
           const SizedBox(height: 5.0), // Abstand zwischen Überschrift und Karten
           SingleChildScrollView(

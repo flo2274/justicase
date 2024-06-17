@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile_anw/services/api_service.dart';
 import 'package:mobile_anw/utils/image_switcher.dart';
+import 'package:mobile_anw/utils/text_theme_config.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -47,25 +48,26 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   Text(
                     'JUSTICE FOR YOUR CASE',
-                    style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold, color: Colors.white54),
+                    style: MyTextStyles.authLargeHeading
                   ),
                   SizedBox(height: 20.0),
                   Text(
                     'WERDEN SIE TEIL UNSERER BEWEGUNG FÜR GERECHTIGKEIT',
-                    style: TextStyle(fontSize: 12.0, color: Colors.white54),
+                    style: MyTextStyles.authSmallHeading
                   ),
                 ],
               ),
             ),
-            SizedBox(height: 60.0),
+            const SizedBox(height: 30.0),
             ImageSwitcher(),
-            SizedBox(height: 60.0),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text('Willkommen bei Justicase', style: Theme.of(context).textTheme.headlineLarge),
-              ),
+            const SizedBox(height: 30.0),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.0),
+              child: Text('Willkommen,', style: MyTextStyles.authWelcome1Text),
+            ),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.0),
+              child: Text('schön dich wiederzusehen', style: MyTextStyles.authWelcome2Text),
             ),
             Padding(
               padding: EdgeInsets.all(16.0),
@@ -77,7 +79,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Text(
+                      const Text(
                         'Email-Adresse',
                         style: TextStyle(fontSize: 14.0),
                       ),
@@ -86,6 +88,7 @@ class _LoginPageState extends State<LoginPage> {
                         controller: _emailController,
                         decoration: const InputDecoration(
                           labelText: 'Deine E-Mail-Adresse',
+                          prefixIcon: Icon(Icons.email_outlined),
                           border: OutlineInputBorder(),
                         ),
                       ),
@@ -100,6 +103,7 @@ class _LoginPageState extends State<LoginPage> {
                         obscureText: !_passwordVisible,
                         decoration: InputDecoration(
                           labelText: 'Dein Passwort',
+                          prefixIcon: Icon(Icons.lock_outlined),
                           border: OutlineInputBorder(),
                           suffixIcon: IconButton(
                             icon: Icon(_passwordVisible ? Icons.visibility : Icons.visibility_off),
@@ -119,12 +123,12 @@ class _LoginPageState extends State<LoginPage> {
                           backgroundColor: Colors.blue,
                           padding: EdgeInsets.symmetric(vertical: 16.0),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20), // Runde Ecken
+                            borderRadius: BorderRadius.circular(10), // Runde Ecken
                           ),
                         ),
                         child: const Text(
                           'Login',
-                          style: TextStyle(fontSize: 16.0),
+                          style: MyTextStyles.buttonText,
                         ),
                       ),
                       const SizedBox(height: 8.0),
@@ -134,7 +138,7 @@ class _LoginPageState extends State<LoginPage> {
                         },
                         child: const Text(
                           'Noch kein Konto? Hier registrieren',
-                          style: TextStyle(fontSize: 12.0),
+                          style: TextStyle(fontSize: 12.0, color: Colors.blue),
                         ),
                       ),
                     ],

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+
+
 class ThemeConfig {
   // Farben für das Theme
   static const Color background = Color(0xFFF1F1F3); // Leicht dunkleres Weiß
@@ -13,7 +15,6 @@ class ThemeConfig {
   static const Color textPrimary = Colors.black;
   static const Color textSecondary = Color(0xFF5E5E5E);
   static const Color? textBlueAccent = Colors.blue;
-  static const Color? textDarkGreyAccent = Color(0xFF5E5E5E);
 
   static ThemeData lightTheme = ThemeData(
     primaryColor: Color(0xFF6E0F53),
@@ -37,7 +38,7 @@ class ThemeConfig {
       unselectedItemColor: null,
     ),
     textTheme: const TextTheme(
-      titleLarge: TextStyle( // Changed from headlineLarge to headline6
+      /*titleLarge: TextStyle( // Changed from headlineLarge to headline6
         fontSize: 20.0,
         fontWeight: FontWeight.bold,
         color: textPrimary,
@@ -51,7 +52,7 @@ class ThemeConfig {
         fontSize: 16.0,
         fontWeight: FontWeight.bold,
         color: textSecondary,
-      ),
+      ),*/
       bodyMedium: TextStyle( // This is the default text style for DropdownMenuItem
         fontSize: 16.0,
         fontWeight: FontWeight.normal,
@@ -60,18 +61,7 @@ class ThemeConfig {
       //HeadlineMedium is Text of Dropdown
       headlineMedium: TextStyle(fontSize: 16.0, fontWeight: FontWeight.normal, color: textPrimary),
       //Login Title
-      headlineLarge: TextStyle(
-        fontSize: 26.0,
-        fontWeight: FontWeight.bold,
-        color: textDarkGreyAccent,
-        fontFamily: 'Oswald',
-      ),
-      headlineSmall: TextStyle(
-        fontSize: 20.0,
-        fontWeight: FontWeight.bold,
-        color: textDarkGreyAccent,
-        fontFamily: 'Oswald',
-      ),
+
     ),
     inputDecorationTheme: InputDecorationTheme(
       hintStyle: const TextStyle(color: textSecondary), // Hinweisfarbe für Textfelder

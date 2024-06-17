@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mobile_anw/models/case.dart'; // Import der Case-Klasse
 import 'package:mobile_anw/services/api_service.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mobile_anw/views/widgets/texts/headings/large_heading.dart';
-import 'package:mobile_anw/views/widgets/texts/headings/middle_heading.dart';
+import 'package:mobile_anw/utils/text_theme_config.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mobile_anw/views/widgets/sections/category_section.dart';
 import 'package:mobile_anw/views/widgets/sections/suggestions_section.dart';
@@ -88,8 +88,7 @@ class _HomePageState extends State<HomePage> {
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Align(
                 alignment: Alignment.centerLeft,
-                child: MiddleHeading(
-                  text: 'Willkommen zurück, $_username',
+                child: Text('Willkommen zurück, $_username', style: MyTextStyles.middleHeading,
                 ),
               ),
             ),

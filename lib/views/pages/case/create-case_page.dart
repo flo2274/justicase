@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_anw/models/case.dart';
 import 'package:mobile_anw/services/api_service.dart';
-import 'package:mobile_anw/views/widgets/texts/headings/large_heading.dart';
-import 'package:mobile_anw/views/widgets/texts/headings/small_heading.dart';
 import 'package:mobile_anw/views/widgets/texts/info_text.dart';
 import 'package:mobile_anw/data/case_data.dart';
 import 'package:mobile_anw/views/widgets/texts/field_text.dart';
 import 'package:go_router/go_router.dart';
+
+import '../../../utils/text_theme_config.dart';
 
 class CreateCasePage extends StatefulWidget {
   const CreateCasePage({Key? key}) : super(key: key);
@@ -37,9 +37,7 @@ class _CreateCasePageState extends State<CreateCasePage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const LargeHeading(
-                      text: 'Neuen Fall erstellen',
-                    ),
+                    const Text('Neuen Fall erstellen', style: MyTextStyles.largeHeading,),
                     _buildCompanyInfoBox(),
                     _buildCaseInfoBox(),
                     const SizedBox(height: 10),
@@ -102,9 +100,7 @@ class _CreateCasePageState extends State<CreateCasePage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SmallHeading(
-            text: 'Unternehmensspezifische Informationen',
-          ),
+          const Text('Unternehmensspezifische Informationen', style: MyTextStyles.smallHeading,),
           const SizedBox(height: 10),
           TextFormField(
             initialValue: _newCase.name ?? '',
@@ -130,7 +126,7 @@ class _CreateCasePageState extends State<CreateCasePage> {
                 value: companyType,
                 child: Text(
                   companyType,
-                  style: Theme.of(context).textTheme.bodyMedium,),
+                ),
               );
             }).toList(),
             onChanged: (value) {
@@ -154,7 +150,7 @@ class _CreateCasePageState extends State<CreateCasePage> {
                 value: industry,
                 child: Text(
                   industry,
-                  style: Theme.of(context).textTheme.bodyMedium,),
+                )
               );
             }).toList(),
             onChanged: (value) {
@@ -192,9 +188,7 @@ class _CreateCasePageState extends State<CreateCasePage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SmallHeading(
-            text: 'Ihre Informationen',
-          ),
+          const Text('Ihre Informationen', style: MyTextStyles.smallHeading,),
           const SizedBox(height: 10),
           TextFormField(
             decoration: const InputDecoration(

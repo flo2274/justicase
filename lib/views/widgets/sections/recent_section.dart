@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_anw/views/widgets/cards/middle_card.dart';
-import 'package:mobile_anw/views/widgets/texts/headings/small_heading.dart';
 import 'package:mobile_anw/models/case.dart';
+
+import '../../../utils/text_theme_config.dart';
 
 class RecentSection extends StatelessWidget {
   final List<Case> cases;
@@ -19,9 +20,7 @@ class RecentSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 20.0),
-          const SmallHeading(
-            text: 'Aktuell',
-          ),
+          const Text('Aktuelles', style: MyTextStyles.smallHeading,),
           const SizedBox(height: 5.0), // Abstand zwischen Überschrift und Karten
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,

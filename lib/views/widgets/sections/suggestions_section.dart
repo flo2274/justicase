@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_anw/views/widgets/cards/middle_card.dart'; // Import für MiddleCard
-import 'package:mobile_anw/views/widgets/texts/headings/small_heading.dart';
 import 'package:mobile_anw/models/case.dart';
+
+import '../../../utils/text_theme_config.dart';
 
 class SuggestionsSection extends StatefulWidget {
   final List<Case> cases;
@@ -25,9 +26,7 @@ class _SuggestionsSectionState extends State<SuggestionsSection> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 20.0),
-          const SmallHeading(
-            text: 'Vorschläge',
-          ),
+      const Text('Vorschläge', style: MyTextStyles.smallHeading,),
           const SizedBox(height: 5.0), // Abstand zwischen Überschrift und Karten
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
