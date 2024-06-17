@@ -41,7 +41,7 @@ class _LoginPageState extends State<LoginPage> {
         child: Column(
           children: [
             Container(
-              color: Colors.grey,
+              color: Colors.grey[300],
               width: double.infinity,
               padding: EdgeInsets.all(35.0),
               child: const Column(
@@ -72,7 +72,7 @@ class _LoginPageState extends State<LoginPage> {
             Padding(
               padding: EdgeInsets.all(16.0),
               child: Card(
-                elevation: 4.0,
+                elevation: 2.0,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
