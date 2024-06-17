@@ -4,10 +4,9 @@ import 'package:mobile_anw/services/api_service.dart';
 import 'package:mobile_anw/views/widgets/texts/headings/large_heading.dart';
 import 'package:mobile_anw/views/widgets/texts/headings/small_heading.dart';
 import 'package:mobile_anw/views/widgets/texts/info_text.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import 'package:mobile_anw/data/case_data.dart';
 import 'package:mobile_anw/views/widgets/texts/field_text.dart';
+import 'package:go_router/go_router.dart';
 
 class CreateCasePage extends StatefulWidget {
   const CreateCasePage({Key? key}) : super(key: key);
@@ -20,7 +19,6 @@ class _CreateCasePageState extends State<CreateCasePage> {
   final _formKey = GlobalKey<FormState>();
   String _yourCaseDescription = '';
   Case _newCase = Case(companyType: '', industry: '');
-  // Initialize with empty values
   bool _isLoading = false;
 
   @override
@@ -46,7 +44,7 @@ class _CreateCasePageState extends State<CreateCasePage> {
                 const InfoText(text: 'Die mit * gekennzeichneten Felder sind Pflichtfelder'),
                 const SizedBox(height: 20),
                 _isLoading
-                    ? Center(child: CircularProgressIndicator())
+                    ? const Center(child: CircularProgressIndicator())
                     : Center(
                   child: ElevatedButton(
                     onPressed: () {
@@ -79,7 +77,7 @@ class _CreateCasePageState extends State<CreateCasePage> {
             color: Colors.black26,
             blurRadius: 1.5,
             spreadRadius: 0.2,
-            offset: Offset(0, 1), // Schatten nach unten verschieben
+            offset: Offset(0, 1),
           ),
         ],
       ),
@@ -112,7 +110,9 @@ class _CreateCasePageState extends State<CreateCasePage> {
             items: CaseData.companyTypes.map((companyType) {
               return DropdownMenuItem(
                 value: companyType,
-                child: Text(companyType),
+                child: Text(
+                  companyType,
+                  style: Theme.of(context).textTheme.bodyMedium,),
               );
             }).toList(),
             onChanged: (value) {
@@ -134,7 +134,9 @@ class _CreateCasePageState extends State<CreateCasePage> {
             items: CaseData.industries.map((industry) {
               return DropdownMenuItem(
                 value: industry,
-                child: Text(industry),
+                child: Text(
+                  industry,
+                  style: Theme.of(context).textTheme.bodyMedium,),
               );
             }).toList(),
             onChanged: (value) {
@@ -200,15 +202,14 @@ class _CreateCasePageState extends State<CreateCasePage> {
     try {
       final bool success = await APIService.createCase(_newCase);
       if (success) {
-        // Case successfully created
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Fall erfolgreich erstellt'),
             backgroundColor: Colors.green,
           ),
         );
+        context.go('/case');
       } else {
-        // Failed to create case
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Fehler beim Erstellen des Falls'),
@@ -217,7 +218,6 @@ class _CreateCasePageState extends State<CreateCasePage> {
         );
       }
     } catch (e) {
-      // Error during API call
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Fehler: $e'),

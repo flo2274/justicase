@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_anw/views/widgets/cards/middle_card.dart'; // Import für MiddleCard
+import 'package:mobile_anw/views/widgets/cards/middle_card.dart';
 import 'package:mobile_anw/views/widgets/texts/headings/small_heading.dart';
 import 'package:mobile_anw/models/case.dart';
 

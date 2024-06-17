@@ -54,10 +54,9 @@ class _LoginPageState extends State<LoginPage> {
               ],
             ),
           ),
-          AppBar(
-            title: Text('Willkommen bei Justicase'),
-            backgroundColor: Colors.transparent,
-            elevation: 0,
+          //hier widget imageswitcher
+          Container(
+            child: Text('Willkommen bei Justicase'),
           ),
           Expanded(
             child: Padding(

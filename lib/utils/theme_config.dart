@@ -52,7 +52,7 @@ class ThemeConfig {
         color: textSecondary,
       ),
       bodyMedium: TextStyle( // This is the default text style for DropdownMenuItem
-        fontSize: 12.0,
+        fontSize: 16.0,
         fontWeight: FontWeight.normal,
         color: textPrimary,
       ),

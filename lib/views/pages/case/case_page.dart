@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile_anw/models/case.dart';
 import 'package:mobile_anw/services/api_service.dart';
-import 'package:mobile_anw/utils/emoji_helper.dart'; // Annahme des Dateipfads
+import 'package:mobile_anw/utils/emoji_helper.dart';
 
 class CasePage extends StatefulWidget {
   const CasePage({
@@ -25,6 +25,15 @@ class _CasePageState extends State<CasePage> {
     _loadCases();
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Sicherstellen, dass _loadCases beim Betreten der Seite erneut aufgerufen wird
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadCases();
+    });
+  }
+
   Future<void> _loadCases() async {
     try {
       List<Case> myCases = await APIService.getMyCases();
@@ -33,8 +42,7 @@ class _CasePageState extends State<CasePage> {
         _myCases = myCases;
       });
     } catch (e) {
-      print(
-          'Failed to load cases: $e'); // Fehlerbehandlung und Debugging-Ausgabe
+      print('Failed to load cases: $e'); // Fehlerbehandlung und Debugging-Ausgabe
       // Zeigen Sie eine Fehlermeldung an oder führen Sie andere Maßnahmen durch
     }
   }

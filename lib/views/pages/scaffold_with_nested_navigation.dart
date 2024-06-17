@@ -14,6 +14,7 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
       index,
       initialLocation: index == navigationShell.currentIndex,// navigate to the initial location when tapping the item that is
     );
+
   }
 
   @override

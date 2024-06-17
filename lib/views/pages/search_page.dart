@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:mobile_anw/views/widgets/texts/alert_text.dart';
 import 'package:mobile_anw/models/case.dart';
 import 'package:mobile_anw/services/api_service.dart';
+import 'package:mobile_anw/views/widgets/cards/middle_card.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -91,15 +92,47 @@ class _SearchPageState extends State<SearchPage> {
                     autofocus: true,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
-                      labelText: ' Search...',
+                      labelText: ' Suche nach einem Fall...',
+                      prefixIcon: Icon(Icons.search),
                     ),
                   );
                 },
               ),
             ),
+            SizedBox(height: 600),
+            GestureDetector(
+              onTap: () {
+                context.go('/search/createCase');
+              },
+              child: Card(
+                elevation: 2.0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16.0),
+                ),
+                child: Container(
+                  width: MediaQuery.of(context).size.width / 1.5,
+                  height: 60,
+                  padding: const EdgeInsets.all(16.0),
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.add, color: Colors.blue),
+                      SizedBox(width: 10),
+                      Text(
+                        'Neuen Fall erstellen',
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.blue,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
           ],
+        ),
       ),
-    ),
     );
   }
 }
