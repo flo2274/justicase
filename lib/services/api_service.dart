@@ -13,6 +13,8 @@ class APIService {
   static const String casesURL = '$baseURL/cases';
   static const String myCasesURL = '$baseURL/getmycases';
   static const String usersByCaseURL = '$baseURL/getusersbycase';
+  static const String enrollToCaseURL = '$baseURL/enrolltocase';
+  static const String removeFromCaseURL = '$baseURL/removefromcase';
 
   static final storage = FlutterSecureStorage();
 
@@ -153,4 +155,45 @@ class APIService {
       throw Exception('Failed to load users by case');
     }
   }
+
+  static Future<void> enrollToCase(int caseId) async {
+    final token = await getToken();
+    final response = await http.post(
+      Uri.parse(enrollToCaseURL),
+      body: jsonEncode({
+        'caseId': caseId,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 201) {
+      return;
+    } else {
+      throw Exception('Failed to enroll into case');
+    }
+  }
+
+  static Future<void> removeFromCase(int caseId) async {
+    final token = await getToken();
+    final response = await http.post(
+      Uri.parse('$baseURL/removefromcase'),
+      body: jsonEncode({
+        'caseId': caseId,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return;
+    } else {
+      throw Exception('Failed to remove user from case');
+    }
+  }
+
 }

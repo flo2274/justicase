@@ -60,7 +60,7 @@ class _CasePageState extends State<CasePage> {
               onTap: () {
                 // Navigieren zur GroupingPage mit dem ausgewählten Fall
                 context.go(
-                  '/case/grouping',
+                  '/case/caseDetails',
                   extra: _myCases[index],
                 );
               },

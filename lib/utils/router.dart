@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mobile_anw/views/pages/case_page.dart';
-import 'package:mobile_anw/views/pages/create-case_page.dart';
+import 'package:mobile_anw/views/pages/case/case_page.dart';
+import 'package:mobile_anw/views/pages/case/create-case_page.dart';
 import 'package:mobile_anw/views/pages/search_page.dart';
 import 'package:mobile_anw/views/pages/home_page.dart';
-import 'package:mobile_anw/views/pages/grouping_page.dart';
+import 'package:mobile_anw/views/pages/case/case-details_page.dart';
 import 'package:mobile_anw/views/pages/scaffold_with_nested_navigation.dart';
 import 'package:mobile_anw/views/pages/auth/registration_page.dart';
 import 'package:mobile_anw/views/pages/auth/login_page.dart';
@@ -74,8 +74,8 @@ final goRouter = GoRouter(
               ),
               routes: [
                 GoRoute(
-                  path: 'grouping',
-                  builder: (context, state) => GroupingPage(
+                  path: 'caseDetails',
+                  builder: (context, state) => CaseDetailsPage(
                     caseInfo: state.extra as Case,
                   ),
                 ),

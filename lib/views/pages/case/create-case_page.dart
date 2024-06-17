@@ -6,8 +6,8 @@ import 'package:mobile_anw/views/widgets/texts/headings/small_heading.dart';
 import 'package:mobile_anw/views/widgets/texts/info_text.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../data/case_data.dart';
-import '../widgets/texts/field_text.dart';
+import 'package:mobile_anw/data/case_data.dart';
+import 'package:mobile_anw/views/widgets/texts/field_text.dart';
 
 class CreateCasePage extends StatefulWidget {
   const CreateCasePage({Key? key}) : super(key: key);

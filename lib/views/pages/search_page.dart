@@ -72,7 +72,7 @@ class _SearchPageState extends State<SearchPage> {
                 },
                 onSelected: (Case suggestion) {
                   // Use goRouter to navigate to the grouping page with case info
-                  context.go('/case/grouping', extra: suggestion);
+                  context.go('/case/caseDetails', extra: suggestion);
                 },
                 emptyBuilder: (context) {
                   return InkWell(

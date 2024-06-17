@@ -3,8 +3,8 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobile_anw/views/pages/auth/login_page.dart'; // Updated import to reflect the correct path
 import 'utils/theme_config.dart'; // Updated import to reflect the correct path
-import 'package:mobile_anw/views/pages/case_page.dart';
-import 'package:mobile_anw/views/pages/grouping_page.dart';
+import 'package:mobile_anw/views/pages/case/case_page.dart';
+import 'package:mobile_anw/views/pages/case/case-details_page.dart';
 import 'package:mobile_anw/views/pages/home_page.dart';
 import 'package:mobile_anw/views/pages/search_page.dart';
 import 'package:mobile_anw/views/pages/scaffold_with_nested_navigation.dart';

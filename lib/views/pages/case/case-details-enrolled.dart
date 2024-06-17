@@ -1,96 +1,83 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_anw/models/case.dart';
+import 'package:mobile_anw/models/user.dart';
+import 'package:mobile_anw/services/api_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:mobile_anw/views/pages/case/case-details-enrolled.dart';
+import 'package:mobile_anw/views/pages/case/case-details-forum.dart';
+import 'package:mobile_anw/models/case.dart';
+import 'package:mobile_anw/models/user.dart';
 
-import '../../models/case.dart';
-import '../../models/user.dart';
-import '../../services/api_service.dart';
-
-class GroupingPage extends StatelessWidget {
-  final Case caseInfo; // Use Case instead of Map<String, dynamic>
-
-  const GroupingPage({Key? key, required this.caseInfo}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2, // Number of tabs
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Center(child: Text('JUSTICASE')),
-          bottom: const TabBar(
-            tabs: [
-              Tab(text: 'Forum'),
-              Tab(text: 'Enrolled'),
-            ],
-          ),
-        ),
-        body: TabBarView(
-          children: [
-            TabForum(caseInfo: caseInfo), // First tab content
-            TabEnrolled(caseInfo: caseInfo), // Second tab content
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-// Content for the first tab
-class TabForum extends StatelessWidget {
+class CaseDetailsEnrolled extends StatefulWidget {
   final Case caseInfo;
 
-  const TabForum({Key? key, required this.caseInfo}) : super(key: key);
+  const CaseDetailsEnrolled({Key? key, required this.caseInfo}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        padding: const EdgeInsets.all(16.0),
-        color: Colors.blue[50],
-        child: Text(
-          'Content of Forum for case: ${caseInfo.name}',
-          style: const TextStyle(
-            fontSize: 18.0,
-            color: Colors.blue,
-            fontFamily: 'PTSerif',
-          ),
-        ),
-      ),
-    );
-  }
+  _CaseDetailsEnrolledState createState() => _CaseDetailsEnrolledState();
 }
 
-// Content for the second tab
-class TabEnrolled extends StatefulWidget {
-  final Case caseInfo;
-
-  const TabEnrolled({Key? key, required this.caseInfo}) : super(key: key);
-
-  @override
-  _TabEnrolledState createState() => _TabEnrolledState();
-}
-
-class _TabEnrolledState extends State<TabEnrolled> {
+class _CaseDetailsEnrolledState extends State<CaseDetailsEnrolled> {
   List<User> enrolledUsers = [];
-  late int caseId; // Variable zur Speicherung der Fall-ID
+  late int caseId; // Variable to store the case ID
+  bool isEnrolled = false; // Variable to track if current user is enrolled
 
   @override
   void initState() {
     super.initState();
-    // Initialisierung der Fall-ID
     caseId = widget.caseInfo.id!;
     _loadEnrolledUsers();
   }
 
   Future<void> _loadEnrolledUsers() async {
     try {
-      // Verwendung von caseId, um die Benutzer für den Fall abzurufen
       List<User> users = await APIService.getUsersByCase(caseId);
       setState(() {
         enrolledUsers = users;
       });
+      await _checkEnrollmentStatus();
     } catch (e) {
       print('Failed to load enrolled users: $e');
-      // Fehlerbehandlung je nach Bedarf
+      // Handle error as needed
+    }
+  }
+
+  Future<void> _checkEnrollmentStatus() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? currentUser = prefs.getString('username');
+
+    setState(() {
+      isEnrolled = enrolledUsers.any((user) => user.username == currentUser);
+    });
+  }
+
+  Future<void> _toggleEnrollment() async {
+    if (isEnrolled) {
+      await _removeFromCase();
+    } else {
+      await _enrollUser();
+    }
+  }
+
+  Future<void> _enrollUser() async {
+    try {
+      await APIService.enrollToCase(caseId);
+      // Refresh enrolled users list after enrollment
+      await _loadEnrolledUsers();
+    } catch (e) {
+      print('Failed to enroll user: $e');
+      // Handle error as needed
+    }
+  }
+
+  Future<void> _removeFromCase() async {
+    try {
+      await APIService.removeFromCase(caseId);
+      // Refresh enrolled users list after removal
+      await _loadEnrolledUsers();
+    } catch (e) {
+      print('Failed to remove user from case: $e');
+      // Handle error as needed
     }
   }
 
@@ -113,7 +100,7 @@ class _TabEnrolledState extends State<TabEnrolled> {
               SizedBox(height: 8),
               Text('Industry: ${widget.caseInfo.industry ?? 'N/A'}'),
               SizedBox(height: 8),
-              Text('ID: ${widget.caseInfo.id?? 'N/A'}'),
+              Text('ID: ${widget.caseInfo.id ?? 'N/A'}'),
             ],
           ),
         ),
@@ -148,8 +135,16 @@ class _TabEnrolledState extends State<TabEnrolled> {
             ],
           ),
         ),
+
+        // Enroll/Unenroll Button
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: ElevatedButton(
+            onPressed: _toggleEnrollment,
+            child: Text(isEnrolled ? 'Verlassen' : 'Einschreiben'),
+          ),
+        ),
       ],
     );
   }
 }
-
