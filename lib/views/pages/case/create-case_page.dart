@@ -27,40 +27,58 @@ class _CreateCasePageState extends State<CreateCasePage> {
       appBar: AppBar(
         title: const Center(child: Text('JUSTICASE')),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const LargeHeading(
-                  text: 'Neuen Fall erstellen',
+      body: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(16.0),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const LargeHeading(
+                      text: 'Neuen Fall erstellen',
+                    ),
+                    _buildCompanyInfoBox(),
+                    _buildCaseInfoBox(),
+                    const SizedBox(height: 10),
+                    const InfoText(
+                      text: 'Die mit * gekennzeichneten Felder sind Pflichtfelder',
+                    ),
+                    const SizedBox(height: 20),
+                  ],
                 ),
-                _buildCompanyInfoBox(),
-                _buildCaseInfoBox(),
-                const SizedBox(height: 10),
-                const InfoText(text: 'Die mit * gekennzeichneten Felder sind Pflichtfelder'),
-                const SizedBox(height: 20),
-                _isLoading
-                    ? const Center(child: CircularProgressIndicator())
-                    : Center(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        _formKey.currentState!.save();
-                        _createCase();
-                      }
-                    },
-                    child: const Text('Erstellen'),
-                  ),
-                ),
-                const SizedBox(height: 20),
-              ],
+              ),
             ),
           ),
-        ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: _isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    _formKey.currentState!.save();
+                    _createCase();
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                child: const Text('Erstellen'),
+              ),
+            ),
+          ),
+          const SizedBox(height: 20),
+        ],
       ),
     );
   }

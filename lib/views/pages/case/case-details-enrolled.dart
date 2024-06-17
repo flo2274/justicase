@@ -2,11 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mobile_anw/models/case.dart';
 import 'package:mobile_anw/models/user.dart';
 import 'package:mobile_anw/services/api_service.dart';
+import 'package:mobile_anw/views/widgets/texts/headings/large_heading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:mobile_anw/views/pages/case/case-details-enrolled.dart';
-import 'package:mobile_anw/views/pages/case/case-details-forum.dart';
-import 'package:mobile_anw/models/case.dart';
-import 'package:mobile_anw/models/user.dart';
 
 class CaseDetailsEnrolled extends StatefulWidget {
   final Case caseInfo;
@@ -21,6 +18,7 @@ class _CaseDetailsEnrolledState extends State<CaseDetailsEnrolled> {
   List<User> enrolledUsers = [];
   late int caseId; // Variable to store the case ID
   bool isEnrolled = false; // Variable to track if current user is enrolled
+  bool _isLoading = false; // Loading state for API operations
 
   @override
   void initState() {
@@ -31,12 +29,19 @@ class _CaseDetailsEnrolledState extends State<CaseDetailsEnrolled> {
 
   Future<void> _loadEnrolledUsers() async {
     try {
+      setState(() {
+        _isLoading = true;
+      });
       List<User> users = await APIService.getUsersByCase(caseId);
       setState(() {
         enrolledUsers = users;
+        _isLoading = false;
       });
       await _checkEnrollmentStatus();
     } catch (e) {
+      setState(() {
+        _isLoading = false;
+      });
       print('Failed to load enrolled users: $e');
       // Handle error as needed
     }
@@ -52,6 +57,10 @@ class _CaseDetailsEnrolledState extends State<CaseDetailsEnrolled> {
   }
 
   Future<void> _toggleEnrollment() async {
+    setState(() {
+      _isLoading = true;
+    });
+
     if (isEnrolled) {
       await _removeFromCase();
     } else {
@@ -67,6 +76,10 @@ class _CaseDetailsEnrolledState extends State<CaseDetailsEnrolled> {
     } catch (e) {
       print('Failed to enroll user: $e');
       // Handle error as needed
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -78,73 +91,101 @@ class _CaseDetailsEnrolledState extends State<CaseDetailsEnrolled> {
     } catch (e) {
       print('Failed to remove user from case: $e');
       // Handle error as needed
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        // Basic Case Info
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Case Name: ${widget.caseInfo.name}',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 8),
-              Text('Company Type: ${widget.caseInfo.companyType ?? 'N/A'}'),
-              SizedBox(height: 8),
-              Text('Industry: ${widget.caseInfo.industry ?? 'N/A'}'),
-              SizedBox(height: 8),
-              Text('ID: ${widget.caseInfo.id ?? 'N/A'}'),
-            ],
-          ),
-        ),
-
-        // Enrolled Users List
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Enrolled Users:',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 8),
-              enrolledUsers.isEmpty
-                  ? Center(child: Text('No enrolled users found'))
-                  : ListView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: enrolledUsers.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Card(
-                    child: ListTile(
-                      leading: Icon(Icons.person),
-                      title: Text(enrolledUsers[index].username),
-                      subtitle: Text(enrolledUsers[index].email),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Case Details Enrolled'),
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Basic Case Info
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Case Name: ${widget.caseInfo.name}',
+                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(height: 8),
+                        Text('Company Type: ${widget.caseInfo.companyType ?? 'N/A'}'),
+                        SizedBox(height: 8),
+                        Text('Industry: ${widget.caseInfo.industry ?? 'N/A'}'),
+                        SizedBox(height: 8),
+                        Text('ID: ${widget.caseInfo.id ?? 'N/A'}'),
+                      ],
                     ),
-                  );
-                },
-              ),
-            ],
-          ),
-        ),
+                  ),
 
-        // Enroll/Unenroll Button
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: ElevatedButton(
-            onPressed: _toggleEnrollment,
-            child: Text(isEnrolled ? 'Verlassen' : 'Einschreiben'),
+                  // Enrolled Users List
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const LargeHeading(text: 'Eingetragene User'),
+                        SizedBox(height: 8),
+                        _isLoading
+                            ? Center(child: CircularProgressIndicator())
+                            : enrolledUsers.isEmpty
+                            ? const Center(child: Text('Kein User ist eingetragen'))
+                            : ListView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: enrolledUsers.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Card(
+                              child: ListTile(
+                                leading: Icon(Icons.person),
+                                title: Text(enrolledUsers[index].username),
+                                subtitle: Text(enrolledUsers[index].email),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
-        ),
-      ],
+
+          // Enroll/Unenroll Button
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: _toggleEnrollment,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue,
+                  foregroundColor: Colors.white,
+                  padding: EdgeInsets.symmetric(vertical: 16.0),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                child: Text(isEnrolled ? 'Verlassen' : 'Einschreiben'),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
