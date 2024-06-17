@@ -26,7 +26,7 @@ class _SuggestionsSectionState extends State<SuggestionsSection> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 20.0),
-      const Text('Vorschläge', style: MyTextStyles.smallHeading,),
+          Text('Vorschläge', style: MyTextStyles.smallHeading,),
           const SizedBox(height: 5.0), // Abstand zwischen Überschrift und Karten
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,

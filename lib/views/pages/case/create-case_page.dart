@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_anw/models/case.dart';
 import 'package:mobile_anw/services/api_service.dart';
-import 'package:mobile_anw/views/widgets/texts/info_text.dart';
 import 'package:mobile_anw/data/case_data.dart';
-import 'package:mobile_anw/views/widgets/texts/field_text.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../utils/text_theme_config.dart';
@@ -37,12 +35,11 @@ class _CreateCasePageState extends State<CreateCasePage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Neuen Fall erstellen', style: MyTextStyles.largeHeading,),
+                    Text('Neuen Fall erstellen', style: MyTextStyles.largeHeading,),
                     _buildCompanyInfoBox(),
                     _buildCaseInfoBox(),
                     const SizedBox(height: 10),
-                    const InfoText(
-                      text: 'Die mit * gekennzeichneten Felder sind Pflichtfelder',
+                    const Text('Die mit * gekennzeichneten Felder sind Pflichtfelder', style: MyTextStyles.infoText,
                     ),
                     const SizedBox(height: 20),
                   ],
@@ -100,7 +97,7 @@ class _CreateCasePageState extends State<CreateCasePage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Unternehmensspezifische Informationen', style: MyTextStyles.smallHeading,),
+          Text('Unternehmensspezifische Informationen', style: MyTextStyles.smallHeading,),
           const SizedBox(height: 10),
           TextFormField(
             initialValue: _newCase.name ?? '',
@@ -120,7 +117,7 @@ class _CreateCasePageState extends State<CreateCasePage> {
           const SizedBox(height: 10),
           DropdownButtonFormField<String>(
             value: _newCase.companyType?.isNotEmpty == true ? _newCase.companyType : null,
-            hint: const FieldText(text: '*Unternehmensform auswählen'),
+            hint: const Text('*Unternehmensform auswählen'),
             items: CaseData.companyTypes.map((companyType) {
               return DropdownMenuItem(
                 value: companyType,
@@ -144,7 +141,7 @@ class _CreateCasePageState extends State<CreateCasePage> {
           const SizedBox(height: 10),
           DropdownButtonFormField<String>(
             value: _newCase.industry?.isNotEmpty == true ? _newCase.industry : null,
-            hint: const FieldText(text: '*Branche auswählen'),
+            hint: const Text('*Branche auswählen'),
             items: CaseData.industries.map((industry) {
               return DropdownMenuItem(
                 value: industry,
@@ -188,7 +185,7 @@ class _CreateCasePageState extends State<CreateCasePage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Ihre Informationen', style: MyTextStyles.smallHeading,),
+          Text('Ihre Informationen', style: MyTextStyles.smallHeading,),
           const SizedBox(height: 10),
           TextFormField(
             decoration: const InputDecoration(

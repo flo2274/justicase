@@ -102,9 +102,6 @@ class _CaseDetailsEnrolledState extends State<CaseDetailsEnrolled> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Case Details Enrolled'),
-      ),
       body: Column(
         children: [
           Expanded(
@@ -112,12 +109,12 @@ class _CaseDetailsEnrolledState extends State<CaseDetailsEnrolled> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Basic Case Info
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        Text('Neuen Fall erstellen', style: MyTextStyles.largeHeading,),
                         Text(
                           'Case Name: ${widget.caseInfo.name}',
                           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -138,7 +135,7 @@ class _CaseDetailsEnrolledState extends State<CaseDetailsEnrolled> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                      const Text('Eingetragene User', style: MyTextStyles.smallHeading,),
+                      Text('Eingetragene User', style: MyTextStyles.smallHeading,),
                         SizedBox(height: 8),
                         _isLoading
                             ? Center(child: CircularProgressIndicator())

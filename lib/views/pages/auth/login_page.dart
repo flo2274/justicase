@@ -44,7 +44,7 @@ class _LoginPageState extends State<LoginPage> {
               color: Colors.grey[300],
               width: double.infinity,
               padding: EdgeInsets.all(35.0),
-              child: const Column(
+              child: Column(
                 children: [
                   Text(
                     'JUSTICE FOR YOUR CASE',

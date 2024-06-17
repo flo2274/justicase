@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class MyTextStyles {
 
@@ -6,29 +7,28 @@ class MyTextStyles {
   static const Color textSecondary = Color(0xFF5E5E5E);
   static const Color? textBlueAccent = Colors.blue;
 
-  static const TextStyle largeHeading = TextStyle( // Changed from headlineLarge to headline6
+  static TextStyle largeHeading = GoogleFonts.barlow( // Changed from headlineLarge to headline6
     fontSize: 20.0,
     fontWeight: FontWeight.bold,
     color: textPrimary,
   );
 
-  static const TextStyle middleHeading = TextStyle(
+  static TextStyle middleHeading = GoogleFonts.barlow(
     fontSize: 24.0,
     fontWeight: FontWeight.bold,
     color: textBlueAccent,
   );
 
-  static const TextStyle smallHeading = TextStyle(
+  static TextStyle smallHeading = GoogleFonts.barlow(
     fontSize: 16.0,
     fontWeight: FontWeight.bold,
     color: textSecondary,
   );
 
-  static const TextStyle authLargeHeading = TextStyle(
+  static TextStyle authLargeHeading = GoogleFonts.ptSerif(
     fontSize: 26.0,
     fontWeight: FontWeight.bold,
     color: textSecondary,
-    fontFamily: 'ptSerif',
   );
 
   static const TextStyle authWelcome1Text = TextStyle(
@@ -71,9 +71,16 @@ class MyTextStyles {
     color: Colors.white,
   );
 
-  static const TextStyle subtitle1 = TextStyle(
+  static const TextStyle alertText = TextStyle(
+    fontSize: 20.0,
+    fontWeight: FontWeight.normal,
+    color: Colors.red,
+  );
+
+  static const TextStyle infoText = TextStyle(
     fontSize: 14.0,
     fontWeight: FontWeight.normal,
-    color: Colors.black54,
+    color: textSecondary,
   );
 }
+

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mobile_anw/views/widgets/texts/alert_text.dart';
+import 'package:mobile_anw/utils/text_theme_config.dart';
 import 'package:mobile_anw/models/case.dart';
 import 'package:mobile_anw/services/api_service.dart';
 import 'package:mobile_anw/views/widgets/cards/middle_card.dart';
@@ -81,7 +81,7 @@ class _SearchPageState extends State<SearchPage> {
                       context.go('/search/createCase');
                     },
                     child: const ListTile(
-                      title: AlertText(text: 'Kein Fall gefunden. Neu erstellen'),
+                      title: Text('Kein Fall gefunden. Neu erstellen', style: MyTextStyles.alertText,),
                     ),
                   );
                 },

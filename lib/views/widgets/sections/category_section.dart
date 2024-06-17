@@ -13,7 +13,7 @@ class CategorySection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 20.0),
-          const Text('Kategorien', style: MyTextStyles.smallHeading,
+          Text('Kategorien', style: MyTextStyles.smallHeading,
           ),
           const SizedBox(height: 5.0), // Abstand zwischen Überschrift und Karten
           SingleChildScrollView(

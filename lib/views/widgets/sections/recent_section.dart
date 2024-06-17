@@ -20,7 +20,7 @@ class RecentSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 20.0),
-          const Text('Aktuelles', style: MyTextStyles.smallHeading,),
+          Text('Aktuelles', style: MyTextStyles.smallHeading,),
           const SizedBox(height: 5.0), // Abstand zwischen Überschrift und Karten
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
