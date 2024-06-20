@@ -43,14 +43,14 @@ class _LoginPageState extends State<LoginPage> {
             Container(
               color: Colors.grey[300],
               width: double.infinity,
-              padding: EdgeInsets.all(35.0),
+              padding: EdgeInsets.all(20.0),
               child: Column(
                 children: [
                   Text(
                     'JUSTICE FOR YOUR CASE',
                     style: MyTextStyles.authLargeHeading
                   ),
-                  SizedBox(height: 20.0),
+                  SizedBox(height: 10.0),
                   Text(
                     'WERDEN SIE TEIL UNSERER BEWEGUNG FÜR GERECHTIGKEIT',
                     style: MyTextStyles.authSmallHeading
@@ -58,9 +58,9 @@ class _LoginPageState extends State<LoginPage> {
                 ],
               ),
             ),
-            const SizedBox(height: 30.0),
+            const SizedBox(height: 20.0),
             ImageSwitcher(),
-            const SizedBox(height: 30.0),
+            const SizedBox(height: 20.0),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.0),
               child: Text('Willkommen,', style: MyTextStyles.authWelcome1Text),
