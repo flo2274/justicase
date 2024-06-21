@@ -11,10 +11,12 @@ class APIService {
   static const String loginURL = '$baseURL/login';
   static const String usersURL = '$baseURL/users';
   static const String casesURL = '$baseURL/cases';
-  static const String myCasesURL = '$baseURL/getmycases';
+  static const String casesByUsersURL = '$baseURL/getcasesbyuser';
   static const String usersByCaseURL = '$baseURL/getusersbycase';
   static const String addUserToCaseURL = '$baseURL/addusertocase';
   static const String removeUserFromCaseURL = '$baseURL/removeuserfromcase';
+  static const String deleteUserURL = '$baseURL/deleteuser';
+
 
   static final storage = FlutterSecureStorage();
 
@@ -66,12 +68,14 @@ class APIService {
       // Ensure the data contains the expected structure
       if (data != null && data.containsKey('token') && data['user'] != null && data['user'].containsKey('username') && data['user'].containsKey('role')) {
         final String token = data['token'];
+        final int userId = data['user']['id'];
         final String username = data['user']['username'];
         final String role = data['user']['role'];
 
         await storage.write(key: 'token', value: token);
 
         SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setInt('userId', userId);
         await prefs.setString('username', username);
         await prefs.setString('role', role);
 
@@ -151,10 +155,16 @@ class APIService {
     }
   }
 
-  static Future<List<Case>> getMyCases() async {
+  static Future<List<Case>> getCasesByUser({int? userId}) async {
     final token = await getToken();
+
+    String url = casesByUsersURL;
+    if (userId != null) {
+      url += '?userId=$userId';
+    }
+
     final response = await http.get(
-      Uri.parse(myCasesURL),
+      Uri.parse(url),
       headers: {'Authorization': 'Bearer $token'},
     );
 
@@ -162,7 +172,7 @@ class APIService {
       final List<dynamic> casesJson = jsonDecode(response.body);
       return casesJson.map((json) => Case.fromJson(json)).toList();
     } else {
-      throw Exception('Failed to load my cases');
+      throw Exception('Failed to load cases');
     }
   }
 
@@ -237,4 +247,32 @@ class APIService {
       throw Exception('Failed to remove user from case: $e');
     }
   }
+
+  static Future<void> deleteUser(int userId) async {
+    try {
+      final token = await getToken();
+
+      final response = await http.delete(
+        Uri.parse('$deleteUserURL/$userId'),
+        headers: {
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        print('User deleted successfully');
+      } else {
+        final Map<String, dynamic> errorResponse = jsonDecode(response.body);
+        String errorMessage = 'Failed to delete user';
+        if (errorResponse.containsKey('error')) {
+          errorMessage = errorResponse['error'];
+        }
+        throw Exception(errorMessage);
+      }
+    } catch (e) {
+      print('Error deleting user: $e');
+      throw Exception('Failed to delete user: $e');
+    }
+  }
+
 }

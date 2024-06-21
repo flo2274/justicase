@@ -16,10 +16,6 @@ class Case {
   });
 
   factory Case.fromJson(Map<String, dynamic> json) {
-    List<User>? usersList = [];
-    if (json['users'] != null) {
-      usersList = List<User>.from(json['users'].map((userJson) => User.fromJson(userJson)));
-    }
     return Case(
       id: json['id'],
       name: json['name'],

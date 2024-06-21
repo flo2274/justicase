@@ -81,13 +81,14 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: const Text('JUSTICASE'),
         centerTitle: true,
+        leading: _isAdmin // Show admin panel icon on the left if user is admin
+            ? IconButton(
+          icon: Icon(Icons.admin_panel_settings_outlined),
+          onPressed: _navigateToAdminPanel,
+          tooltip: 'Admin Panel',
+        )
+            : null,
         actions: <Widget>[
-          if (_isAdmin) // Show logout button only if user is admin
-            IconButton(
-              icon: Icon(Icons.admin_panel_settings),
-              onPressed: _navigateToAdminPanel,
-              tooltip: 'Admin Panel',
-            ),
           IconButton(
             icon: Icon(Icons.logout),
             onPressed: _logout,

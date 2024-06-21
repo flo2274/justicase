@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_anw/models/user.dart';
 import 'package:mobile_anw/models/case.dart'; // Assuming Case class is defined in case.dart
 import 'package:mobile_anw/services/api_service.dart';
-import 'package:mobile_anw/views/widgets/user_item.dart'; // Assuming UserItem is a widget for displaying users
+import 'package:mobile_anw/views/widgets/admin-user_item.dart'; // Assuming UserItem is a widget for displaying users
 import 'package:mobile_anw/views/widgets/case_item.dart'; // Assuming CaseItem is a widget for displaying cases
 
 import 'admin-case-details-enrolled-page.dart'; // New: Import CaseDetailsPage
@@ -50,6 +50,49 @@ class _AdminPanelPageState extends State<AdminPanelPage> with SingleTickerProvid
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Failed to fetch users: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  void _deleteUser(int userId) async {
+    try {
+      await APIService.deleteUser(userId);
+      // Remove the user from the local list
+      setState(() {
+        _users.removeWhere((user) => user.id == userId);
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('User deleted successfully'),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to delete user: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  void _getCasesByUser(int userId) async {
+    try {
+      List<Case> cases = await APIService.getCasesByUser(userId: userId);
+      setState(() {
+        _cases = cases;
+        _isLoadingCases = false;
+      });
+    } catch (e) {
+      setState(() {
+        _isLoadingCases = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to fetch cases for user: $e'),
           backgroundColor: Colors.red,
         ),
       );
@@ -165,12 +208,12 @@ class _AdminPanelPageState extends State<AdminPanelPage> with SingleTickerProvid
                     physics: NeverScrollableScrollPhysics(),
                     itemCount: _users.length,
                     itemBuilder: (context, index) {
-                      return UserItem(
+                      return AdminUserItem(
                         user: _users[index],
-                        onAddToCase: (caseId) =>
-                            _addUserToCase(_users[index].id, caseId),
-                        onRemoveFromCase: (caseId) =>
-                            _removeUserFromCase(_users[index].id, caseId),
+                        onDeleteUser: (caseId) =>
+                            _deleteUser(_users[index].id),
+                        onGetCasesByUser: (caseId) =>
+                            _getCasesByUser(_users[index].id),
                       );
                     },
                   ),
