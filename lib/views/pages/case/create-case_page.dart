@@ -3,7 +3,6 @@ import 'package:mobile_anw/models/case.dart';
 import 'package:mobile_anw/services/api_service.dart';
 import 'package:mobile_anw/data/case_data.dart';
 import 'package:go_router/go_router.dart';
-
 import '../../../utils/text_theme_config.dart';
 
 class CreateCasePage extends StatefulWidget {
@@ -48,7 +47,7 @@ class _CreateCasePageState extends State<CreateCasePage> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            padding: const EdgeInsets.all(20.0),
             child: _isLoading
                 ? const Center(child: CircularProgressIndicator())
                 : SizedBox(
@@ -72,7 +71,6 @@ class _CreateCasePageState extends State<CreateCasePage> {
               ),
             ),
           ),
-          const SizedBox(height: 20),
         ],
       ),
     );
@@ -144,10 +142,10 @@ class _CreateCasePageState extends State<CreateCasePage> {
             hint: const Text('*Branche auswählen'),
             items: CaseData.industries.map((industry) {
               return DropdownMenuItem(
-                value: industry,
-                child: Text(
-                  industry,
-                )
+                  value: industry,
+                  child: Text(
+                    industry,
+                  )
               );
             }).toList(),
             onChanged: (value) {
