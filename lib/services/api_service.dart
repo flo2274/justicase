@@ -18,21 +18,38 @@ class APIService {
 
   static final storage = FlutterSecureStorage();
 
-  static Future<bool> register(String username, String email, String password) async {
-    final response = await http.post(
-      Uri.parse(registerURL),
-      body: jsonEncode({
-        'username': username,
-        'email': email,
-        'password': password,
-      }),
-      headers: {'Content-Type': 'application/json'},
-    );
+  static Future<bool> register(String firstName, String lastName, String username, String email, String password) async {
+    try {
+      final response = await http.post(
+        Uri.parse(registerURL),
+        body: jsonEncode({
+          'firstName': firstName,
+          'lastName': lastName,
+          'email': email,
+          'username': username,
+          'password': password,
+        }),
+        headers: {'Content-Type': 'application/json'},
+      );
 
-    if (response.statusCode == 201 || response.statusCode == 200) {
-      return true;
-    } else {
-      throw Exception('Failed to register');
+      if (response.statusCode == 201) {
+        return true;
+      } else if (response.statusCode == 400) {
+        // Handle validation errors
+        final Map<String, dynamic> errorResponse = jsonDecode(response.body);
+        String errorMessage = 'Registration failed';
+        if (errorResponse.containsKey('errors')) {
+          errorMessage = errorResponse['errors'].join('\n');
+        }
+        print('Registration failed: $errorMessage');
+        throw Exception(errorMessage);
+      } else {
+        print('Failed to register: ${response.statusCode}');
+        throw Exception('Failed to register: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Registration failed: $e');
+      throw Exception('Failed to register: $e');
     }
   }
 
@@ -43,18 +60,29 @@ class APIService {
       headers: {'Content-Type': 'application/json'},
     );
 
-    if (response.statusCode == 200 || response.statusCode == 201) {
+    if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      await storage.write(key: 'token', value: data['token']);
 
-      // Save username to shared preferences
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString('username', data['user']['username']);
+      // Ensure the data contains the expected structure
+      if (data != null && data.containsKey('token') && data['user'] != null && data['user'].containsKey('username') && data['user'].containsKey('role')) {
+        final String token = data['token'];
+        final String username = data['user']['username'];
+        final String role = data['user']['role'];
 
-      return true;
+        await storage.write(key: 'token', value: token);
+
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('username', username);
+        await prefs.setString('role', role);
+
+        return true;
+      } else {
+        print('Unexpected JSON structure: $data');
+        return false;
+      }
     } else {
-      print(response.statusCode);
-      throw Exception('Failed to login');
+      print('Failed to login: ${response.body}');
+      return false;
     }
   }
 
@@ -85,9 +113,6 @@ class APIService {
 
   static Future<bool> createCase(Case newCase) async {
     final token = await getToken();
-
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? username = prefs.getString('username');
 
     final response = await http.post(
       Uri.parse(casesURL),
@@ -195,5 +220,6 @@ class APIService {
       throw Exception('Failed to remove user from case');
     }
   }
+
 
 }
