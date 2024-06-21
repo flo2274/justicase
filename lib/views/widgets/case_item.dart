@@ -1,4 +1,48 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_anw/models/case.dart'; // Assuming Case class is defined in case.dart
+
+class CaseItem extends StatelessWidget {
+  final Case caseItem;
+  final Function onDelete;
+
+  const CaseItem({
+    Key? key,
+    required this.caseItem,
+    required this.onDelete,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+      child: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Case ID: ${caseItem.id}',
+              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 16.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                ElevatedButton(
+                  onPressed: null/*onDelete*/,
+                  style: ElevatedButton.styleFrom(foregroundColor: Colors.red),
+                  child: Text('Delete Case'),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/*import 'package:flutter/material.dart';
 
 class CaseWidget extends StatelessWidget {
   final String companyName;
@@ -90,4 +134,4 @@ class CaseWidget extends StatelessWidget {
       ],
     );
   }
-}
+}*/

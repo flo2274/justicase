@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile_anw/views/pages/admin-panel_page.dart';
 import 'package:mobile_anw/views/pages/case/case_page.dart';
 import 'package:mobile_anw/views/pages/case/create-case_page.dart';
 import 'package:mobile_anw/views/pages/search_page.dart';
@@ -11,6 +12,7 @@ import 'package:mobile_anw/views/pages/auth/login_page.dart';
 import 'dart:developer';
 
 import '../models/case.dart';
+import '../views/pages/admin-case-details-enrolled-page.dart';
 
 // private navigators (underscore makes it private)
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -44,6 +46,18 @@ final goRouter = GoRouter(
               pageBuilder: (context, state) => const NoTransitionPage(
                 child: HomePage(),
               ),
+              routes: [
+                GoRoute(
+                  path: 'adminPanel',
+                  builder: (context, state) => const AdminPanelPage(),
+                ),
+                GoRoute(
+                  path: 'adminCaseDetailsEnrolled',
+                  builder: (context, state) => AdminCaseDetailsEnrolledPage(
+                    caseInfo: state.extra as Case,
+                  ),
+                ),
+              ]
             ),
           ],
         ),

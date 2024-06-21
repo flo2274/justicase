@@ -20,12 +20,14 @@ class _HomePageState extends State<HomePage> {
   List<Case> _cases = [];
   bool _isLoading = true;
   String _username = '';
+  bool _isAdmin = false; // New variable to check if user is admin
 
   @override
   void initState() {
     super.initState();
     _fetchCases();
     _fetchUsername();
+    _checkAdminStatus(); // Check if user is admin
   }
 
   void _fetchUsername() async {
@@ -56,9 +58,21 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  void _checkAdminStatus() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? role = prefs.getString('role');
+    setState(() {
+      _isAdmin = role == 'admin';
+    });
+  }
+
   void _logout() {
     APIService.logout();
     context.go('/login');
+  }
+
+  void _navigateToAdminPanel() {
+    context.go('/home/adminPanel'); // Navigate to admin panel route
   }
 
   @override
@@ -68,6 +82,12 @@ class _HomePageState extends State<HomePage> {
         title: const Text('JUSTICASE'),
         centerTitle: true,
         actions: <Widget>[
+          if (_isAdmin) // Show logout button only if user is admin
+            IconButton(
+              icon: Icon(Icons.admin_panel_settings),
+              onPressed: _navigateToAdminPanel,
+              tooltip: 'Admin Panel',
+            ),
           IconButton(
             icon: Icon(Icons.logout),
             onPressed: _logout,
@@ -88,7 +108,9 @@ class _HomePageState extends State<HomePage> {
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Align(
                 alignment: Alignment.centerLeft,
-                child: Text('Willkommen zurück, $_username', style: MyTextStyles.middleHeading,
+                child: Text(
+                  'Willkommen zurück, $_username',
+                  style: MyTextStyles.middleHeading,
                 ),
               ),
             ),
@@ -101,3 +123,4 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+

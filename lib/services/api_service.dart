@@ -13,8 +13,8 @@ class APIService {
   static const String casesURL = '$baseURL/cases';
   static const String myCasesURL = '$baseURL/getmycases';
   static const String usersByCaseURL = '$baseURL/getusersbycase';
-  static const String enrollToCaseURL = '$baseURL/enrolltocase';
-  static const String removeFromCaseURL = '$baseURL/removefromcase';
+  static const String addUserToCaseURL = '$baseURL/addusertocase';
+  static const String removeUserFromCaseURL = '$baseURL/removeuserfromcase';
 
   static final storage = FlutterSecureStorage();
 
@@ -181,10 +181,12 @@ class APIService {
     }
   }
 
-  static Future<void> enrollToCase(int caseId) async {
+  static Future<void> addUserToCase(int caseId, {int? userId}) async {
     final token = await getToken();
+    String url = userId != null ? '$addUserToCaseURL?userId=$userId' : addUserToCaseURL;
+
     final response = await http.post(
-      Uri.parse(enrollToCaseURL),
+      Uri.parse(url),
       body: jsonEncode({
         'caseId': caseId,
       }),
@@ -201,25 +203,38 @@ class APIService {
     }
   }
 
-  static Future<void> removeFromCase(int caseId) async {
-    final token = await getToken();
-    final response = await http.post(
-      Uri.parse('$baseURL/removefromcase'),
-      body: jsonEncode({
-        'caseId': caseId,
-      }),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $token',
-      },
-    );
+  static Future<void> removeUserFromCase(int caseId, {int? userId}) async {
+    try {
+      final token = await getToken();
+      String url = userId != null ? '$removeUserFromCaseURL?userId=$userId' : removeUserFromCaseURL;
 
-    if (response.statusCode == 200) {
-      return;
-    } else {
-      throw Exception('Failed to remove user from case');
+      final response = await http.post(
+        Uri.parse(url),
+        body: jsonEncode({
+          'caseId': caseId,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        print('User removed from case successfully');
+        return;
+      } else if (response.statusCode == 400) {
+        final Map<String, dynamic> errorResponse = jsonDecode(response.body);
+        String errorMessage = 'Failed to remove user from case';
+        if (errorResponse.containsKey('error')) {
+          errorMessage = errorResponse['error'];
+        }
+        throw Exception(errorMessage);
+      } else {
+        throw Exception('Failed to remove user from case: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error removing user from case: $e');
+      throw Exception('Failed to remove user from case: $e');
     }
   }
-
-
 }

@@ -71,7 +71,7 @@ class _CaseDetailsEnrolledState extends State<CaseDetailsEnrolled> {
 
   Future<void> _enrollUser() async {
     try {
-      await APIService.enrollToCase(caseId);
+      await APIService.addUserToCase(caseId);
       // Refresh enrolled users list after enrollment
       await _loadEnrolledUsers();
     } catch (e) {
@@ -86,7 +86,7 @@ class _CaseDetailsEnrolledState extends State<CaseDetailsEnrolled> {
 
   Future<void> _removeFromCase() async {
     try {
-      await APIService.removeFromCase(caseId);
+      await APIService.removeUserFromCase(caseId);
       // Refresh enrolled users list after removal
       await _loadEnrolledUsers();
     } catch (e) {
