@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile_anw/models/case.dart';
 import 'package:mobile_anw/services/api_service.dart';
-import 'package:mobile_anw/data/case_data.dart';
 import 'package:go_router/go_router.dart';
+import '../../../data/case_data.dart';
 import '../../../utils/text_theme_config.dart';
+import '../../../utils/case_notifier.dart'; // Adjust import path as per your project structure
 
-class CreateCasePage extends StatefulWidget {
+class CreateCasePage extends ConsumerStatefulWidget {
   const CreateCasePage({Key? key}) : super(key: key);
 
   @override
   _CreateCasePageState createState() => _CreateCasePageState();
 }
 
-class _CreateCasePageState extends State<CreateCasePage> {
+class _CreateCasePageState extends ConsumerState<CreateCasePage> {
   final _formKey = GlobalKey<FormState>();
   String _yourCaseDescription = '';
   Case _newCase = Case(companyType: '', industry: '');
@@ -34,11 +36,16 @@ class _CreateCasePageState extends State<CreateCasePage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Neuen Fall erstellen', style: MyTextStyles.largeHeading,),
+                    Text(
+                      'Neuen Fall erstellen',
+                      style: MyTextStyles.largeHeading,
+                    ),
                     _buildCompanyInfoBox(),
                     _buildCaseInfoBox(),
                     const SizedBox(height: 10),
-                    const Text('Die mit * gekennzeichneten Felder sind Pflichtfelder', style: MyTextStyles.infoText,
+                    const Text(
+                      'Die mit * gekennzeichneten Felder sind Pflichtfelder',
+                      style: MyTextStyles.infoText,
                     ),
                     const SizedBox(height: 20),
                   ],
@@ -56,7 +63,7 @@ class _CreateCasePageState extends State<CreateCasePage> {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
-                    _createCase();
+                    _createCase(context);
                   }
                 },
                 style: ElevatedButton.styleFrom(
@@ -95,7 +102,10 @@ class _CreateCasePageState extends State<CreateCasePage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Unternehmensspezifische Informationen', style: MyTextStyles.smallHeading,),
+          Text(
+            'Unternehmensspezifische Informationen',
+            style: MyTextStyles.smallHeading,
+          ),
           const SizedBox(height: 10),
           TextFormField(
             initialValue: _newCase.name ?? '',
@@ -114,7 +124,9 @@ class _CreateCasePageState extends State<CreateCasePage> {
           ),
           const SizedBox(height: 10),
           DropdownButtonFormField<String>(
-            value: _newCase.companyType?.isNotEmpty == true ? _newCase.companyType : null,
+            value: _newCase.companyType?.isNotEmpty == true
+                ? _newCase.companyType
+                : null,
             hint: const Text('*Unternehmensform auswählen'),
             items: CaseData.companyTypes.map((companyType) {
               return DropdownMenuItem(
@@ -138,15 +150,16 @@ class _CreateCasePageState extends State<CreateCasePage> {
           ),
           const SizedBox(height: 10),
           DropdownButtonFormField<String>(
-            value: _newCase.industry?.isNotEmpty == true ? _newCase.industry : null,
+            value: _newCase.industry?.isNotEmpty == true
+                ? _newCase.industry
+                : null,
             hint: const Text('*Branche auswählen'),
             items: CaseData.industries.map((industry) {
               return DropdownMenuItem(
                   value: industry,
                   child: Text(
                     industry,
-                  )
-              );
+                  ));
             }).toList(),
             onChanged: (value) {
               setState(() {
@@ -183,7 +196,10 @@ class _CreateCasePageState extends State<CreateCasePage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Ihre Informationen', style: MyTextStyles.smallHeading,),
+          Text(
+            'Ihre Informationen',
+            style: MyTextStyles.smallHeading,
+          ),
           const SizedBox(height: 10),
           TextFormField(
             decoration: const InputDecoration(
@@ -201,40 +217,19 @@ class _CreateCasePageState extends State<CreateCasePage> {
     );
   }
 
-  void _createCase() async {
-    setState(() {
-      _isLoading = true;
-    });
-
+  void _createCase(BuildContext context) async {
     try {
-      final bool success = await APIService.createCase(_newCase);
-      if (success) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Fall erfolgreich erstellt'),
-            backgroundColor: Colors.green,
-          ),
-        );
-        context.go('/case');
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Fehler beim Erstellen des Falls'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
+      await ref.read(caseProvider.notifier).createCaseAndUpdateUserCases(_newCase);
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: const Text('Fall erfolgreich erstellt'),
+        backgroundColor: Colors.green,
+      ));
+      context.go('/case'); // Zurück zur vorherigen Seite (z.B. CasePage)
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Fehler: $e'),
-          backgroundColor: Colors.red,
-        ),
-      );
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Fehler beim Erstellen des Falls: $e'),
+        backgroundColor: Colors.red,
+      ));
     }
   }
 }

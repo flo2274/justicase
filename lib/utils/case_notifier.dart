@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mobile_anw/models/case.dart'; // Adjust import path as per your project structure
+import 'package:mobile_anw/models/case.dart';
 import 'package:mobile_anw/services/api_service.dart';
 
-import 'case_state.dart'; // Adjust import path as per your project structure
+import 'case_state.dart';
 
 class CaseNotifier extends StateNotifier<CaseState> {
   CaseNotifier() : super(CaseState(allCases: [], userCases: [], isLoading: true));
@@ -54,6 +54,21 @@ class CaseNotifier extends StateNotifier<CaseState> {
     state = state.copyWith(isLoading: true, errorMessage: null);
     await getCasesByUser(userId);
   }
+
+  Future<void> createCaseAndUpdateUserCases(Case newCase) async {
+    try {
+      final bool success = await APIService.createCase(newCase);
+      if (success) {
+        state = state.copyWith(userCases: [...state.userCases, newCase]);
+      } else {
+        throw Exception('Failed to create case');
+      }
+    } catch (e) {
+      print('Failed to create case: $e');
+      throw Exception('Failed to create case: $e');
+    }
+  }
+
 }
 
 final caseProvider = StateNotifierProvider<CaseNotifier, CaseState>((ref) {
