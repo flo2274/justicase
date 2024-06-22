@@ -87,23 +87,19 @@ class _HomePageState extends ConsumerState<HomePage> {
           padding: const EdgeInsets.symmetric(horizontal: 20.0),
           child: Row(
             children: [
-              Expanded(
-                child: Align(
+              Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    'Willkommen zurück,',
+                    'Willkommen zurück, ',
                     style: MyTextStyles.middleHeading1,
                   ),
                 ),
-              ),
-              Expanded(
-                child: Align(
+              Align(
                   alignment: Alignment.centerLeft,
                   child: Text(_username,
                     style: MyTextStyles.middleHeading2,
                     ),
                   ),
-                ),
             ],
           ),
         ),
