@@ -9,7 +9,9 @@ import '../../utils/case_state.dart';
 import '../../utils/user_notifier.dart';
 import '../../utils/user_state.dart';
 import '../widgets/admin-user_item.dart';
-import 'admin-case-details-enrolled-page.dart';
+import 'admin-details_page.dart';
+import 'package:go_router/go_router.dart';
+
 
 class AdminPanelPage extends ConsumerStatefulWidget {
   const AdminPanelPage({Key? key}) : super(key: key);
@@ -115,6 +117,15 @@ class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
   void _getCasesByUser(int userId) async {
     try {
       await ref.read(caseProvider.notifier).getCasesByUser(userId);
+      // Navigate to a new page to show cases for this user
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => AdminDetailsPage(
+            userId: userId,
+          ),
+        ),
+      );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -154,7 +165,16 @@ class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
       itemBuilder: (context, index) {
         final caseInfo = caseState.allCases[index];
         return GestureDetector(
-          onTap: () => _navigateToCaseDetails(context, caseInfo),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => AdminDetailsPage(
+                  caseId: caseInfo.id,
+                ),
+              ),
+            );
+          },
           child: CaseItem(
             caseItem: caseInfo,
             onDelete: () => _deleteCase(caseInfo.id!),
@@ -163,6 +183,7 @@ class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
       },
     );
   }
+
 
   void _deleteCase(int caseId) async {
     /*try {
@@ -182,14 +203,5 @@ class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
         ),
       );
     }*/
-  }
-
-  void _navigateToCaseDetails(BuildContext context, Case caseInfo) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => AdminCaseDetailsEnrolledPage(caseInfo: caseInfo),
-      ),
-    );
   }
 }

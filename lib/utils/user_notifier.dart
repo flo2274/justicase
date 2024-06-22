@@ -30,6 +30,15 @@ class UserNotifier extends StateNotifier<UserState> {
     state = state.copyWith(isLoading: true, errorMessage: null);
     await getAllUsers();
   }
+
+  Future<void> getUsersByCase(int caseId) async {
+    try {
+      List<User> caseUsers = await APIService.getUsersByCase(caseId);
+      state = state.copyWith(caseUsers: caseUsers, isLoading: false);
+    } catch (e) {
+      state = state.copyWith(isLoading: false, errorMessage: e.toString());
+    }
+  }
 }
 
 final userProvider = StateNotifierProvider<UserNotifier, UserState>((ref) {

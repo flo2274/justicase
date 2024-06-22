@@ -12,7 +12,7 @@ import 'package:mobile_anw/views/pages/auth/login_page.dart';
 import 'dart:developer';
 
 import '../models/case.dart';
-import '../views/pages/admin-case-details-enrolled-page.dart';
+import '../views/pages/admin-details_page.dart';
 
 // private navigators (underscore makes it private)
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -52,9 +52,10 @@ final goRouter = GoRouter(
                   builder: (context, state) => const AdminPanelPage(),
                 ),
                 GoRoute(
-                  path: 'adminCaseDetailsEnrolled',
-                  builder: (context, state) => AdminCaseDetailsEnrolledPage(
-                    caseInfo: state.extra as Case,
+                  path: 'adminDetails',
+                  builder: (context, state) => AdminDetailsPage(
+                    caseId: state.extra as int,
+                    userId: state.extra as int,
                   ),
                 ),
               ]
