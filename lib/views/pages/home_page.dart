@@ -1,68 +1,39 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_anw/models/case.dart'; // Import der Case-Klasse
-import 'package:mobile_anw/services/api_service.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:mobile_anw/models/case.dart'; // Adjust import path as per your project structure
 import 'package:go_router/go_router.dart';
 import 'package:mobile_anw/utils/text_theme_config.dart';
-
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mobile_anw/views/widgets/sections/category_section.dart';
 import 'package:mobile_anw/views/widgets/sections/suggestions_section.dart';
 import 'package:mobile_anw/views/widgets/sections/recent_section.dart';
+import '../../services/api_service.dart';
+import '../../utils/case_notifier.dart'; // Adjust import path as per your project structure
+import '../../utils/case_state.dart'; // Adjust import path as per your project structure
 
-class HomePage extends StatefulWidget {
+class HomePage extends ConsumerStatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  List<Case> _cases = [];
-  bool _isLoading = true;
+class _HomePageState extends ConsumerState<HomePage> {
   String _username = '';
-  bool _isAdmin = false; // New variable to check if user is admin
+  bool _isAdmin = false;
 
   @override
   void initState() {
     super.initState();
-    _fetchCases();
-    _fetchUsername();
-    _checkAdminStatus(); // Check if user is admin
+    _fetchUserData();
+    ref.read(caseProvider.notifier).getAllCases(); // Trigger fetching all cases on widget initialization
   }
 
-  void _fetchUsername() async {
+  Future<void> _fetchUserData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? username = prefs.getString('username');
     setState(() {
-      _username = username ?? '';
-    });
-  }
-
-  void _fetchCases() async {
-    try {
-      List<Case> cases = await APIService.getAllCases();
-      setState(() {
-        _cases = cases;
-        _isLoading = false;
-      });
-    } catch (e) {
-      setState(() {
-        _isLoading = false;
-      });
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Fehler beim Abrufen der Fälle: $e'),
-          backgroundColor: Colors.red,
-        ),
-      );
-    }
-  }
-
-  void _checkAdminStatus() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? role = prefs.getString('role');
-    setState(() {
-      _isAdmin = role == 'admin';
+      _username = prefs.getString('username') ?? '';
+      _isAdmin = prefs.getString('role') == 'admin';
     });
   }
 
@@ -77,6 +48,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final caseState = ref.watch(caseProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('JUSTICASE'),
@@ -96,8 +69,14 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      body: _isLoading
+      body: caseState.isLoading
           ? Center(child: CircularProgressIndicator())
+          : caseState.errorMessage != null
+          ? Center(
+        child: Text(
+          'Fehler beim Abrufen der Fälle: ${caseState.errorMessage}',
+        ),
+      )
           : SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -115,8 +94,8 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-            SuggestionsSection(cases: _cases),
-            RecentSection(cases: _cases),
+            SuggestionsSection(cases: caseState.allCases),
+            RecentSection(cases: caseState.allCases),
             const SizedBox(height: 20.0),
           ],
         ),
@@ -124,4 +103,3 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-

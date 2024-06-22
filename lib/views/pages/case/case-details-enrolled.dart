@@ -135,7 +135,7 @@ class _CaseDetailsEnrolledState extends State<CaseDetailsEnrolled> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                      Text('Eingetragene User', style: MyTextStyles.smallHeading,),
+                        Text('Eingetragene User', style: MyTextStyles.smallHeading,),
                         SizedBox(height: 8),
                         _isLoading
                             ? Center(child: CircularProgressIndicator())
