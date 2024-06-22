@@ -81,19 +81,32 @@ class _HomePageState extends ConsumerState<HomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const SizedBox(height: 20.0),
             CategorySection(),
             const SizedBox(height: 20.0),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Willkommen zurück, $_username',
-                  style: MyTextStyles.middleHeading,
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: Row(
+            children: [
+              Expanded(
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Willkommen zurück,',
+                    style: MyTextStyles.middleHeading1,
+                  ),
                 ),
               ),
-            ),
+              Expanded(
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(_username,
+                    style: MyTextStyles.middleHeading2,
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        ),
             SuggestionsSection(cases: caseState.allCases),
             RecentSection(cases: caseState.allCases),
             const SizedBox(height: 20.0),

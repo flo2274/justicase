@@ -13,9 +13,15 @@ class MyTextStyles {
     color: textPrimary,
   );
 
-  static TextStyle middleHeading = GoogleFonts.barlow(
+  static TextStyle middleHeading1 = GoogleFonts.barlow(
     fontSize: 24.0,
-    fontWeight: FontWeight.bold,
+    fontWeight: FontWeight.w600,
+    color: textBlueAccent,
+  );
+
+  static TextStyle middleHeading2 = GoogleFonts.barlow(
+    fontSize: 24.0,
+    fontWeight: FontWeight.w800,
     color: textBlueAccent,
   );
 

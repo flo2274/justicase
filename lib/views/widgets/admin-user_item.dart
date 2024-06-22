@@ -39,9 +39,7 @@ class AdminUserItem extends StatelessWidget {
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {
-                      // Assuming caseId is hardcoded for demonstration
-                      int caseId = 1; // Replace with dynamic caseId logic if applicable
-                      onDeleteUser(caseId);
+                      onDeleteUser(user.id); // Pass user.id to the callback
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xCEFF3030),
@@ -57,9 +55,7 @@ class AdminUserItem extends StatelessWidget {
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {
-                      // Assuming caseId is hardcoded for demonstration
-                      int caseId = 1; // Replace with dynamic caseId logic if applicable
-                      onGetCasesByUser(caseId);
+                      onGetCasesByUser(user.id); // Pass user.id to the callback
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.grey,

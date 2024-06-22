@@ -1,68 +1,101 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile_anw/models/user.dart';
-import 'package:mobile_anw/models/case.dart'; // Assuming Case class is defined in case.dart
+import 'package:mobile_anw/models/case.dart';
 import 'package:mobile_anw/services/api_service.dart';
-import 'package:mobile_anw/views/widgets/admin-user_item.dart'; // Assuming UserItem is a widget for displaying users
-import 'package:mobile_anw/views/widgets/case_item.dart'; // Assuming CaseItem is a widget for displaying cases
+import 'package:mobile_anw/views/widgets/case_item.dart';
+import '../../utils/case_notifier.dart';
+import '../../utils/case_state.dart';
+import '../../utils/user_notifier.dart';
+import '../../utils/user_state.dart';
+import '../widgets/admin-user_item.dart';
+import 'admin-case-details-enrolled-page.dart';
 
-import 'admin-case-details-enrolled-page.dart'; // New: Import CaseDetailsPage
-
-class AdminPanelPage extends StatefulWidget {
+class AdminPanelPage extends ConsumerStatefulWidget {
   const AdminPanelPage({Key? key}) : super(key: key);
 
   @override
   _AdminPanelPageState createState() => _AdminPanelPageState();
 }
 
-class _AdminPanelPageState extends State<AdminPanelPage> with SingleTickerProviderStateMixin {
-  late TabController _tabController;
-  List<User> _users = [];
-  List<Case> _cases = [];
-
-  bool _isLoadingUsers = true;
-  bool _isLoadingCases = true;
+class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this); // Initialize TabController
-    _fetchUsers();
-    _fetchCases();
+    ref.read(caseProvider.notifier).getAllCases(); // Trigger fetching all cases on widget initialization
+    ref.read(userProvider.notifier).getAllUsers(); // Trigger fetching all users on widget initialization
   }
 
   @override
-  void dispose() {
-    _tabController.dispose(); // Dispose TabController
-    super.dispose();
+  Widget build(BuildContext context) {
+    final caseState = ref.watch(caseProvider);
+    final userState = ref.watch(userProvider);
+
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Admin Panel'),
+          bottom: TabBar(
+            tabs: [
+              Tab(text: 'Users'),
+              Tab(text: 'Cases'),
+            ],
+          ),
+        ),
+        body: userState.isLoading || caseState.isLoading
+            ? Center(child: CircularProgressIndicator())
+            : TabBarView(
+          children: [
+            _buildUsersTab(context, userState),
+            _buildCasesTab(context, caseState),
+          ],
+        ),
+      ),
+    );
   }
 
-  void _fetchUsers() async {
-    try {
-      List<User> users = await APIService.getUsers();
-      setState(() {
-        _users = users;
-        _isLoadingUsers = false;
-      });
-    } catch (e) {
-      setState(() {
-        _isLoadingUsers = false;
-      });
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Failed to fetch users: $e'),
-          backgroundColor: Colors.red,
-        ),
-      );
-    }
+  Widget _buildUsersTab(BuildContext context, UserState userState) {
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text(
+              'Users:',
+              style: TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          _buildUsersList(context, userState),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildUsersList(BuildContext context, UserState userState) {
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      itemCount: userState.allUsers.length,
+      itemBuilder: (context, index) {
+        final user = userState.allUsers[index];
+        return AdminUserItem(
+          user: user,
+          onDeleteUser: _deleteUser,
+          onGetCasesByUser: _getCasesByUser,
+        );
+      },
+    );
   }
 
   void _deleteUser(int userId) async {
     try {
-      await APIService.deleteUser(userId);
-      // Remove the user from the local list
-      setState(() {
-        _users.removeWhere((user) => user.id == userId);
-      });
+      await ref.read(userProvider.notifier).deleteUser(userId);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('User deleted successfully'),
@@ -81,15 +114,8 @@ class _AdminPanelPageState extends State<AdminPanelPage> with SingleTickerProvid
 
   void _getCasesByUser(int userId) async {
     try {
-      List<Case> cases = await APIService.getCasesByUser(userId: userId);
-      setState(() {
-        _cases = cases;
-        _isLoadingCases = false;
-      });
+      await ref.read(caseProvider.notifier).getCasesByUser(userId);
     } catch (e) {
-      setState(() {
-        _isLoadingCases = false;
-      });
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Failed to fetch cases for user: $e'),
@@ -99,163 +125,70 @@ class _AdminPanelPageState extends State<AdminPanelPage> with SingleTickerProvid
     }
   }
 
-  void _fetchCases() async {
-    try {
-      List<Case> cases = await APIService.getAllCases();
-      setState(() {
-        _cases = cases;
-        _isLoadingCases = false;
-      });
-    } catch (e) {
-      setState(() {
-        _isLoadingCases = false;
-      });
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Failed to fetch cases: $e'),
-          backgroundColor: Colors.red,
-        ),
-      );
-    }
-  }
-
-  void _addUserToCase(int userId, int caseId) async {
-    try {
-      await APIService.addUserToCase(caseId, userId: userId);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('User added to case successfully'),
-          backgroundColor: Colors.green,
-        ),
-      );
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Failed to add user to case: $e'),
-          backgroundColor: Colors.red,
-        ),
-      );
-    }
-  }
-
-  void _removeUserFromCase(int userId, int caseId) async {
-    try {
-      await APIService.removeUserFromCase(caseId, userId: userId);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('User removed from case successfully'),
-          backgroundColor: Colors.green,
-        ),
-      );
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Failed to remove user from case: $e'),
-          backgroundColor: Colors.red,
-        ),
-      );
-    }
-  }
-
-  void _navigateToCaseDetails(Case caseInfo) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => AdminCaseDetailsEnrolledPage(caseInfo: caseInfo),
+  Widget _buildCasesTab(BuildContext context, CaseState caseState) {
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text(
+              'Cases:',
+              style: TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          _buildCasesList(context, caseState),
+        ],
       ),
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2, // Number of tabs
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text('Admin Panel'),
-          bottom: TabBar(
-            controller: _tabController, // Bind TabController to TabBar
-            tabs: [
-              Tab(text: 'Users'),
-              Tab(text: 'Cases'),
-            ],
+  Widget _buildCasesList(BuildContext context, CaseState caseState) {
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      itemCount: caseState.allCases.length,
+      itemBuilder: (context, index) {
+        final caseInfo = caseState.allCases[index];
+        return GestureDetector(
+          onTap: () => _navigateToCaseDetails(context, caseInfo),
+          child: CaseItem(
+            caseItem: caseInfo,
+            onDelete: () => _deleteCase(caseInfo.id!),
           ),
+        );
+      },
+    );
+  }
+
+  void _deleteCase(int caseId) async {
+    /*try {
+      await APIService.deleteCase(caseId);
+      ref.read(caseProvider.notifier).refreshAllCases();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Case deleted successfully'),
+          backgroundColor: Colors.green,
         ),
-        body: _isLoadingUsers || _isLoadingCases
-            ? Center(child: CircularProgressIndicator())
-            : TabBarView(
-          controller: _tabController, // Bind TabController to TabBarView
-          children: [
-            // Users Tab
-            SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Text(
-                      'Users:',
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  _users.isEmpty
-                      ? Center(child: Text('No users found'))
-                      : ListView.builder(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: _users.length,
-                    itemBuilder: (context, index) {
-                      return AdminUserItem(
-                        user: _users[index],
-                        onDeleteUser: (caseId) =>
-                            _deleteUser(_users[index].id),
-                        onGetCasesByUser: (caseId) =>
-                            _getCasesByUser(_users[index].id),
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ),
-            // Cases Tab
-            SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Text(
-                      'Cases:',
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  _cases.isEmpty
-                      ? Center(child: Text('No cases found'))
-                      : ListView.builder(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: _cases.length,
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () => _navigateToCaseDetails(_cases[index]), // Navigate to case details
-                        child: CaseItem(
-                          caseItem: _cases[index],
-                          onDelete: () => null,
-                        ),
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ],
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to delete case: $e'),
+          backgroundColor: Colors.red,
         ),
+      );
+    }*/
+  }
+
+  void _navigateToCaseDetails(BuildContext context, Case caseInfo) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AdminCaseDetailsEnrolledPage(caseInfo: caseInfo),
       ),
     );
   }
