@@ -16,6 +16,7 @@ class APIService {
   static const String addUserToCaseURL = '$baseURL/addusertocase';
   static const String removeUserFromCaseURL = '$baseURL/removeuserfromcase';
   static const String deleteUserURL = '$baseURL/deleteuser';
+  static const String deleteCaseURL = '$baseURL/deletecase';
 
 
   static final storage = FlutterSecureStorage();
@@ -194,6 +195,7 @@ class APIService {
   static Future<void> addUserToCase(int caseId, {int? userId}) async {
     final token = await getToken();
     String url = userId != null ? '$addUserToCaseURL?userId=$userId' : addUserToCaseURL;
+    //String url = userId != null ? '$addUserToCaseURL/$userId' : addUserToCaseURL; So?
 
     final response = await http.post(
       Uri.parse(url),
@@ -216,17 +218,24 @@ class APIService {
   static Future<void> removeUserFromCase(int caseId, {int? userId}) async {
     try {
       final token = await getToken();
-      String url = userId != null ? '$removeUserFromCaseURL?userId=$userId' : removeUserFromCaseURL;
+      final url = Uri.parse(removeUserFromCaseURL);
+
+      final body = {
+        'caseId': caseId,
+      };
+
+      // Fügt userId hinzu, wenn es nicht null ist
+      if (userId != null) {
+        body['userId'] = userId;
+      }
 
       final response = await http.post(
-        Uri.parse(url),
-        body: jsonEncode({
-          'caseId': caseId,
-        }),
+        url,
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
         },
+        body: jsonEncode(body),
       );
 
       if (response.statusCode == 200) {
@@ -275,4 +284,31 @@ class APIService {
     }
   }
 
+  static Future<void> deleteCase(int caseId) async {
+    try {
+      final token = await getToken(); // Implement your token retrieval method
+
+      final response = await http.delete(
+        Uri.parse('$deleteCaseURL/$caseId'),
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        print('Case deleted successfully');
+      } else {
+        final Map<String, dynamic> errorResponse = jsonDecode(response.body);
+        String errorMessage = 'Failed to delete case';
+        if (errorResponse.containsKey('error')) {
+          errorMessage = errorResponse['error'];
+        }
+        throw Exception(errorMessage);
+      }
+    } catch (e) {
+      print('Error deleting case: $e');
+      throw Exception('Failed to delete case: $e');
+    }
+  }
 }

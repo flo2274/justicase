@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile_anw/models/case.dart';
 import 'package:mobile_anw/services/api_service.dart';
@@ -45,28 +46,17 @@ class CaseNotifier extends StateNotifier<CaseState> {
     }
   }
 
-  /*Future<void> deleteCase(int caseId) async {
+  Future<void> deleteCase(int caseId) async {
     try {
       await APIService.deleteCase(caseId);
       state = state.copyWith(
         allCases: state.allCases.where((c) => c.id != caseId).toList(),
         userCases: state.userCases.where((c) => c.id != caseId).toList(),
       );
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Case deleted successfully'),
-          backgroundColor: Colors.green,
-        ),
-      );
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Failed to delete case: $e'),
-          backgroundColor: Colors.red,
-        ),
-      );
+      throw Exception('Failed to delete case: $e');
     }
-  }*/
+  }
 
   Future<void> refreshAllCases() async {
     state = state.copyWith(isLoading: true, errorMessage: null);

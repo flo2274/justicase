@@ -39,6 +39,20 @@ class UserNotifier extends StateNotifier<UserState> {
       state = state.copyWith(isLoading: false, errorMessage: e.toString());
     }
   }
+
+  Future<void> removeUserFromCase(int caseId, {int? userId}) async {
+    try {
+      state = state.copyWith(isLoading: true, errorMessage: null);
+
+      await APIService.removeUserFromCase(caseId, userId: userId);
+
+      await getUsersByCase(caseId);
+
+      state = state.copyWith(isLoading: false);
+    } catch (e) {
+      state = state.copyWith(isLoading: false, errorMessage: 'Failed to remove user from case: $e');
+    }
+  }
 }
 
 final userProvider = StateNotifierProvider<UserNotifier, UserState>((ref) {

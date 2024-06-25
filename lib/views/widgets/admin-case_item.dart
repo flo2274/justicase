@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_anw/models/user.dart'; // Assuming User class is defined in user.dart
+import 'package:mobile_anw/models/case.dart';
 
-class AdminUserItem extends StatelessWidget {
-  final User user;
-  final Function(int) onDeleteUser;
-  final Function(int) onGetCasesByUser;
+class AdminCaseItem extends StatelessWidget {
+  final Case caseItem;
+  final Function onDelete;
+  final Function onGetUsersByCase;
 
-  const AdminUserItem({
+  const AdminCaseItem({
     Key? key,
-    required this.user,
-    required this.onDeleteUser,
-    required this.onGetCasesByUser,
+    required this.caseItem,
+    required this.onDelete,
+    required this.onGetUsersByCase,
   }) : super(key: key);
 
   @override
@@ -23,48 +23,42 @@ class AdminUserItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              '${user.username}',
+              'Case ID: ${caseItem.id}',
               style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 8.0),
-            Text('Name: ${user.firstName} ${user.lastName}'),
+            Text('Name: ${caseItem.name}'),
             SizedBox(height: 8.0),
-            Text('Email: ${user.email}'),
-            SizedBox(height: 8.0),
-            Text('Beigetreten: ${user.createdAt}'),
+            Text('Type: ${caseItem.companyType}'),
             SizedBox(height: 16.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: () {
-                      onDeleteUser(user.id); // Pass user.id to the callback
-                    },
+                    onPressed: () => onDelete(),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xCEFF3030),
                       foregroundColor: Colors.white,
+                      backgroundColor: Colors.red,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
-                    child: const Text('Benutzer löschen'),
+                    child: const Text('Fall löschen'),
                   ),
                 ),
                 const SizedBox(width: 30), // Add space between buttons
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: () {
-                      onGetCasesByUser(user.id); // Pass user.id to the callback
-                    },
+                    onPressed: () => onGetUsersByCase(caseItem.id),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.grey,
                       foregroundColor: Colors.white,
+                      backgroundColor: Colors.grey,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
-                    child: const Text('Fälle anzeigen'),
+                    child: const Text('Benutzer anzeigen'),
                   ),
                 ),
               ],

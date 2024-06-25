@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mobile_anw/models/case.dart';
-import 'package:mobile_anw/models/user.dart';
-import 'package:mobile_anw/services/api_service.dart';
-import 'package:mobile_anw/utils/case_state.dart';
 import 'package:mobile_anw/utils/user_state.dart';
-
-import '../../utils/case_notifier.dart';
-import '../../utils/user_notifier.dart';
+import 'package:mobile_anw/utils/case_notifier.dart';
+import 'package:mobile_anw/utils/user_notifier.dart';
+import 'package:mobile_anw/views/widgets/admin-user_item.dart';
+import 'package:mobile_anw/views/widgets/admin-case_item.dart';
 
 class AdminDetailsPage extends ConsumerStatefulWidget {
   final int? userId;
@@ -35,7 +32,6 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
     if (widget.userId != null) {
       return _buildCasesForUser(context);
     } else if (widget.caseId != null) {
-      ref.read(userProvider.notifier).getUsersByCase(widget.caseId!);
       return _buildUsersInCase(context);
     } else {
       return Scaffold(
@@ -49,7 +45,6 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
     }
   }
 
-
   Widget _buildCasesForUser(BuildContext context) {
     final caseState = ref.watch(caseProvider);
 
@@ -61,26 +56,38 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
           ? Center(child: CircularProgressIndicator())
           : caseState.errorMessage != null
           ? Center(child: Text(caseState.errorMessage!))
-          : ListView.builder(
-        itemCount: caseState.userCases.length,
-        itemBuilder: (context, index) {
-          final caseItem = caseState.userCases[index];
-          return ListTile(
-            title: Text(caseItem.name!),
-            subtitle: Text(caseItem.companyType!),
-            onTap: () {
-              // Handle case item tap
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => AdminDetailsPage(
-                    caseId: caseItem.id,
-                  ),
-                ),
-              );
-            },
-          );
-        },
+          : Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text(
+              'User is involved in ${caseState.userCases.length} cases',
+              style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: caseState.userCases.length,
+              itemBuilder: (context, index) {
+                final caseItem = caseState.userCases[index];
+                return AdminCaseItem(
+                  caseItem: caseItem,
+                  onDelete: () {
+                    // Implement case deletion logic here
+                  },
+                  onGetUsersByCase: (caseId) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AdminDetailsPage(caseId: caseId),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -96,16 +103,62 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
           ? Center(child: CircularProgressIndicator())
           : userState.errorMessage != null
           ? Center(child: Text(userState.errorMessage!))
-          : ListView.builder(
-        itemCount: userState.caseUsers.length, // Anpassung hier
-        itemBuilder: (context, index) {
-          final userItem = userState.caseUsers[index]; // Anpassung hier
-          return ListTile(
-            title: Text(userItem.username),
-            subtitle: Text(userItem.email),
-          );
-        },
+          : Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text(
+              'Case involves ${userState.caseUsers.length} users',
+              style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: userState.caseUsers.length,
+              itemBuilder: (context, index) {
+                final userItem = userState.caseUsers[index];
+                return AdminUserItem(
+                  user: userItem,
+                  onDeleteUser: (userId) {
+                    _removeUserFromCase(context, userId, widget.caseId!);
+                  },
+                  onGetCasesByUser: (userId) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AdminDetailsPage(userId: userId),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
+  }
+
+
+  void _removeUserFromCase(BuildContext context, int userId, int caseId) {
+    try {
+      ref.read(userProvider.notifier).removeUserFromCase(caseId, userId: userId);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('User removed from case successfully'),
+          backgroundColor: Colors.green,
+        ),
+      );
+
+      // Update user list after successful removal
+      ref.read(userProvider.notifier).getUsersByCase(caseId);
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to remove user from case: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 }
