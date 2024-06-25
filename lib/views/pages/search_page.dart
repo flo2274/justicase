@@ -62,7 +62,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                                 context.go('/search/createCase');
                               },
                               child: const ListTile(
-                                title: Text('Kein Fall gefunden. Neu erstellen', style: MyTextStyles.alertText,),
+                                title: Text('Kein Fall gefunden. Erstelle einen neuen Fall', style: MyTextStyles.alertText,),
                               ),
                             );
                           },
@@ -81,7 +81,6 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                         ),
                       ),
                       const SizedBox(height: 16.0),
-                      // Add more content here if needed
                     ],
                   ),
                 ),
@@ -107,7 +106,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                           Icon(Icons.add, color: Colors.blue),
                           SizedBox(width: 10),
                           Text(
-                            'Neuen Fall erstellen',
+                            'Erstelle einen neuen Fall',
                             style: TextStyle(
                               fontSize: 18,
                               color: Colors.blue,

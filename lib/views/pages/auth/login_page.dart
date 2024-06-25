@@ -52,7 +52,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   SizedBox(height: 10.0),
                   Text(
-                    'WERDEN SIE TEIL UNSERER BEWEGUNG FÜR GERECHTIGKEIT',
+                    'WIR SIND DIE BEWEGUNG FÜR GERECHTIGKEIT',
                     style: MyTextStyles.authSmallHeading
                   ),
                 ],
@@ -75,15 +75,10 @@ class _LoginPageState extends State<LoginPage> {
                 elevation: 2.0,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
                 child: Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(24.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      const Text(
-                        'Email-Adresse',
-                        style: TextStyle(fontSize: 14.0),
-                      ),
-                      const SizedBox(height: 8.0),
                       TextField(
                         controller: _emailController,
                         decoration: const InputDecoration(
@@ -93,11 +88,6 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       const SizedBox(height: 16.0),
-                      const Text(
-                        'Passwort',
-                        style: TextStyle(fontSize: 14.0),
-                      ),
-                      const SizedBox(height: 8.0),
                       TextField(
                         controller: _passwordController,
                         obscureText: !_passwordVisible,

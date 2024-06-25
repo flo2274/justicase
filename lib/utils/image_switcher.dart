@@ -46,7 +46,7 @@ class _ImageSwitcherState extends State<ImageSwitcher> {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 20.0),
       width: double.infinity,
-      height: 200.0,
+      height: 170.0,
       child: AnimatedSwitcher(
         duration: Duration(milliseconds: _isLastImage ? 600 : 800),
         child: Image.asset(

@@ -39,7 +39,7 @@ class AdminCaseItem extends StatelessWidget {
                     onPressed: () => onDelete(),
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,
-                      backgroundColor: Colors.red,
+                      backgroundColor: Color(0xCEFF3030),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
