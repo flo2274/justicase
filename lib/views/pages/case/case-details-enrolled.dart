@@ -25,10 +25,10 @@ class _CaseDetailsEnrolledState extends State<CaseDetailsEnrolled> {
   void initState() {
     super.initState();
     caseId = widget.caseInfo.id!;
-    _loadEnrolledUsers();
+    _fetchEnrolledUsers();
   }
 
-  Future<void> _loadEnrolledUsers() async {
+  Future<void> _fetchEnrolledUsers() async {
     try {
       setState(() {
         _isLoading = true;
@@ -73,7 +73,7 @@ class _CaseDetailsEnrolledState extends State<CaseDetailsEnrolled> {
     try {
       await APIService.addUserToCase(caseId);
       // Refresh enrolled users list after enrollment
-      await _loadEnrolledUsers();
+      await _fetchEnrolledUsers();
     } catch (e) {
       print('Failed to enroll user: $e');
       // Handle error as needed
@@ -88,7 +88,7 @@ class _CaseDetailsEnrolledState extends State<CaseDetailsEnrolled> {
     try {
       await APIService.removeUserFromCase(caseId);
       // Refresh enrolled users list after removal
-      await _loadEnrolledUsers();
+      await _fetchEnrolledUsers();
     } catch (e) {
       print('Failed to remove user from case: $e');
       // Handle error as needed

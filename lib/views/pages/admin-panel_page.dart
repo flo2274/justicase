@@ -4,10 +4,10 @@ import 'package:mobile_anw/models/user.dart';
 import 'package:mobile_anw/models/case.dart';
 import 'package:mobile_anw/services/api_service.dart';
 import 'package:mobile_anw/views/widgets/admin-case_item.dart';
-import '../../utils/case_notifier.dart';
-import '../../utils/case_state.dart';
-import '../../utils/user_notifier.dart';
-import '../../utils/user_state.dart';
+import 'package:mobile_anw/utils/case_notifier.dart';
+import 'package:mobile_anw/utils/case_state.dart';
+import 'package:mobile_anw/utils/user_notifier.dart';
+import 'package:mobile_anw/utils/user_state.dart';
 import '../widgets/admin-user_item.dart';
 import 'admin-details_page.dart';
 
@@ -94,7 +94,8 @@ class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
 
   void _deleteUser(int userId) async {
     try {
-      await ref.read(userProvider.notifier).deleteUser(userId);
+      await APIService.deleteUser(userId);
+      ref.read(userProvider.notifier).refreshAllUsers(); // Refresh user list after deletion
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('User deleted successfully'),
@@ -105,28 +106,6 @@ class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Failed to delete user: $e'),
-          backgroundColor: Colors.red,
-        ),
-      );
-    }
-  }
-
-  void _getCasesByUser(int userId) async {
-    try {
-      await ref.read(caseProvider.notifier).getCasesByUser(userId);
-      // Navigate to a new page to show cases for this user
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => AdminDetailsPage(
-            userId: userId,
-          ),
-        ),
-      );
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Failed to fetch cases for user: $e'),
           backgroundColor: Colors.red,
         ),
       );
@@ -172,7 +151,7 @@ class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
 
   void _getUsersByCase(int caseId) async {
     try {
-      await ref.read(caseProvider.notifier).getCasesByUser(caseId);
+      APIService.getUsersByCase(caseId);
       // Navigate to a new page to show cases for this user
       Navigator.push(
         context,
@@ -192,9 +171,33 @@ class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
     }
   }
 
+  void _getCasesByUser(int userId) async {
+    try {
+      APIService.getCasesByUser();
+      // Navigate to a new page to show cases for this user
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => AdminDetailsPage(
+            userId: userId,
+          ),
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to fetch cases for user: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+
   void _deleteCase(int caseId) async {
     try {
       await ref.read(caseProvider.notifier).deleteCase(caseId);
+      ref.read(caseProvider.notifier).getAllCases(); // Refresh case list after deletion
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Case deleted successfully'),

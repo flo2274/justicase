@@ -311,4 +311,26 @@ class APIService {
       throw Exception('Failed to delete case: $e');
     }
   }
+
+  static Future<int> getEnrolledUsersCount(int caseId) async {
+    try {
+      final token = await getToken();
+
+      final response = await http.get(
+        Uri.parse('$baseURL/getenrolleduserscount/$caseId'),
+        headers: {'Authorization': 'Bearer $token'},
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = jsonDecode(response.body);
+        final int count = data['count'];
+        return count;
+      } else {
+        throw Exception('Failed to fetch enrolled users count');
+      }
+    } catch (e) {
+      print('Error fetching enrolled users count: $e');
+      throw Exception('Failed to fetch enrolled users count: $e');
+    }
+  }
 }

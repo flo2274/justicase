@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mobile_anw/services/api_service.dart';
 import 'package:mobile_anw/utils/user_state.dart';
 import 'package:mobile_anw/utils/case_notifier.dart';
 import 'package:mobile_anw/utils/user_notifier.dart';
 import 'package:mobile_anw/views/widgets/admin-user_item.dart';
 import 'package:mobile_anw/views/widgets/admin-case_item.dart';
+
+import '../../models/case.dart';
+import '../../models/user.dart';
 
 class AdminDetailsPage extends ConsumerStatefulWidget {
   final int? userId;
@@ -17,13 +21,42 @@ class AdminDetailsPage extends ConsumerStatefulWidget {
 }
 
 class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
+  List<Case> userCases = [];
+  List<User> caseUsers = [];
+
   @override
   void initState() {
     super.initState();
     if (widget.userId != null) {
-      ref.read(caseProvider.notifier).getCasesByUser(widget.userId!);
+      // Fetch cases for user directly using API
+      _fetchCasesByUser(widget.userId!);
     } else if (widget.caseId != null) {
-      ref.read(userProvider.notifier).getUsersByCase(widget.caseId!);
+      // Fetch users for case directly using API
+      _fetchUsersByCase(widget.caseId!);
+    }
+  }
+
+  Future<void> _fetchCasesByUser(int userId) async {
+    try {
+      List<Case> cases = await APIService.getCasesByUser(userId: userId);
+      setState(() {
+        userCases = cases;
+      });
+    } catch (e) {
+      print('Failed to load cases: $e');
+      // Handle error as needed
+    }
+  }
+
+  Future<void> _fetchUsersByCase(int caseId) async {
+    try {
+      List<User> users = await APIService.getUsersByCase(caseId);
+      setState(() {
+        caseUsers = users;
+      });
+    } catch (e) {
+      print('Failed to load users: $e');
+      // Handle error as needed
     }
   }
 
@@ -61,15 +94,15 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(
-              'User is involved in ${caseState.userCases.length} cases',
+              'User is involved in XX cases', //Todo: implement real number with api
               style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
             ),
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: caseState.userCases.length,
+              itemCount: userCases.length,
               itemBuilder: (context, index) {
-                final caseItem = caseState.userCases[index];
+                final caseItem = userCases[index];
                 return AdminCaseItem(
                   caseItem: caseItem,
                   onDelete: () {
@@ -108,15 +141,15 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(
-              'Case involves ${userState.caseUsers.length} users',
+              'Case involves ${caseUsers.length} users',
               style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
             ),
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: userState.caseUsers.length,
+              itemCount: caseUsers.length,
               itemBuilder: (context, index) {
-                final userItem = userState.caseUsers[index];
+                final userItem = caseUsers[index];
                 return AdminUserItem(
                   user: userItem,
                   onDeleteUser: (userId) {
@@ -139,10 +172,9 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
     );
   }
 
-
   void _removeUserFromCase(BuildContext context, int userId, int caseId) {
     try {
-      ref.read(userProvider.notifier).removeUserFromCase(caseId, userId: userId);
+      APIService.removeUserFromCase(caseId, userId: userId);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('User removed from case successfully'),
@@ -150,8 +182,8 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
         ),
       );
 
-      // Update user list after successful removal
-      ref.read(userProvider.notifier).getUsersByCase(caseId);
+      // Todo: check id and when necessary -> Update user list after successful removal
+      APIService.getUsersByCase(caseId);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
