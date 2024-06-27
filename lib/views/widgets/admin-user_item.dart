@@ -5,12 +5,14 @@ class AdminUserItem extends StatelessWidget {
   final User user;
   final Function(int) onDeleteUser;
   final Function(int) onGetCasesByUser;
+  final Function(int)? onRemoveUserFromCase; // Optional parameter
 
   const AdminUserItem({
     Key? key,
     required this.user,
     required this.onDeleteUser,
     required this.onGetCasesByUser,
+    this.onRemoveUserFromCase, // Optional parameter
   }) : super(key: key);
 
   @override
@@ -67,6 +69,24 @@ class AdminUserItem extends StatelessWidget {
                     child: const Text('Fälle anzeigen'),
                   ),
                 ),
+                if (onRemoveUserFromCase != null) ...[
+                  const SizedBox(width: 30), // Add space between buttons
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        onRemoveUserFromCase!(user.id); // Pass user.id to the callback
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      child: const Text('Aus Fall entfernen'),
+                    ),
+                  ),
+                ],
               ],
             ),
           ],

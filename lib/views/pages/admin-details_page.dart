@@ -115,7 +115,7 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
                 return AdminCaseItem(
                   caseItem: caseItem,
                   onDelete: () {
-                    // Implement case deletion logic here
+                    _deleteCase(caseItem.id!);
                   },
                   onGetUsersByCase: (caseItem) {
                     Navigator.push(
@@ -172,13 +172,16 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
                 return AdminUserItem(
                   user: userItem,
                   onDeleteUser: (userId) {
+                    _deleteUser(userId);
+                  },
+                  onRemoveUserFromCase: (userId) {
                     _removeUserFromCase(context, userId, widget.caseInfo!.id!);
                   },
                   onGetCasesByUser: (userItem) {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => AdminDetailsPage(userInfo: caseUsers[index]),//Todo: Change to userItem
+                        builder: (context) => AdminDetailsPage(userInfo: caseUsers[index]),//Todo
                       ),
                     );
                   },
@@ -189,6 +192,29 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
         ],
       ),
     );
+  }
+
+  void _deleteUser(int userId) async {
+    try {
+      await APIService.deleteUser(userId);
+      setState(() {
+        caseUsers.removeWhere((user) => user.id == userId);
+      });
+      ref.read(userProvider.notifier).refreshAllUsers();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('User deleted successfully'),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to delete user: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 
   void _removeUserFromCase(BuildContext context, int userId, int caseId) async {
@@ -207,6 +233,29 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Failed to remove user from case: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  void _deleteCase(int caseId) async {
+    try {
+      await APIService.deleteCase(caseId);
+      setState(() {
+        userCases.removeWhere((caseItem) => caseItem.id == caseId);
+      });
+      ref.read(caseProvider.notifier).fetchAllCases();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Case deleted successfully'),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to delete case: $e'),
           backgroundColor: Colors.red,
         ),
       );
