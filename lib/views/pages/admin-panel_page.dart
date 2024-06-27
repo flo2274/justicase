@@ -20,6 +20,9 @@ class AdminPanelPage extends ConsumerStatefulWidget {
 }
 
 class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
+  late List<String> filterOptions = ['Alle Fälle', 'Mindestens 50 Benutzer', 'Keine Benutzer'];
+  late Set<String> selectedFilters = {'Alle Fälle'};
+
   @override
   void initState() {
     super.initState();
@@ -119,9 +122,27 @@ class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(
-              'Es gibt insgesamt ${caseState.allCases.length} ${caseState.allCases.length == 1 ? "Fall" : "Fälle"}',
+              'Es gibt insgesamt ${_filteredCases(caseState).length} ${_filteredCases(caseState).length == 1 ? "Fall" : "Fälle"}',
               style: MyTextStyles.smallHeading,
             ),
+          ),
+          Wrap(
+            spacing: 8.0,
+            children: filterOptions.map((option) {
+              return FilterChip(
+                label: Text(option),
+                selected: selectedFilters.contains(option),
+                onSelected: (selected) {
+                  setState(() {
+                    if (selected) {
+                      selectedFilters.add(option);
+                    } else {
+                      selectedFilters.remove(option);
+                    }
+                  });
+                },
+              );
+            }).toList(),
           ),
           _buildCasesList(context, caseState),
         ],
@@ -129,17 +150,41 @@ class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
     );
   }
 
+  List<Case> _filteredCases(CaseState caseState) {
+    return caseState.allCases.where((caseItem) {
+      if (selectedFilters.contains('Mindestens 50 Benutzer')) {
+        return caseItem.userCount >= 50;
+      } else if (selectedFilters.contains('Keine Benutzer')) {
+        return caseItem.userCount == 0;
+      }
+      return true;
+    }).toList();
+  }
+
   Widget _buildCasesList(BuildContext context, CaseState caseState) {
     return ListView.builder(
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
-      itemCount: caseState.allCases.length,
+      itemCount: _filteredCases(caseState).length,
       itemBuilder: (context, index) {
-        final caseInfo = caseState.allCases[index];
-        return AdminCaseItem(
-          caseItem: caseInfo,
-          onDelete: () => _deleteCase(caseInfo.id!),
-          onGetUsersByCase: (caseInfo) => _getUsersByCase(caseInfo),
+        final caseInfo = _filteredCases(caseState)[index];
+        return FutureBuilder<int>(
+          future: APIService.getEnrolledUsersCount(caseInfo.id!),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            } else {
+              // Update the caseItem.userCount with the enrolled users count
+              caseInfo.userCount = snapshot.data ?? 0;
+              return AdminCaseItem(
+                caseItem: caseInfo,
+                onDelete: () => _deleteCase(caseInfo.id!),
+                onGetUsersByCase: (caseItem) => _getUsersByCase(caseInfo),
+              );
+            }
+          },
         );
       },
     );

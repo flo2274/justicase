@@ -333,4 +333,43 @@ class APIService {
       throw Exception('Failed to fetch enrolled users count: $e');
     }
   }
+
+  static Future<List<Case>> getAllCasesWithEnrolledUsersCount() async {
+    try {
+      final token = await getToken();
+
+      // Get all cases
+      final response = await http.get(
+        Uri.parse(casesURL),
+        headers: {'Authorization': 'Bearer $token'},
+      );
+
+      if (response.statusCode == 200) {
+        final List<dynamic> casesJson = jsonDecode(response.body);
+
+        // Create a list to store Case objects with enrolled users count
+        List<Case> cases = [];
+
+        // Iterate through each case and fetch enrolled users count
+        for (var caseJson in casesJson) {
+          Case caseObj = Case.fromJson(caseJson);
+
+          // Get enrolled users count for the current case
+          final enrolledUsersCount = await getEnrolledUsersCount(caseObj.id!);
+          caseObj.userCount = enrolledUsersCount;
+
+          // Add the updated case object to the list
+          cases.add(caseObj);
+        }
+
+        return cases;
+      } else {
+        throw Exception('Failed to load cases');
+      }
+    } catch (e) {
+      print('Error fetching cases with enrolled users count: $e');
+      throw Exception('Failed to fetch cases with enrolled users count: $e');
+    }
+  }
+
 }

@@ -6,6 +6,7 @@ class Case {
   String? companyType;
   String? industry;
   final DateTime? createdAt;
+  int userCount;
 
   Case({
     this.id,
@@ -13,6 +14,7 @@ class Case {
     this.companyType,
     this.industry,
     this.createdAt,
+    this.userCount = 0,
   });
 
   factory Case.fromJson(Map<String, dynamic> json) {
