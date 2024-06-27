@@ -9,6 +9,7 @@ import 'package:mobile_anw/utils/case_notifier.dart';
 import 'package:mobile_anw/utils/case_state.dart';
 import 'package:mobile_anw/utils/user_notifier.dart';
 import 'package:mobile_anw/utils/user_state.dart';
+import '../../data/case_data.dart';
 import '../widgets/admin-user_item.dart';
 import 'admin-details_page.dart';
 
@@ -20,8 +21,7 @@ class AdminPanelPage extends ConsumerStatefulWidget {
 }
 
 class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
-  late List<String> filterOptions = ['Alle Fälle', 'Mindestens 50 Benutzer', 'Keine Benutzer'];
-  late Set<String> selectedFilters = {'Alle Fälle'};
+  late String selectedFilter = 'Alle Fälle';
 
   @override
   void initState() {
@@ -126,24 +126,27 @@ class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
               style: MyTextStyles.smallHeading,
             ),
           ),
-          Wrap(
-            spacing: 8.0,
-            children: filterOptions.map((option) {
-              return FilterChip(
-                label: Text(option),
-                selected: selectedFilters.contains(option),
-                onSelected: (selected) {
-                  setState(() {
-                    if (selected) {
-                      selectedFilters.add(option);
-                    } else {
-                      selectedFilters.remove(option);
-                    }
-                  });
-                },
-              );
-            }).toList(),
+          Center(
+            child: Wrap(
+              spacing: 8.0,
+              children: CaseData.filterOptions.map((option) {
+                return ChoiceChip(
+                  label: Text(
+                    option,
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  selected: selectedFilter == option,
+                  selectedColor: Theme.of(context).primaryColor,
+                  onSelected: (selected) {
+                    setState(() {
+                      selectedFilter = option;
+                    });
+                  },
+                );
+              }).toList(),
+            ),
           ),
+          SizedBox(height: 16.0),
           _buildCasesList(context, caseState),
         ],
       ),
@@ -152,12 +155,14 @@ class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
 
   List<Case> _filteredCases(CaseState caseState) {
     return caseState.allCases.where((caseItem) {
-      if (selectedFilters.contains('Mindestens 50 Benutzer')) {
-        return caseItem.userCount >= 50;
-      } else if (selectedFilters.contains('Keine Benutzer')) {
-        return caseItem.userCount == 0;
+      switch (selectedFilter) {
+        case 'Mindestens 50 Benutzer':
+          return caseItem.userCount >= 50;
+        case 'Keine Benutzer':
+          return caseItem.userCount == 0;
+        default:
+          return true;
       }
-      return true;
     }).toList();
   }
 

@@ -14,4 +14,6 @@ class CaseData {
     'Einzelunternehmen',
     'GbR',
   ];
+
+  static final List<String> filterOptions = ['Alle Fälle', 'Mindestens 50 Benutzer', 'Keine Benutzer'];
 }
