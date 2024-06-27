@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile_anw/models/case.dart';
 import 'package:mobile_anw/models/user.dart';
 import 'package:mobile_anw/services/api_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../utils/case_notifier.dart';
 import '../../../utils/text_theme_config.dart';
 
-class CaseDetailsEnrolled extends StatefulWidget {
+class CaseDetailsEnrolled extends ConsumerStatefulWidget {
   final Case caseInfo;
 
   const CaseDetailsEnrolled({Key? key, required this.caseInfo}) : super(key: key);
@@ -15,7 +17,7 @@ class CaseDetailsEnrolled extends StatefulWidget {
   _CaseDetailsEnrolledState createState() => _CaseDetailsEnrolledState();
 }
 
-class _CaseDetailsEnrolledState extends State<CaseDetailsEnrolled> {
+class _CaseDetailsEnrolledState extends ConsumerState<CaseDetailsEnrolled> {
   List<User> enrolledUsers = [];
   late int caseId; // Variable to store the case ID
   bool isEnrolled = false; // Variable to track if current user is enrolled
@@ -26,6 +28,7 @@ class _CaseDetailsEnrolledState extends State<CaseDetailsEnrolled> {
     super.initState();
     caseId = widget.caseInfo.id!;
     _fetchEnrolledUsers();
+    ref.read(caseProvider.notifier).fetchAllCases();
   }
 
   Future<void> _fetchEnrolledUsers() async {
@@ -57,17 +60,30 @@ class _CaseDetailsEnrolledState extends State<CaseDetailsEnrolled> {
     });
   }
 
-  Future<void> _toggleEnrollment() async {
+
+  void _toggleEnrollment() async {
     setState(() {
-      _isLoading = true;
+      _isLoading = true; // Assuming _isLoading is defined in your state
     });
 
-    if (isEnrolled) {
-      await _removeFromCase();
-    } else {
-      await _enrollUser();
+    try {
+      if (isEnrolled) {
+        await _removeFromCase();
+      } else {
+        await _enrollUser();
+      }
+      // After toggle enrollment, trigger fetchUserCases using caseProvider
+      ref.read(caseProvider.notifier).fetchUserCases();
+    } catch (e) {
+      print('Failed to toggle enrollment: $e');
+      // Handle error as needed
+    } finally {
+      setState(() {
+        _isLoading = false; // Assuming _isLoading is defined in your state
+      });
     }
   }
+
 
   Future<void> _enrollUser() async {
     try {

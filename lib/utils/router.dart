@@ -71,12 +71,6 @@ final goRouter = GoRouter(
               pageBuilder: (context, state) => const NoTransitionPage(
                 child: SearchPage(/*label: 'SearchP', detailsPath: '/search/details'*/),
               ),
-              routes: [
-                GoRoute(
-                  path: 'createCase',
-                  builder: (context, state) => const CreateCasePage(),
-                ),
-              ],
             ),
           ],
         ),
@@ -94,6 +88,10 @@ final goRouter = GoRouter(
                   builder: (context, state) => CaseDetailsPage(
                     caseInfo: state.extra as Case,
                   ),
+                ),
+                GoRoute(
+                  path: 'createCase',
+                  builder: (context, state) => const CreateCasePage(),
                 ),
               ],
             ),

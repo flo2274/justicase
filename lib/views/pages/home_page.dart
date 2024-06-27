@@ -9,7 +9,8 @@ import 'package:mobile_anw/views/widgets/sections/suggestions_section.dart';
 import 'package:mobile_anw/views/widgets/sections/recent_section.dart';
 import '../../services/api_service.dart';
 import '../../utils/case_notifier.dart'; // Adjust import path as per your project structure
-import '../../utils/case_state.dart'; // Adjust import path as per your project structure
+import '../../utils/case_state.dart';
+import '../../utils/user_preferences.dart'; // Adjust import path as per your project structure
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -26,14 +27,15 @@ class _HomePageState extends ConsumerState<HomePage> {
   void initState() {
     super.initState();
     _fetchUserData();
-    ref.read(caseProvider.notifier).getAllCases(); // Trigger fetching all cases on widget initialization
+    ref.read(caseProvider.notifier).fetchAllCases();
   }
 
   Future<void> _fetchUserData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _username = prefs.getString('username') ?? '';
-      _isAdmin = prefs.getString('role') == 'admin';
+    await UserPreferences.fetchUserData((int userId, String username, bool isAdmin) {
+      setState(() {
+        _username = username;
+        _isAdmin = isAdmin;
+      });
     });
   }
 
@@ -43,7 +45,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   }
 
   void _navigateToAdminPanel() {
-    context.go('/home/adminPanel'); // Navigate to admin panel route
+    context.go('/home/adminPanel');
   }
 
   @override
@@ -54,7 +56,7 @@ class _HomePageState extends ConsumerState<HomePage> {
       appBar: AppBar(
         title: const Text('JUSTICASE'),
         centerTitle: true,
-        leading: _isAdmin // Show admin panel icon on the left if user is admin
+        leading: _isAdmin
             ? IconButton(
           icon: Icon(Icons.admin_panel_settings_outlined),
           onPressed: _navigateToAdminPanel,
@@ -83,26 +85,27 @@ class _HomePageState extends ConsumerState<HomePage> {
           children: [
             CategorySection(),
             const SizedBox(height: 20.0),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-          child: Row(
-            children: [
-              Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Willkommen zurück, ',
-                    style: MyTextStyles.middleHeading1,
-                  ),
-                ),
-              Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(_username,
-                    style: MyTextStyles.middleHeading2,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Row(
+                children: [
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Willkommen zurück, ',
+                      style: MyTextStyles.middleHeading1,
                     ),
                   ),
-            ],
-          ),
-        ),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      _username,
+                      style: MyTextStyles.middleHeading2,
+                    ),
+                  ),
+                ],
+              ),
+            ),
             SuggestionsSection(cases: caseState.allCases),
             RecentSection(cases: caseState.allCases),
             const SizedBox(height: 20.0),

@@ -42,28 +42,35 @@ class _CaseItemState extends State<CaseItem> {
         : 0.0;
 
     return Card(
-      child: ListTile(
-        leading: Icon(
-          EmojiHelper.getIndustryIcon(widget.caseInfo.industry ?? ''),
-          size: 30,
-        ),
-        title: Text(widget.caseInfo.name ?? ''),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(widget.caseInfo.companyType ?? 'Kein Unternehmen'),
-            SizedBox(height: 8),
-            LinearProgressIndicator(
-              value: progress,
-              backgroundColor: Colors.grey[300],
-              minHeight: 10,
-              valueColor: AlwaysStoppedAnimation<Color>(progress >= 1.0 ? Colors.green : Colors.blue), // Adjust colors as needed
-            ),
-          ],
-        ),
+      child: InkWell(
         onTap: () {
           context.go('/case/caseDetails', extra: widget.caseInfo);
         },
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ListTile(
+            leading: Icon(
+              EmojiHelper.getIndustryIcon(widget.caseInfo.industry ?? ''),
+              size: 30,
+            ),
+            title: Text(widget.caseInfo.name ?? ''),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(widget.caseInfo.companyType ?? 'Kein Unternehmen'),
+                SizedBox(height: 8),
+                LinearProgressIndicator(
+                  value: progress,
+                  backgroundColor: Colors.grey[300],
+                  minHeight: 10,
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                      progress >= 1.0 ? Colors.green : Colors.blue), // Adjust colors as needed
+                ),
+              ],
+            ),
+            trailing: Icon(Icons.arrow_forward_ios, size: 16), // Small arrow icon
+          ),
+        ),
       ),
     );
   }

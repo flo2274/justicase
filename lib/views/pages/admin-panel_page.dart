@@ -23,7 +23,7 @@ class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
   @override
   void initState() {
     super.initState();
-    ref.read(caseProvider.notifier).getAllCases(); // Trigger fetching all cases on widget initialization
+    ref.read(caseProvider.notifier).fetchAllCases(); // Trigger fetching all cases on widget initialization
     ref.read(userProvider.notifier).getAllUsers(); // Trigger fetching all users on widget initialization
   }
 
@@ -170,7 +170,7 @@ class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
   void _deleteCase(int caseId) async {
     try {
       await ref.read(caseProvider.notifier).deleteCase(caseId);
-      ref.read(caseProvider.notifier).getAllCases(); // Refresh case list after deletion
+      await ref.read(caseProvider.notifier).fetchAllCases(); // Refresh case list after deletion
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Case deleted successfully'),

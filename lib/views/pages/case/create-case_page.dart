@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile_anw/models/case.dart';
 import 'package:mobile_anw/services/api_service.dart';
+import 'package:mobile_anw/utils/case_notifier.dart'; // Adjust import path as per your project structure
+import 'package:mobile_anw/utils/text_theme_config.dart';
 import 'package:go_router/go_router.dart';
 import '../../../data/case_data.dart';
-import '../../../utils/text_theme_config.dart';
-import '../../../utils/case_notifier.dart'; // Adjust import path as per your project structure
 
 class CreateCasePage extends ConsumerStatefulWidget {
   const CreateCasePage({Key? key}) : super(key: key);
@@ -18,7 +18,6 @@ class _CreateCasePageState extends ConsumerState<CreateCasePage> {
   final _formKey = GlobalKey<FormState>();
   String _yourCaseDescription = '';
   Case _newCase = Case(companyType: '', industry: '');
-  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -27,59 +26,67 @@ class _CreateCasePageState extends ConsumerState<CreateCasePage> {
         title: Text('JUSTICASE'),
         centerTitle: true,
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(16.0),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Neuen Fall erstellen',
-                      style: MyTextStyles.largeHeading,
+      body: Consumer(
+        builder: (context, watch, child) {
+          final caseState = ref.watch(caseProvider);
+
+          if (caseState.isLoading) {
+            return Center(child: CircularProgressIndicator());
+          }
+
+          return Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Neuen Fall erstellen',
+                          style: MyTextStyles.largeHeading,
+                        ),
+                        _buildCompanyInfoBox(),
+                        _buildCaseInfoBox(),
+                        const SizedBox(height: 10),
+                        const Text(
+                          'Die mit * gekennzeichneten Felder sind Pflichtfelder',
+                          style: MyTextStyles.infoText,
+                        ),
+                        const SizedBox(height: 20),
+                      ],
                     ),
-                    _buildCompanyInfoBox(),
-                    _buildCaseInfoBox(),
-                    const SizedBox(height: 10),
-                    const Text(
-                      'Die mit * gekennzeichneten Felder sind Pflichtfelder',
-                      style: MyTextStyles.infoText,
-                    ),
-                    const SizedBox(height: 20),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: _isLoading
-                ? const Center(child: CircularProgressIndicator())
-                : SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    _formKey.currentState!.save();
-                    _createCase(context);
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                child: const Text('Erstellen'),
               ),
-            ),
-          ),
-        ],
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        _formKey.currentState!.save();
+                        _createCase(context);
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 16.0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    child: const Text('Erstellen'),
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
@@ -220,12 +227,14 @@ class _CreateCasePageState extends ConsumerState<CreateCasePage> {
 
   void _createCase(BuildContext context) async {
     try {
-      await ref.read(caseProvider.notifier).createCaseAndUpdateUserCases(_newCase);
+      await ref.read(caseProvider.notifier).createCase(_newCase);
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: const Text('Fall erfolgreich erstellt'),
         backgroundColor: Colors.green,
       ));
-      context.go('/case'); // Zurück zur vorherigen Seite (z.B. CasePage)
+      // Refetch user cases after creating a new case
+      ref.read(caseProvider.notifier).fetchUserCases();
+      context.go('/case'); // Navigate back to the previous page (e.g., CasePage)
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text('Fehler beim Erstellen des Falls: $e'),

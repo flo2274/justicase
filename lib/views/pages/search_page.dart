@@ -4,6 +4,7 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile_anw/utils/text_theme_config.dart';
 import 'package:mobile_anw/models/case.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../utils/case_notifier.dart';
 import '../../utils/case_state.dart';
@@ -16,6 +17,12 @@ class SearchPage extends ConsumerStatefulWidget {
 }
 
 class _SearchPageState extends ConsumerState<SearchPage> {
+
+  @override
+  void initState() {
+    super.initState();
+    ref.read(caseProvider.notifier).fetchAllCases(); // Trigger fetching all cases on widget initialization
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +51,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                         child: TypeAheadField<Case>(
                           suggestionsCallback: (search) {
                             if (search.isEmpty) {
-                              return caseState.allCases.where((c) => c.name!.toLowerCase().contains(search.toLowerCase())).toList();
+                              return []; // Return an empty list when search is empty
                             }
                             return caseState.allCases.where((c) => c.name!.toLowerCase().contains(search.toLowerCase())).toList();
                           },
@@ -60,7 +67,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                           emptyBuilder: (context) {
                             return InkWell(
                               onTap: () {
-                                context.go('/search/createCase');
+                                context.go('/case/createCase');
                               },
                               child: const ListTile(
                                 title: Text('Kein Fall gefunden. Erstelle einen neuen Fall', style: MyTextStyles.alertText,),
@@ -90,7 +97,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                 alignment: Alignment.bottomCenter,
                 child: GestureDetector(
                   onTap: () {
-                    context.go('/search/createCase');
+                    context.go('/case/createCase');
                   },
                   child: Card(
                     elevation: 2.0,
