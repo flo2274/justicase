@@ -24,7 +24,8 @@ class _CreateCasePageState extends ConsumerState<CreateCasePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Center(child: Text('JUSTICASE')),
+        title: Text('JUSTICASE'),
+        centerTitle: true,
       ),
       body: Column(
         children: [

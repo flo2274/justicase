@@ -18,7 +18,8 @@ class CaseDetailsPage extends StatelessWidget {
       length: 2, // Number of tabs
       child: Scaffold(
         appBar: AppBar(
-          title: const Center(child: Text('JUSTICASE')),
+          title: Text('JUSTICASE'),
+          centerTitle: true,
           bottom: const TabBar(
             tabs: [
               Tab(text: 'Forum'),

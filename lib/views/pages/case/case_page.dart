@@ -52,7 +52,8 @@ class _CasePageState extends State<CasePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Center(child: Text('JUSTICASE')),
+        title: Text('JUSTICASE'),
+        centerTitle: true,
       ),
       body: _userCases.isEmpty
           ? Center(

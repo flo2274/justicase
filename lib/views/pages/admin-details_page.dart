@@ -9,12 +9,13 @@ import 'package:mobile_anw/views/widgets/admin-case_item.dart';
 
 import '../../models/case.dart';
 import '../../models/user.dart';
+import '../../utils/text_theme_config.dart';
 
 class AdminDetailsPage extends ConsumerStatefulWidget {
-  final int? userId;
+  final User? userInfo;
   final Case? caseInfo;
 
-  const AdminDetailsPage({Key? key, this.userId, this.caseInfo}) : super(key: key);
+  const AdminDetailsPage({Key? key, this.userInfo, this.caseInfo}) : super(key: key);
 
   @override
   _AdminDetailsPageState createState() => _AdminDetailsPageState();
@@ -23,18 +24,14 @@ class AdminDetailsPage extends ConsumerStatefulWidget {
 class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
   List<Case> userCases = [];
   List<User> caseUsers = [];
-  String? caseName;
 
   @override
   void initState() {
     super.initState();
-    if (widget.userId != null) {
-      // Fetch cases for user directly using API
-      _fetchCasesByUser(widget.userId!);
+    if (widget.userInfo != null) {
+      _fetchCasesByUser(widget.userInfo!.id);
     } else if (widget.caseInfo != null) {
-      // Fetch users for case directly using API
       _fetchUsersByCase(widget.caseInfo!.id!);
-      caseName = widget.caseInfo!.name;
     }
   }
 
@@ -64,7 +61,7 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.userId != null) {
+    if (widget.userInfo != null) {
       return _buildCasesForUser(context);
     } else if (widget.caseInfo != null) {
       return _buildUsersInCase(context);
@@ -85,7 +82,8 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Cases for User'),
+        title: Text('ADMIN PANEL'),
+        centerTitle: true,
       ),
       body: caseState.isLoading
           ? Center(child: CircularProgressIndicator())
@@ -94,10 +92,19 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
           : Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text(
-              'Cases for user',
-              style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 8.0),
+                  Text(
+                    '${widget.userInfo?.username} ist in ${userCases.length} ${userCases.length == 1 ? "Fall" : "Fällen"} eingeschrieben',
+                    style: MyTextStyles.smallHeading,
+                  ),
+                ],
+              ),
             ),
           ),
           Expanded(
@@ -132,7 +139,8 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Users in Case'),
+        title: Text('ADMIN PANEL'),
+        centerTitle: true,
       ),
       body: userState.isLoading
           ? Center(child: CircularProgressIndicator())
@@ -141,10 +149,19 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
           : Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text(
-              'Case involves ${caseUsers.length} users in $caseName',
-              style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 8.0),
+                  Text(
+                    'In ${widget.caseInfo?.name} ${caseUsers.length == 1 ? "ist" : "sind"} ${caseUsers.length} ${caseUsers.length == 1 ? "Person" : "Personen"} eingeschrieben',
+                    style: MyTextStyles.smallHeading,
+                  ),
+                ],
+              ),
             ),
           ),
           Expanded(
@@ -157,11 +174,11 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
                   onDeleteUser: (userId) {
                     _removeUserFromCase(context, userId, widget.caseInfo!.id!);
                   },
-                  onGetCasesByUser: (userId) {
+                  onGetCasesByUser: (userItem) {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => AdminDetailsPage(userId: userId),
+                        builder: (context) => AdminDetailsPage(userInfo: caseUsers[index]),//Todo: Change to userItem
                       ),
                     );
                   },
@@ -174,9 +191,9 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
     );
   }
 
-  void _removeUserFromCase(BuildContext context, int userId, int caseId) {
+  void _removeUserFromCase(BuildContext context, int userId, int caseId) async {
     try {
-      APIService.removeUserFromCase(caseId, userId: userId);
+      await APIService.removeUserFromCase(caseId, userId: userId);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('User removed from case successfully'),
@@ -184,8 +201,8 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
         ),
       );
 
-      // Todo: check id and when necessary -> Update user list after successful removal
-      APIService.getUsersByCase(caseId);
+      // Update user list after successful removal
+      _fetchUsersByCase(caseId);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

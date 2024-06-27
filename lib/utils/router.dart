@@ -12,6 +12,7 @@ import 'package:mobile_anw/views/pages/auth/login_page.dart';
 import 'dart:developer';
 
 import '../models/case.dart';
+import '../models/user.dart';
 import '../views/pages/admin-details_page.dart';
 
 // private navigators (underscore makes it private)
@@ -55,7 +56,7 @@ final goRouter = GoRouter(
                   path: 'adminDetails',
                   builder: (context, state) => AdminDetailsPage(
                     caseInfo: state.extra as Case,
-                    userId: state.extra as int,
+                    userInfo: state.extra as User,
                   ),
                 ),
               ]

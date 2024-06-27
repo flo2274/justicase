@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile_anw/models/user.dart';
 import 'package:mobile_anw/models/case.dart';
 import 'package:mobile_anw/services/api_service.dart';
+import 'package:mobile_anw/utils/text_theme_config.dart';
 import 'package:mobile_anw/views/widgets/admin-case_item.dart';
 import 'package:mobile_anw/utils/case_notifier.dart';
 import 'package:mobile_anw/utils/case_state.dart';
@@ -35,7 +36,8 @@ class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Admin Panel'),
+          title: const Text('ADMIN PANEL'),
+          centerTitle: true,
           bottom: TabBar(
             tabs: [
               Tab(text: 'Users'),
@@ -63,11 +65,8 @@ class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(
-              'Users:',
-              style: TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.bold,
-              ),
+              'Es gibt insgesamt ${userState.allUsers.length} ${userState.allUsers.length == 1 ? "Person" : "Personen"}',
+              style: MyTextStyles.smallHeading,
             ),
           ),
           _buildUsersList(context, userState),
@@ -86,7 +85,7 @@ class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
         return AdminUserItem(
           user: user,
           onDeleteUser: _deleteUser,
-          onGetCasesByUser: _getCasesByUser,
+          onGetCasesByUser: (caseInfo) => _getCasesByUser(user),
         );
       },
     );
@@ -120,11 +119,8 @@ class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(
-              'Cases:',
-              style: TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.bold,
-              ),
+              'Es gibt insgesamt ${caseState.allCases.length} ${caseState.allCases.length == 1 ? "Fall" : "Fälle"}',
+              style: MyTextStyles.smallHeading,
             ),
           ),
           _buildCasesList(context, caseState),
@@ -160,13 +156,12 @@ class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
     );
   }
 
-  void _getCasesByUser(int userId) async {
-
+  void _getCasesByUser(User user) async {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => AdminDetailsPage(
-          userId: userId,
+          userInfo: user,
         ),
       ),
     );
