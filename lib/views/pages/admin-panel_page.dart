@@ -143,56 +143,34 @@ class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
         return AdminCaseItem(
           caseItem: caseInfo,
           onDelete: () => _deleteCase(caseInfo.id!),
-          onGetUsersByCase: _getUsersByCase,
+          onGetUsersByCase: (caseInfo) => _getUsersByCase(caseInfo),
         );
       },
     );
   }
 
-  void _getUsersByCase(int caseId) async {
-    try {
-      APIService.getUsersByCase(caseId);
-      // Navigate to a new page to show cases for this user
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => AdminDetailsPage(
-            caseId: caseId,
-          ),
+  void _getUsersByCase(Case caseInfo) async {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AdminDetailsPage(
+          caseInfo: caseInfo,
         ),
-      );
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Failed to fetch users for case: $e'),
-          backgroundColor: Colors.red,
-        ),
-      );
-    }
+      ),
+    );
   }
 
   void _getCasesByUser(int userId) async {
-    try {
-      APIService.getCasesByUser();
-      // Navigate to a new page to show cases for this user
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => AdminDetailsPage(
-            userId: userId,
-          ),
-        ),
-      );
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Failed to fetch cases for user: $e'),
-          backgroundColor: Colors.red,
-        ),
-      );
-    }
-  }
 
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AdminDetailsPage(
+          userId: userId,
+        ),
+      ),
+    );
+  }
 
   void _deleteCase(int caseId) async {
     try {

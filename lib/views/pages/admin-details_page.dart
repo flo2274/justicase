@@ -12,9 +12,9 @@ import '../../models/user.dart';
 
 class AdminDetailsPage extends ConsumerStatefulWidget {
   final int? userId;
-  final int? caseId;
+  final Case? caseInfo;
 
-  const AdminDetailsPage({Key? key, this.userId, this.caseId}) : super(key: key);
+  const AdminDetailsPage({Key? key, this.userId, this.caseInfo}) : super(key: key);
 
   @override
   _AdminDetailsPageState createState() => _AdminDetailsPageState();
@@ -23,6 +23,7 @@ class AdminDetailsPage extends ConsumerStatefulWidget {
 class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
   List<Case> userCases = [];
   List<User> caseUsers = [];
+  String? caseName;
 
   @override
   void initState() {
@@ -30,9 +31,10 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
     if (widget.userId != null) {
       // Fetch cases for user directly using API
       _fetchCasesByUser(widget.userId!);
-    } else if (widget.caseId != null) {
+    } else if (widget.caseInfo != null) {
       // Fetch users for case directly using API
-      _fetchUsersByCase(widget.caseId!);
+      _fetchUsersByCase(widget.caseInfo!.id!);
+      caseName = widget.caseInfo!.name;
     }
   }
 
@@ -64,7 +66,7 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
   Widget build(BuildContext context) {
     if (widget.userId != null) {
       return _buildCasesForUser(context);
-    } else if (widget.caseId != null) {
+    } else if (widget.caseInfo != null) {
       return _buildUsersInCase(context);
     } else {
       return Scaffold(
@@ -94,7 +96,7 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(
-              'User is involved in XX cases', //Todo: implement real number with api
+              'Cases for user',
               style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
             ),
           ),
@@ -108,11 +110,11 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
                   onDelete: () {
                     // Implement case deletion logic here
                   },
-                  onGetUsersByCase: (caseId) {
+                  onGetUsersByCase: (caseItem) {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => AdminDetailsPage(caseId: caseId),
+                        builder: (context) => AdminDetailsPage(caseInfo: caseItem),
                       ),
                     );
                   },
@@ -141,7 +143,7 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(
-              'Case involves ${caseUsers.length} users',
+              'Case involves ${caseUsers.length} users in $caseName',
               style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
             ),
           ),
@@ -153,7 +155,7 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
                 return AdminUserItem(
                   user: userItem,
                   onDeleteUser: (userId) {
-                    _removeUserFromCase(context, userId, widget.caseId!);
+                    _removeUserFromCase(context, userId, widget.caseInfo!.id!);
                   },
                   onGetCasesByUser: (userId) {
                     Navigator.push(

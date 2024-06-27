@@ -50,7 +50,7 @@ class AdminCaseItem extends StatelessWidget {
                 const SizedBox(width: 30), // Add space between buttons
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: () => onGetUsersByCase(caseItem.id),
+                    onPressed: () => onGetUsersByCase(caseItem),
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,
                       backgroundColor: Colors.grey,
