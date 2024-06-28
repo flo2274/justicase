@@ -14,6 +14,7 @@ import 'dart:developer';
 import '../models/case.dart';
 import '../models/user.dart';
 import '../views/pages/admin-details_page.dart';
+import '../views/pages/industry_page.dart';
 
 // private navigators (underscore makes it private)
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -43,23 +44,35 @@ final goRouter = GoRouter(
           navigatorKey: _shellNavigatorHomeKey,
           routes: [
             GoRoute(
-              path: '/home',
-              pageBuilder: (context, state) => const NoTransitionPage(
-                child: HomePage(),
-              ),
-              routes: [
-                GoRoute(
-                  path: 'adminPanel',
-                  builder: (context, state) => const AdminPanelPage(),
+                path: '/home',
+                pageBuilder: (context, state) => const NoTransitionPage(
+                  child: HomePage(),
                 ),
-                GoRoute(
-                  path: 'adminDetails',
-                  builder: (context, state) => AdminDetailsPage(
-                    myCase: state.extra as Case,
-                    myUser: state.extra as User,
+                routes: [
+                  GoRoute(
+                    path: 'adminPanel',
+                    pageBuilder: (context, state) => const NoTransitionPage(
+                      child: AdminPanelPage(),
+                    ),
                   ),
-                ),
-              ]
+                  GoRoute(
+                    path: 'adminDetails',
+                    pageBuilder: (context, state) => NoTransitionPage(
+                      child: AdminDetailsPage(
+                        myCase: state.extra as Case,
+                        myUser: state.extra as User,
+                      ),
+                    ),
+                  ),
+                  GoRoute(
+                    path: 'industry',
+                    pageBuilder: (context, state) => NoTransitionPage(
+                      child: IndustryCasesPage(
+                        industry: state.extra as String,
+                      ),
+                    ),
+                  ),
+                ]
             ),
           ],
         ),
@@ -85,13 +98,17 @@ final goRouter = GoRouter(
               routes: [
                 GoRoute(
                   path: 'caseDetails',
-                  builder: (context, state) => CaseDetailsPage(
-                    caseInfo: state.extra as Case,
+                  pageBuilder: (context, state) => NoTransitionPage(
+                    child: CaseDetailsPage(
+                      myCase: state.extra as Case,
+                    ),
                   ),
                 ),
                 GoRoute(
                   path: 'createCase',
-                  builder: (context, state) => const CreateCasePage(),
+                  pageBuilder: (context, state) => const NoTransitionPage(
+                    child: CreateCasePage(),
+                  ),
                 ),
               ],
             ),

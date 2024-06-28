@@ -177,6 +177,17 @@ class APIService {
     }
   }
 
+  static Future<List<dynamic>> getCasesByIndustry(String industry) async {
+    final response = await http.get(Uri.parse('$baseURL/casesbyindustry/$industry'));
+
+    if (response.statusCode == 200) {
+      List<dynamic> cases = jsonDecode(response.body);
+      return cases;
+    } else {
+      throw Exception('Failed to load cases by industry');
+    }
+  }
+
   static Future<List<User>> getUsersByCase(int caseId) async {
     final token = await getToken();
     final response = await http.get(

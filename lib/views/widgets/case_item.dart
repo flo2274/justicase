@@ -38,6 +38,7 @@ class _CaseItemState extends State<CaseItem> {
             leading: Icon(
               EmojiHelper.getIndustryIcon(widget.caseInfo.industry ?? ''),
               size: 30,
+              color: Colors.blue,
             ),
             title: Text(widget.caseInfo.name ?? ''),
             subtitle: Column(

@@ -9,9 +9,9 @@ import '../../../utils/case_notifier.dart';
 import '../../../utils/text_theme_config.dart';
 
 class CaseDetailsEnrolled extends ConsumerStatefulWidget {
-  final Case caseInfo;
+  final Case myCase;
 
-  const CaseDetailsEnrolled({Key? key, required this.caseInfo}) : super(key: key);
+  const CaseDetailsEnrolled({Key? key, required this.myCase}) : super(key: key);
 
   @override
   _CaseDetailsEnrolledState createState() => _CaseDetailsEnrolledState();
@@ -26,7 +26,7 @@ class _CaseDetailsEnrolledState extends ConsumerState<CaseDetailsEnrolled> {
   @override
   void initState() {
     super.initState();
-    caseId = widget.caseInfo.id!;
+    caseId = widget.myCase.id!;
     _fetchEnrolledUsers();
     ref.read(caseProvider.notifier).fetchAllCases();
   }
@@ -132,15 +132,15 @@ class _CaseDetailsEnrolledState extends ConsumerState<CaseDetailsEnrolled> {
                       children: [
                         Text('Neuen Fall erstellen', style: MyTextStyles.largeHeading,),
                         Text(
-                          'Case Name: ${widget.caseInfo.name}',
+                          'Case Name: ${widget.myCase.name}',
                           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                         ),
                         SizedBox(height: 8),
-                        Text('Company Type: ${widget.caseInfo.companyType ?? 'N/A'}'),
+                        Text('Company Type: ${widget.myCase.companyType ?? 'N/A'}'),
                         SizedBox(height: 8),
-                        Text('Industry: ${widget.caseInfo.industry ?? 'N/A'}'),
+                        Text('Industry: ${widget.myCase.industry ?? 'N/A'}'),
                         SizedBox(height: 8),
-                        Text('ID: ${widget.caseInfo.id ?? 'N/A'}'),
+                        Text('ID: ${widget.myCase.id ?? 'N/A'}'),
                       ],
                     ),
                   ),

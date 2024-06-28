@@ -8,9 +8,9 @@ import 'package:mobile_anw/views/pages/case/case-details-forum.dart';
 import 'package:mobile_anw/models/case.dart';
 
 class CaseDetailsForum extends StatelessWidget {
-  final Case caseInfo;
+  final Case myCase;
 
-  const CaseDetailsForum({Key? key, required this.caseInfo}) : super(key: key);
+  const CaseDetailsForum({Key? key, required this.myCase}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class CaseDetailsForum extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         color: Colors.blue[50],
         child: Text(
-          'Content of Forum for case: ${caseInfo.name}',
+          'Content of Forum for case: ${myCase.name}',
           style: const TextStyle(
             fontSize: 18.0,
             color: Colors.blue,

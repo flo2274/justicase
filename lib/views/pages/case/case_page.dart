@@ -4,6 +4,7 @@ import 'package:mobile_anw/models/case.dart';
 import 'package:mobile_anw/services/api_service.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile_anw/utils/case_notifier.dart'; // Adjust import path as per your project structure
+import '../../../utils/text_theme_config.dart';
 import '../../widgets/case_item.dart'; // Adjust import path as per your project structure
 
 class CasePage extends ConsumerStatefulWidget {
@@ -84,26 +85,37 @@ class _CasePageState extends ConsumerState<CasePage> {
 
           return RefreshIndicator(
             onRefresh: () => ref.read(caseProvider.notifier).fetchUserCases(),
-            child: ListView.builder(
+            child: Padding(
               padding: const EdgeInsets.all(16.0),
-              itemCount: caseState.userCases.length,
-              itemBuilder: (BuildContext context, int index) {
-                final caseInfo = caseState.userCases[index];
-                return FutureBuilder<int>(
-                  future: APIService.getEnrolledUsersCount(caseInfo.id!),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator());
-                    } else if (snapshot.hasError) {
-                      return Center(child: Text('Error: ${snapshot.error}'));
-                    } else {
-                      // Update the caseInfo.userCount with the enrolled users count
-                      caseInfo.userCount = snapshot.data ?? 0;
-                      return CaseItem(caseInfo: caseInfo);
-                    }
-                  },
-                );
-              },
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Deine Fälle', style: MyTextStyles.smallHeading),
+                  const SizedBox(height: 8.0),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: caseState.userCases.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        final caseInfo = caseState.userCases[index];
+                        return FutureBuilder<int>(
+                          future: APIService.getEnrolledUsersCount(caseInfo.id!),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              return Center(child: CircularProgressIndicator());
+                            } else if (snapshot.hasError) {
+                              return Center(child: Text('Error: ${snapshot.error}'));
+                            } else {
+                              // Update the caseInfo.userCount with the enrolled users count
+                              caseInfo.userCount = snapshot.data ?? 0;
+                              return CaseItem(caseInfo: caseInfo);
+                            }
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
             ),
           );
         },

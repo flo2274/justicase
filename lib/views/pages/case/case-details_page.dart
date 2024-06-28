@@ -8,9 +8,9 @@ import 'package:mobile_anw/views/pages/case/case-details-enrolled.dart';
 import 'package:mobile_anw/views/pages/case/case-details-forum.dart';
 
 class CaseDetailsPage extends StatelessWidget {
-  final Case caseInfo;
+  final Case myCase;
 
-  const CaseDetailsPage({Key? key, required this.caseInfo}) : super(key: key);
+  const CaseDetailsPage({Key? key, required this.myCase}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,8 +29,8 @@ class CaseDetailsPage extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            CaseDetailsForum(caseInfo: caseInfo), // First tab content
-            CaseDetailsEnrolled(caseInfo: caseInfo), // Second tab content
+            CaseDetailsForum(myCase: myCase), // First tab content
+            CaseDetailsEnrolled(myCase: myCase), // Second tab content
           ],
         ),
       ),
