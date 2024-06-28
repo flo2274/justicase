@@ -15,5 +15,5 @@ class CaseData {
     'GbR',
   ];
 
-  static final List<String> filterOptions = ['Alle Fälle', 'Mindestens 50 Benutzer', 'Keine Benutzer'];
+  static final List<String> filterOptions = ['Alle', 'Vollständig', 'Leer'];
 }

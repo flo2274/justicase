@@ -21,7 +21,7 @@ class AdminPanelPage extends ConsumerStatefulWidget {
 }
 
 class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
-  late String selectedFilter = 'Alle Fälle';
+  late String selectedFilter = 'Alle';
 
   @override
   void initState() {
@@ -136,7 +136,7 @@ class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
                     style: TextStyle(color: Colors.white),
                   ),
                   selected: selectedFilter == option,
-                  selectedColor: Theme.of(context).primaryColor,
+                  selectedColor: selectedFilter == option ? Colors.blue : Colors.blue[200], // Adjust selected and unselected colors
                   onSelected: (selected) {
                     setState(() {
                       selectedFilter = option;
@@ -156,9 +156,9 @@ class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
   List<Case> _filteredCases(CaseState caseState) {
     return caseState.allCases.where((caseItem) {
       switch (selectedFilter) {
-        case 'Mindestens 50 Benutzer':
+        case 'Vollständig':
           return caseItem.userCount >= 50;
-        case 'Keine Benutzer':
+        case 'Leer':
           return caseItem.userCount == 0;
         default:
           return true;
