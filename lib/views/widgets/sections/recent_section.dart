@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart'; // Import the go_router package
 import 'package:mobile_anw/views/widgets/cards/middle_card.dart';
 import 'package:mobile_anw/models/case.dart';
 
@@ -27,7 +28,12 @@ class RecentSection extends StatelessWidget {
             children: displayCases
                 .take(2) // Zwei Karten in einer Reihe
                 .map((caseItem) => Expanded(
-              child: MiddleCard(caseItem: caseItem),
+              child: GestureDetector(
+                onTap: () {
+                  context.go('/case/caseDetails', extra: caseItem);
+                },
+                child: MiddleCard(caseItem: caseItem),
+              ),
             ))
                 .toList(),
           ),
@@ -38,7 +44,12 @@ class RecentSection extends StatelessWidget {
                 .skip(2)
                 .take(2) // Zwei Karten in einer Reihe
                 .map((caseItem) => Expanded(
-              child: MiddleCard(caseItem: caseItem),
+              child: GestureDetector(
+                onTap: () {
+                  context.go('/case/caseDetails', extra: caseItem);
+                },
+                child: MiddleCard(caseItem: caseItem),
+              ),
             ))
                 .toList(),
           ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart'; // Import the go_router package
 import 'package:mobile_anw/views/widgets/cards/middle_card.dart'; // Import für MiddleCard
 import 'package:mobile_anw/models/case.dart';
 
@@ -16,7 +17,6 @@ class SuggestionsSection extends StatefulWidget {
 class _SuggestionsSectionState extends State<SuggestionsSection> {
   @override
   Widget build(BuildContext context) {
-    // Nehmen wir an, dass wir nur die nächsten vier Fälle für die Vorschläge verwenden
     final displayCases =
     widget.cases.length >= 8 ? widget.cases.sublist(4, 8) : widget.cases.skip(4).take(4).toList();
 
@@ -27,13 +27,18 @@ class _SuggestionsSectionState extends State<SuggestionsSection> {
         children: [
           const SizedBox(height: 20.0),
           Text('Vorschläge', style: MyTextStyles.smallHeading,),
-          const SizedBox(height: 5.0), // Abstand zwischen Überschrift und Karten
+          const SizedBox(height: 5.0),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: displayCases
                 .take(2) // Zwei Karten in einer Reihe
                 .map((caseItem) => Expanded(
-              child: MiddleCard(caseItem: caseItem),
+              child: GestureDetector(
+                onTap: () {
+                  context.go('/case/caseDetails', extra: caseItem);
+                },
+                child: MiddleCard(caseItem: caseItem),
+              ),
             ))
                 .toList(),
           ),
@@ -44,7 +49,12 @@ class _SuggestionsSectionState extends State<SuggestionsSection> {
                 .skip(2)
                 .take(2) // Zwei Karten in einer Reihe
                 .map((caseItem) => Expanded(
-              child: MiddleCard(caseItem: caseItem),
+              child: GestureDetector(
+                onTap: () {
+                  context.go('/case/caseDetails', extra: caseItem);
+                },
+                child: MiddleCard(caseItem: caseItem),
+              ),
             ))
                 .toList(),
           ),

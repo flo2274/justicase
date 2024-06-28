@@ -84,11 +84,10 @@ class AdminUserItem extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 20.0), // Add space between icons
-                      if (onRemoveUserFromCase !=
-                          null) // Conditionally show the button
+                      if (onRemoveUserFromCase != null) // Conditionally show the button
                         GestureDetector(
                           onTap: () {
-                            onRemoveUserFromCase!(user.id);
+                            _showRemoveUserFromCaseConfirmationDialog(context, user.id);
                           },
                           child: Icon(
                             Icons.person_remove_outlined,
@@ -128,6 +127,38 @@ class AdminUserItem extends StatelessWidget {
               ),
               onPressed: () {
                 onDeleteUser(userId);
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showRemoveUserFromCaseConfirmationDialog(BuildContext context, int userId) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Entfernen bestätigen"),
+          content: Text("Möchten Sie diesen Benutzer wirklich aus dem Fall entfernen?"),
+          actions: <Widget>[
+            TextButton(
+              child: Text("Abbrechen"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text(
+                "Entfernen",
+                style: TextStyle(color: Colors.red),
+              ),
+              onPressed: () {
+                if (onRemoveUserFromCase != null) {
+                  onRemoveUserFromCase!(userId);
+                }
                 Navigator.of(context).pop();
               },
             ),
