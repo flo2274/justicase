@@ -21,7 +21,7 @@ class AdminPanelPage extends ConsumerStatefulWidget {
 }
 
 class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
-  late String selectedFilter = 'Alle';
+  String selectedFilter = 'Alle';
 
   @override
   void initState() {
@@ -115,19 +115,17 @@ class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
   }
 
   Widget _buildCasesTab(BuildContext context, CaseState caseState) {
+    final filteredCases = _filteredCases(caseState);
+
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text(
-              'Es gibt insgesamt ${_filteredCases(caseState).length} ${_filteredCases(caseState).length == 1 ? "Fall" : "Fälle"}',
-              style: MyTextStyles.smallHeading,
-            ),
-          ),
-          Center(
-            child: Wrap(
+          const SizedBox(height: 8.0),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child:
+          Wrap(
               spacing: 8.0,
               children: CaseData.filterOptions.map((option) {
                 return ChoiceChip(
@@ -136,7 +134,7 @@ class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
                     style: TextStyle(color: Colors.white),
                   ),
                   selected: selectedFilter == option,
-                  selectedColor: selectedFilter == option ? Colors.blue : Colors.blue[200], // Adjust selected and unselected colors
+                  selectedColor: Colors.blue,
                   onSelected: (selected) {
                     setState(() {
                       selectedFilter = option;
@@ -145,9 +143,16 @@ class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
                 );
               }).toList(),
             ),
+      ),
+
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            child: Text(
+              'Es gibt insgesamt ${filteredCases.length} ${filteredCases.length == 1 ? "Fall" : "Fälle"}',
+              style: MyTextStyles.smallHeading,
+            ),
           ),
-          SizedBox(height: 16.0),
-          _buildCasesList(context, caseState),
+          _buildCasesList(context, filteredCases),
         ],
       ),
     );
@@ -166,13 +171,13 @@ class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
     }).toList();
   }
 
-  Widget _buildCasesList(BuildContext context, CaseState caseState) {
+  Widget _buildCasesList(BuildContext context, List<Case> filteredCases) {
     return ListView.builder(
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
-      itemCount: _filteredCases(caseState).length,
+      itemCount: filteredCases.length,
       itemBuilder: (context, index) {
-        final caseInfo = _filteredCases(caseState)[index];
+        final caseInfo = filteredCases[index];
         return FutureBuilder<int>(
           future: APIService.getEnrolledUsersCount(caseInfo.id!),
           builder: (context, snapshot) {
