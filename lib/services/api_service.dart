@@ -334,7 +334,7 @@ class APIService {
     }
   }
 
-  static Future<List<Case>> getAllCasesWithEnrolledUsersCount() async {
+  /*static Future<List<Case>> getAllCasesWithEnrolledUsersCount() async {
     try {
       final token = await getToken();
 
@@ -370,6 +370,6 @@ class APIService {
       print('Error fetching cases with enrolled users count: $e');
       throw Exception('Failed to fetch cases with enrolled users count: $e');
     }
-  }
+  }*/
 
 }
