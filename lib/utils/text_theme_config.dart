@@ -71,6 +71,24 @@ class MyTextStyles {
     color: Colors.black87,
   );
 
+  static const TextStyle mainCardText = TextStyle(
+    fontSize: 16.0,
+    fontWeight: FontWeight.normal,
+    color: Colors.black87,
+  );
+
+  static const TextStyle largeCardText = TextStyle(
+    fontSize: 16.0,
+    fontWeight: FontWeight.normal,
+    color: Colors.black87,
+  );
+
+  static const TextStyle smallCardText = TextStyle(
+    fontSize: 10.0,
+    fontWeight: FontWeight.normal,
+    color: textSecondary,
+  );
+
   static const TextStyle buttonText = TextStyle(
     fontSize: 16.0,
     fontWeight: FontWeight.normal,

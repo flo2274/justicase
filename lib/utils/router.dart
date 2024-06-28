@@ -55,8 +55,8 @@ final goRouter = GoRouter(
                 GoRoute(
                   path: 'adminDetails',
                   builder: (context, state) => AdminDetailsPage(
-                    caseInfo: state.extra as Case,
-                    userInfo: state.extra as User,
+                    myCase: state.extra as Case,
+                    myUser: state.extra as User,
                   ),
                 ),
               ]

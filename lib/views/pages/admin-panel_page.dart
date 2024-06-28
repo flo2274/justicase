@@ -195,23 +195,23 @@ class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
     );
   }
 
-  void _getUsersByCase(Case caseInfo) async {
+  void _getUsersByCase(Case myCase) async {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => AdminDetailsPage(
-          caseInfo: caseInfo,
+          myCase: myCase,
         ),
       ),
     );
   }
 
-  void _getCasesByUser(User user) async {
+  void _getCasesByUser(User myUser) async {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => AdminDetailsPage(
-          userInfo: user,
+          myUser: myUser,
         ),
       ),
     );

@@ -20,19 +20,6 @@ class _CaseItemState extends State<CaseItem> {
   @override
   void initState() {
     super.initState();
-    _fetchEnrolledUsersCount(widget.caseInfo.id!);
-  }
-
-  Future<void> _fetchEnrolledUsersCount(int caseId) async {
-    try {
-      int count = await APIService.getEnrolledUsersCount(caseId);
-      setState(() {
-        _enrolledUsersCount = count;
-      });
-    } catch (e) {
-      print('Error fetching enrolled users count: $e');
-      // Handle error as needed
-    }
   }
 
   @override

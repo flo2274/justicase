@@ -78,6 +78,13 @@ class ThemeConfig {
       fillColor: background, // Hintergrundfarbe für Textfelder
     ),
 
+    dialogTheme: DialogTheme(
+      backgroundColor: Colors.white, // Hier die gewünschte Hintergrundfarbe setzen
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0), // Optional: Runde die Ecken des Dialogs
+      ),
+    ),
+
     colorScheme: ColorScheme.fromSwatch().copyWith(
       primary: lightGreyAccent, // Für Dinge wie Umrandung bei der Searchbar
       secondary: Colors.white,

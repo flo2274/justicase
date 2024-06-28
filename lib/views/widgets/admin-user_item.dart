@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_anw/models/user.dart'; // Assuming User class is defined in user.dart
+import 'package:mobile_anw/utils/theme_config.dart';
 
 class AdminUserItem extends StatelessWidget {
   final User user;
@@ -17,81 +18,122 @@ class AdminUserItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-      child: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              '${user.username}',
-              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 8.0),
-            Text('Name: ${user.firstName} ${user.lastName}'),
-            SizedBox(height: 8.0),
-            Text('Email: ${user.email}'),
-            SizedBox(height: 8.0),
-            Text('Beigetreten: ${user.createdAt}'),
-            SizedBox(height: 16.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      onDeleteUser(user.id); // Pass user.id to the callback
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xCEFF3030),
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    child: const Text('Benutzer löschen'),
-                  ),
-                ),
-                const SizedBox(width: 30), // Add space between buttons
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      onGetCasesByUser(user.id); // Pass user.id to the callback
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.grey,
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    child: const Text('Fälle anzeigen'),
-                  ),
-                ),
-                if (onRemoveUserFromCase != null) ...[
-                  const SizedBox(width: 30), // Add space between buttons
+    return GestureDetector(
+      onTap: () {
+        onGetCasesByUser(user.id); // Invoke onGetCasesByUser callback
+      },
+      child: Card(
+        margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+        child: Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
                   Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        onRemoveUserFromCase!(user.id); // Pass user.id to the callback
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue,
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
+                    child: ListTile(
+                      contentPadding: EdgeInsets.zero,
+                      leading: Icon(
+                        Icons.person,
+                        size: 40.0,
+                        color: Colors.blue,
+                      ),
+                      title: Text(
+                        '${user.username}',
+                        style: TextStyle(
+                            fontSize: 18.0, fontWeight: FontWeight.bold),
+                      ),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: 8.0),
+                          Text('Id: ${user.id}'),
+                          SizedBox(height: 8.0),
+                          Text('Name: ${user.firstName} ${user.lastName}'),
+                          SizedBox(height: 8.0),
+                          Text('Email: ${user.email}'),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          _showDeleteConfirmationDialog(context, user.id);
+                        },
+                        child: Icon(
+                          Icons.delete_outline_rounded,
+                          color: ThemeConfig.darkGreyAccent,
+                          size: 30.0,
                         ),
                       ),
-                      child: const Text('Aus Fall entfernen'),
-                    ),
+                      SizedBox(height: 20.0), // Add space between icons
+                      GestureDetector(
+                        onTap: () {
+                          onGetCasesByUser(user.id);
+                        },
+                        child: Icon(
+                          Icons.chevron_right,
+                          color: ThemeConfig.darkGreyAccent,
+                          size: 25.0,
+                        ),
+                      ),
+                      SizedBox(height: 20.0), // Add space between icons
+                      if (onRemoveUserFromCase !=
+                          null) // Conditionally show the button
+                        GestureDetector(
+                          onTap: () {
+                            onRemoveUserFromCase!(user.id);
+                          },
+                          child: Icon(
+                            Icons.person_remove_outlined,
+                            color: ThemeConfig.darkGreyAccent,
+                            size: 30.0,
+                          ),
+                        ),
+                    ],
                   ),
                 ],
-              ],
-            ),
-          ],
+              ),
+            ],
+          ),
         ),
       ),
+    );
+  }
+
+  void _showDeleteConfirmationDialog(BuildContext context, int userId) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Löschung bestätigen"),
+          content: Text("Möchten Sie diesen Benutzer wirklich löschen?"),
+          actions: <Widget>[
+            TextButton(
+              child: Text("Abbrechen"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text(
+                "Löschen",
+                style: TextStyle(color: Colors.red),
+              ),
+              onPressed: () {
+                onDeleteUser(userId);
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

@@ -6,16 +6,15 @@ import 'package:mobile_anw/utils/case_notifier.dart';
 import 'package:mobile_anw/utils/user_notifier.dart';
 import 'package:mobile_anw/views/widgets/admin-user_item.dart';
 import 'package:mobile_anw/views/widgets/admin-case_item.dart';
-
 import '../../models/case.dart';
 import '../../models/user.dart';
 import '../../utils/text_theme_config.dart';
 
 class AdminDetailsPage extends ConsumerStatefulWidget {
-  final User? userInfo;
-  final Case? caseInfo;
+  final User? myUser;
+  final Case? myCase;
 
-  const AdminDetailsPage({Key? key, this.userInfo, this.caseInfo}) : super(key: key);
+  const AdminDetailsPage({Key? key, this.myUser, this.myCase}) : super(key: key);
 
   @override
   _AdminDetailsPageState createState() => _AdminDetailsPageState();
@@ -28,10 +27,10 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
   @override
   void initState() {
     super.initState();
-    if (widget.userInfo != null) {
-      _fetchCasesByUser(widget.userInfo!.id);
-    } else if (widget.caseInfo != null) {
-      _fetchUsersByCase(widget.caseInfo!.id!);
+    if (widget.myUser != null) {
+      _fetchCasesByUser(widget.myUser!.id);
+    } else if (widget.myCase != null) {
+      _fetchUsersByCase(widget.myCase!.id!);
     }
   }
 
@@ -61,9 +60,9 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.userInfo != null) {
+    if (widget.myUser != null) {
       return _buildCasesForUser(context);
-    } else if (widget.caseInfo != null) {
+    } else if (widget.myCase != null) {
       return _buildUsersInCase(context);
     } else {
       return Scaffold(
@@ -100,7 +99,7 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
                 children: [
                   const SizedBox(height: 8.0),
                   Text(
-                    '${widget.userInfo?.username} ist in ${userCases.length} ${userCases.length == 1 ? "Fall" : "Fällen"} eingeschrieben',
+                    '${widget.myUser?.username} ist in ${userCases.length} ${userCases.length == 1 ? "Fall" : "Fällen"} eingeschrieben',
                     style: MyTextStyles.smallHeading,
                   ),
                 ],
@@ -111,19 +110,32 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
             child: ListView.builder(
               itemCount: userCases.length,
               itemBuilder: (context, index) {
-                final caseItem = userCases[index];
-                return AdminCaseItem(
-                  caseItem: caseItem,
-                  onDelete: () {
-                    _deleteCase(caseItem.id!);
-                  },
-                  onGetUsersByCase: (caseItem) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => AdminDetailsPage(caseInfo: caseItem),
-                      ),
-                    );
+                final myCase = userCases[index];
+                return FutureBuilder<int>(
+                  future: APIService.getEnrolledUsersCount(myCase.id!),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    } else {
+                      // Update the caseItem.userCount with the enrolled users count
+                      myCase.userCount = snapshot.data ?? 0;
+                      return AdminCaseItem(
+                        caseItem: myCase,
+                        onDelete: () {
+                          _deleteCase(myCase.id!);
+                        },
+                        onGetUsersByCase: (myCase) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => AdminDetailsPage(myCase: myCase),
+                            ),
+                          );
+                        },
+                      );
+                    }
                   },
                 );
               },
@@ -157,7 +169,7 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
                 children: [
                   const SizedBox(height: 8.0),
                   Text(
-                    'In ${widget.caseInfo?.name} ${caseUsers.length == 1 ? "ist" : "sind"} ${caseUsers.length} ${caseUsers.length == 1 ? "Person" : "Personen"} eingeschrieben',
+                    'In ${widget.myCase?.name} ${caseUsers.length == 1 ? "ist" : "sind"} ${caseUsers.length} ${caseUsers.length == 1 ? "Person" : "Personen"} eingeschrieben',
                     style: MyTextStyles.smallHeading,
                   ),
                 ],
@@ -175,13 +187,13 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
                     _deleteUser(userId);
                   },
                   onRemoveUserFromCase: (userId) {
-                    _removeUserFromCase(context, userId, widget.caseInfo!.id!);
+                    _removeUserFromCase(context, userId, widget.myCase!.id!);
                   },
                   onGetCasesByUser: (userItem) {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => AdminDetailsPage(userInfo: caseUsers[index]),//Todo
+                        builder: (context) => AdminDetailsPage(myUser: caseUsers[index]),
                       ),
                     );
                   },
