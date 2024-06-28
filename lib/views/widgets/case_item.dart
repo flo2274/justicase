@@ -15,7 +15,6 @@ class CaseItem extends StatefulWidget {
 }
 
 class _CaseItemState extends State<CaseItem> {
-  int? _enrolledUsersCount; // Variable to store enrolled users count
 
   @override
   void initState() {
@@ -24,8 +23,8 @@ class _CaseItemState extends State<CaseItem> {
 
   @override
   Widget build(BuildContext context) {
-    double progress = _enrolledUsersCount != null
-        ? _enrolledUsersCount! / 50.0 // Todo: make 50 constant global variable
+    double progress = widget.caseInfo.userCount != null
+        ? widget.caseInfo.userCount / 50.0 // Todo: make 50 constant global variable
         : 0.0;
 
     return Card(

@@ -111,7 +111,7 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
               itemCount: userCases.length,
               itemBuilder: (context, index) {
                 final myCase = userCases[index];
-                return FutureBuilder<int>(
+                return FutureBuilder<int>( // Todo muss das doppelt? war ja in admin panel schon
                   future: APIService.getEnrolledUsersCount(myCase.id!),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {

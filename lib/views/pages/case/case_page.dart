@@ -2,12 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile_anw/models/case.dart';
 import 'package:mobile_anw/services/api_service.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:go_router/go_router.dart';
-import '../../../utils/emoji_helper.dart';
-import '../../widgets/case_item.dart';
-import 'case-details-enrolled.dart';
 import 'package:mobile_anw/utils/case_notifier.dart'; // Adjust import path as per your project structure
+import '../../widgets/case_item.dart'; // Adjust import path as per your project structure
 
 class CasePage extends ConsumerStatefulWidget {
   const CasePage({
@@ -37,18 +34,18 @@ class _CasePageState extends ConsumerState<CasePage> {
       ),
       body: Consumer(
         builder: (context, watch, child) {
-          final state = ref.watch(caseProvider);
+          final caseState = ref.watch(caseProvider);
 
-          if (state.isLoading) {
+          if (caseState.isLoading) {
             return Center(child: CircularProgressIndicator());
           }
 
-          if (state.userCases.isEmpty) {
+          if (caseState.userCases.isEmpty) {
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text('Sie haben sich in keinen Fall eingetragen.'),
+                  Text('Sie haben sich in keinen Fall eingetragen.'),
                   SizedBox(height: 20),
                   GestureDetector(
                     onTap: () {
@@ -63,7 +60,7 @@ class _CasePageState extends ConsumerState<CasePage> {
                         width: MediaQuery.of(context).size.width / 1.5,
                         height: 60,
                         padding: const EdgeInsets.all(16.0),
-                        child: const Row(
+                        child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(Icons.search, color: Colors.blue),
@@ -84,13 +81,28 @@ class _CasePageState extends ConsumerState<CasePage> {
               ),
             );
           }
+
           return RefreshIndicator(
             onRefresh: () => ref.read(caseProvider.notifier).fetchUserCases(),
             child: ListView.builder(
               padding: const EdgeInsets.all(16.0),
-              itemCount: state.userCases.length,
+              itemCount: caseState.userCases.length,
               itemBuilder: (BuildContext context, int index) {
-                return CaseItem(caseInfo: state.userCases[index]);
+                final caseInfo = caseState.userCases[index];
+                return FutureBuilder<int>(
+                  future: APIService.getEnrolledUsersCount(caseInfo.id!),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    } else {
+                      // Update the caseInfo.userCount with the enrolled users count
+                      caseInfo.userCount = snapshot.data ?? 0;
+                      return CaseItem(caseInfo: caseInfo);
+                    }
+                  },
+                );
               },
             ),
           );
