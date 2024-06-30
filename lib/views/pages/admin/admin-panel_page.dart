@@ -3,14 +3,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile_anw/models/user.dart';
 import 'package:mobile_anw/models/case.dart';
 import 'package:mobile_anw/services/api_service.dart';
-import 'package:mobile_anw/utils/text_theme_config.dart';
-import 'package:mobile_anw/views/widgets/admin-case_item.dart';
-import 'package:mobile_anw/utils/case_notifier.dart';
-import 'package:mobile_anw/utils/case_state.dart';
-import 'package:mobile_anw/utils/user_notifier.dart';
-import 'package:mobile_anw/utils/user_state.dart';
-import '../../data/case_data.dart';
-import '../widgets/admin-user_item.dart';
+import 'package:mobile_anw/utils/configs/text_theme_config.dart';
+import 'package:mobile_anw/state/notifiers/case_notifier.dart';
+import 'package:mobile_anw/state/models/case_state.dart';
+import 'package:mobile_anw/state/notifiers/user_notifier.dart';
+import 'package:mobile_anw/state/models/user_state.dart';
+import '../../../data/constants/case_data.dart';
+import '../../items/admin/admin-case_item.dart';
+import '../../items/admin/admin-user_item.dart';
 import 'admin-details_page.dart';
 
 class AdminPanelPage extends ConsumerStatefulWidget {
@@ -69,7 +69,7 @@ class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
             padding: const EdgeInsets.all(16.0),
             child: Text(
               'Es gibt insgesamt ${userState.allUsers.length} ${userState.allUsers.length == 1 ? "Person" : "Personen"}',
-              style: MyTextStyles.smallHeading,
+              style: TextThemeConfig.smallHeading,
             ),
           ),
           _buildUsersList(context, userState),
@@ -149,7 +149,7 @@ class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
             padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
             child: Text(
               'Es gibt insgesamt ${filteredCases.length} ${filteredCases.length == 1 ? "Fall" : "Fälle"}',
-              style: MyTextStyles.smallHeading,
+              style: TextThemeConfig.smallHeading,
             ),
           ),
           _buildCasesList(context, filteredCases),

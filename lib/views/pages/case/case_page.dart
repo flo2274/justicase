@@ -3,9 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile_anw/models/case.dart';
 import 'package:mobile_anw/services/api_service.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mobile_anw/utils/case_notifier.dart'; // Adjust import path as per your project structure
-import '../../../utils/text_theme_config.dart';
-import '../../widgets/case_item.dart'; // Adjust import path as per your project structure
+import 'package:mobile_anw/state/notifiers/case_notifier.dart'; // Adjust import path as per your project structure
+import '../../../utils/configs/text_theme_config.dart';
+import '../../items/case_item.dart';
 
 class CasePage extends ConsumerStatefulWidget {
   const CasePage({
@@ -61,7 +61,7 @@ class _CasePageState extends ConsumerState<CasePage> {
                         width: MediaQuery.of(context).size.width / 1.5,
                         height: 60,
                         padding: const EdgeInsets.all(16.0),
-                        child: Row(
+                        child: const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(Icons.search, color: Colors.blue),
@@ -90,7 +90,7 @@ class _CasePageState extends ConsumerState<CasePage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Deine Fälle', style: MyTextStyles.smallHeading),
+                  Text('Deine Fälle', style: TextThemeConfig.smallHeading),
                   const SizedBox(height: 8.0),
                   Expanded(
                     child: ListView.builder(

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 
-class ImageSwitcher extends StatefulWidget {
+class ImageAnimationHelper extends StatefulWidget {
   @override
-  _ImageSwitcherState createState() => _ImageSwitcherState();
+  _ImageAnimationHelperState createState() => _ImageAnimationHelperState();
 }
 
-class _ImageSwitcherState extends State<ImageSwitcher> {
+class _ImageAnimationHelperState extends State<ImageAnimationHelper> {
   int _imageIndex = 0;
   final List<String> _imageAssets = [
     'assets/images/logo_icon02.png',
@@ -21,11 +21,9 @@ class _ImageSwitcherState extends State<ImageSwitcher> {
   @override
   void initState() {
     super.initState();
-    // Starte einen Timer, der alle 2 Sekunden das Bild wechselt
     _timer = Timer.periodic(Duration(milliseconds: _isLastImage ? 1000 : 500), (timer) {
       setState(() {
         _imageIndex = (_imageIndex + 1) % _imageAssets.length;
-        // Prüfe, ob das letzte Bild angezeigt wird
         if (_imageIndex == _imageAssets.length - 1) {
           _isLastImage = true;
         } else {

@@ -5,8 +5,8 @@ import 'package:mobile_anw/models/user.dart';
 import 'package:mobile_anw/services/api_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../utils/case_notifier.dart';
-import '../../../utils/text_theme_config.dart';
+import '../../../state/notifiers/case_notifier.dart';
+import '../../../utils/configs/text_theme_config.dart';
 
 class CaseDetailsEnrolled extends ConsumerStatefulWidget {
   final Case myCase;
@@ -130,7 +130,7 @@ class _CaseDetailsEnrolledState extends ConsumerState<CaseDetailsEnrolled> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Neuen Fall erstellen', style: MyTextStyles.largeHeading,),
+                        Text('Neuen Fall erstellen', style: TextThemeConfig.largeHeading,),
                         Text(
                           'Case Name: ${widget.myCase.name}',
                           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -151,7 +151,7 @@ class _CaseDetailsEnrolledState extends ConsumerState<CaseDetailsEnrolled> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Eingetragene User', style: MyTextStyles.smallHeading,),
+                        Text('Eingetragene User', style: TextThemeConfig.smallHeading,),
                         SizedBox(height: 8),
                         _isLoading
                             ? Center(child: CircularProgressIndicator())

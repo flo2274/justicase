@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart'; // Import the go_router package
-import 'package:mobile_anw/views/widgets/cards/middle_card.dart'; // Import für MiddleCard
 import 'package:mobile_anw/models/case.dart';
 
-import '../../../utils/text_theme_config.dart';
+import '../../utils/configs/text_theme_config.dart';
+import '../items/big-case_item.dart';
 
 class SuggestionsSection extends StatefulWidget {
   final List<Case> cases;
@@ -26,7 +26,7 @@ class _SuggestionsSectionState extends State<SuggestionsSection> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 20.0),
-          Text('Vorschläge', style: MyTextStyles.smallHeading,),
+          Text('Vorschläge', style: TextThemeConfig.smallHeading,),
           const SizedBox(height: 5.0),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -37,23 +37,23 @@ class _SuggestionsSectionState extends State<SuggestionsSection> {
                 onTap: () {
                   context.go('/case/caseDetails', extra: caseItem);
                 },
-                child: MiddleCard(caseItem: caseItem),
+                child: BigCaseItem(caseItem: caseItem),
               ),
             ))
                 .toList(),
           ),
-          const SizedBox(height: 5.0), // Abstand zwischen den Reihen
+          const SizedBox(height: 5.0),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: displayCases
                 .skip(2)
-                .take(2) // Zwei Karten in einer Reihe
+                .take(2)
                 .map((caseItem) => Expanded(
               child: GestureDetector(
                 onTap: () {
                   context.go('/case/caseDetails', extra: caseItem);
                 },
-                child: MiddleCard(caseItem: caseItem),
+                child: BigCaseItem(caseItem: caseItem),
               ),
             ))
                 .toList(),

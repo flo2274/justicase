@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile_anw/services/api_service.dart';
-import 'package:mobile_anw/utils/image_switcher.dart';
-import 'package:mobile_anw/utils/text_theme_config.dart';
+import 'package:mobile_anw/utils/helpers/image-animation_helper.dart';
+import 'package:mobile_anw/utils/configs/text_theme_config.dart';
 
 class RegistrationPage extends StatefulWidget {
   @override
@@ -80,12 +80,12 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 children: [
                   Text(
                     'JUSTICE FOR YOUR CASE',
-                    style: MyTextStyles.authLargeHeading,
+                    style: TextThemeConfig.authLargeHeading,
                   ),
                   SizedBox(height: 10.0),
                   Text(
                       'WERDEN SIE TEIL UNSERER BEWEGUNG FÜR GERECHTIGKEIT',
-                      style: MyTextStyles.authSmallHeading
+                      style: TextThemeConfig.authSmallHeading
                   ),
                 ],
               ),
@@ -93,15 +93,15 @@ class _RegistrationPageState extends State<RegistrationPage> {
             const SizedBox(height: 70.0),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.0),
-              child: Text('Registrieren,', style: MyTextStyles.authWelcome1Text),
+              child: Text('Registrieren,', style: TextThemeConfig.authWelcome1Text),
             ),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.0),
-              child: Text('denn gemeinsam Recht haben', style: MyTextStyles.authWelcome2Text),
+              child: Text('denn gemeinsam Recht haben', style: TextThemeConfig.authWelcome2Text),
             ),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.0),
-              child: Text('war nie einfacher!', style: MyTextStyles.authWelcome2Text),
+              child: Text('war nie einfacher!', style: TextThemeConfig.authWelcome2Text),
             ),
             Padding(
               padding: EdgeInsets.all(16.0),
@@ -179,7 +179,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         ),
                         child: const Text(
                           'Registrieren',
-                          style: MyTextStyles.buttonText,
+                          style: TextThemeConfig.buttonText,
                         ),
                       ),
                       const SizedBox(height: 8.0),

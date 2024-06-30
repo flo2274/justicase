@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile_anw/services/api_service.dart';
-import 'package:mobile_anw/utils/user_state.dart';
-import 'package:mobile_anw/utils/case_notifier.dart';
-import 'package:mobile_anw/utils/user_notifier.dart';
-import 'package:mobile_anw/views/widgets/admin-user_item.dart';
-import 'package:mobile_anw/views/widgets/admin-case_item.dart';
-import '../../models/case.dart';
-import '../../models/user.dart';
-import '../../utils/text_theme_config.dart';
+import 'package:mobile_anw/state/models/user_state.dart';
+import 'package:mobile_anw/state/notifiers/case_notifier.dart';
+import 'package:mobile_anw/state/notifiers/user_notifier.dart';
+import '../../../models/case.dart';
+import '../../../models/user.dart';
+import '../../../utils/configs/text_theme_config.dart';
+import '../../items/admin/admin-case_item.dart';
+import '../../items/admin/admin-user_item.dart';
 
 class AdminDetailsPage extends ConsumerStatefulWidget {
   final User? myUser;
@@ -100,7 +100,7 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
                   const SizedBox(height: 8.0),
                   Text(
                     '${widget.myUser?.username} ist in ${userCases.length} ${userCases.length == 1 ? "Fall" : "Fällen"} eingeschrieben',
-                    style: MyTextStyles.smallHeading,
+                    style: TextThemeConfig.smallHeading,
                   ),
                 ],
               ),
@@ -170,7 +170,7 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
                   const SizedBox(height: 8.0),
                   Text(
                     'In ${widget.myCase?.name} ${caseUsers.length == 1 ? "ist" : "sind"} ${caseUsers.length} ${caseUsers.length == 1 ? "Person" : "Personen"} eingeschrieben',
-                    style: MyTextStyles.smallHeading,
+                    style: TextThemeConfig.smallHeading,
                   ),
                 ],
               ),

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart'; // Import the go_router package
-import 'package:mobile_anw/views/widgets/cards/middle_card.dart';
 import 'package:mobile_anw/models/case.dart';
 
-import '../../../utils/text_theme_config.dart';
+import '../../utils/configs/text_theme_config.dart';
+import '../items/big-case_item.dart';
 
 class RecentSection extends StatelessWidget {
   final List<Case> cases;
@@ -21,7 +21,7 @@ class RecentSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 20.0),
-          Text('Aktuelles', style: MyTextStyles.smallHeading,),
+          Text('Aktuelles', style: TextThemeConfig.smallHeading,),
           const SizedBox(height: 5.0), // Abstand zwischen Überschrift und Karten
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -32,7 +32,7 @@ class RecentSection extends StatelessWidget {
                 onTap: () {
                   context.go('/case/caseDetails', extra: caseItem);
                 },
-                child: MiddleCard(caseItem: caseItem),
+                child: BigCaseItem(caseItem: caseItem),
               ),
             ))
                 .toList(),
@@ -48,7 +48,7 @@ class RecentSection extends StatelessWidget {
                 onTap: () {
                   context.go('/case/caseDetails', extra: caseItem);
                 },
-                child: MiddleCard(caseItem: caseItem),
+                child: BigCaseItem(caseItem: caseItem),
               ),
             ))
                 .toList(),

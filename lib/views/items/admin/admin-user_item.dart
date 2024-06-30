@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_anw/models/user.dart'; // Assuming User class is defined in user.dart
-import 'package:mobile_anw/utils/theme_config.dart';
+import 'package:mobile_anw/utils/configs/theme_config.dart';
 
 class AdminUserItem extends StatelessWidget {
   final User user;

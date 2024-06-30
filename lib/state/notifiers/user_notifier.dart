@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile_anw/models/user.dart';
 import 'package:mobile_anw/services/api_service.dart';
-import 'user_state.dart';
+import '../models/user_state.dart';
 
 class UserNotifier extends StateNotifier<UserState> {
   UserNotifier() : super(UserState(allUsers: [], isLoading: true));

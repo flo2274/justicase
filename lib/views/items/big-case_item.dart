@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_anw/models/case.dart';
-import 'package:mobile_anw/utils/emoji_helper.dart';
+import 'package:mobile_anw/utils/helpers/emoji_helper.dart';
 
-class MiddleCard extends StatelessWidget {
+class BigCaseItem extends StatelessWidget {
   final Case caseItem;
 
-  MiddleCard({required this.caseItem});
+  BigCaseItem({required this.caseItem});
 
   @override
   Widget build(BuildContext context) {

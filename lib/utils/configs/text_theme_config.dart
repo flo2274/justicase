@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class MyTextStyles {
+class TextThemeConfig {
 
   static const Color textPrimary = Colors.black;
   static const Color textSecondary = Color(0xFF5E5E5E);

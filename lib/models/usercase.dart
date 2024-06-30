@@ -19,4 +19,4 @@ class UserCase {
       'userId': userId,
       'caseId': caseId,
     };
-  }}
+  }} // Todo: delete if unused

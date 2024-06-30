@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile_anw/models/case.dart';
 import 'package:mobile_anw/services/api_service.dart';
-import 'package:mobile_anw/utils/case_notifier.dart'; // Adjust import path as per your project structure
-import 'package:mobile_anw/utils/text_theme_config.dart';
+import 'package:mobile_anw/state/notifiers/case_notifier.dart'; // Adjust import path as per your project structure
+import 'package:mobile_anw/utils/configs/text_theme_config.dart';
 import 'package:go_router/go_router.dart';
-import '../../../data/case_data.dart';
+import '../../../data/constants/case_data.dart';
 
 class CreateCasePage extends ConsumerStatefulWidget {
   const CreateCasePage({Key? key}) : super(key: key);
@@ -46,14 +46,14 @@ class _CreateCasePageState extends ConsumerState<CreateCasePage> {
                       children: [
                         Text(
                           'Neuen Fall erstellen',
-                          style: MyTextStyles.largeHeading,
+                          style: TextThemeConfig.largeHeading,
                         ),
                         _buildCompanyInfoBox(),
                         _buildCaseInfoBox(),
                         const SizedBox(height: 10),
                         const Text(
                           'Die mit * gekennzeichneten Felder sind Pflichtfelder',
-                          style: MyTextStyles.infoText,
+                          style: TextThemeConfig.infoText,
                         ),
                         const SizedBox(height: 20),
                       ],
@@ -112,7 +112,7 @@ class _CreateCasePageState extends ConsumerState<CreateCasePage> {
         children: [
           Text(
             'Unternehmensspezifische Informationen',
-            style: MyTextStyles.smallHeading,
+            style: TextThemeConfig.smallHeading,
           ),
           const SizedBox(height: 10),
           TextFormField(
@@ -206,7 +206,7 @@ class _CreateCasePageState extends ConsumerState<CreateCasePage> {
         children: [
           Text(
             'Ihre Informationen',
-            style: MyTextStyles.smallHeading,
+            style: TextThemeConfig.smallHeading,
           ),
           const SizedBox(height: 10),
           TextFormField(

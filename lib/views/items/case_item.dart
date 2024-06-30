@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_anw/models/case.dart';
 import 'package:mobile_anw/services/api_service.dart'; // Import your API service class
-import 'package:mobile_anw/utils/emoji_helper.dart';
+import 'package:mobile_anw/utils/helpers/emoji_helper.dart';
 import 'package:go_router/go_router.dart';
-import '../pages/case/case-details-enrolled.dart'; // Adjust import path as per your project structure
 
 class CaseItem extends StatefulWidget {
   final Case caseInfo;

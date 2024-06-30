@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_anw/utils/text_theme_config.dart';
-import 'package:mobile_anw/views/widgets/cards/mini_card.dart';
-import 'package:mobile_anw/data/case_data.dart';
-import 'package:go_router/go_router.dart'; // Import der go_router Bibliothek für die Navigation
+import 'package:mobile_anw/utils/configs/text_theme_config.dart';
+import 'package:mobile_anw/data/constants/case_data.dart';
+import 'package:go_router/go_router.dart';
+
+import '../items/category-case_item.dart'; // Import der go_router Bibliothek für die Navigation
 
 class CategorySection extends StatelessWidget {
   @override
@@ -15,7 +16,7 @@ class CategorySection extends StatelessWidget {
           const SizedBox(height: 20.0),
           Text(
             'Kategorien',
-            style: MyTextStyles.smallHeading,
+            style: TextThemeConfig.smallHeading,
           ),
           const SizedBox(height: 5.0), // Abstand zwischen Überschrift und Karten
           SingleChildScrollView(
@@ -28,7 +29,7 @@ class CategorySection extends StatelessWidget {
                     onTap: () {
                       context.go('/home/industry', extra: industry);
                     },
-                    child: MiniCard(name: industry),
+                    child: CategoryCaseItem(name: industry),
                   ),
                 );
               }).toList(),

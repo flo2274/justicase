@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile_anw/services/api_service.dart';
-import 'package:mobile_anw/utils/image_switcher.dart';
-import 'package:mobile_anw/utils/text_theme_config.dart';
+import 'package:mobile_anw/utils/helpers/image-animation_helper.dart';
+import 'package:mobile_anw/utils/configs/text_theme_config.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -48,26 +48,26 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   Text(
                     'JUSTICE FOR YOUR CASE',
-                    style: MyTextStyles.authLargeHeading
+                    style: TextThemeConfig.authLargeHeading
                   ),
                   SizedBox(height: 10.0),
                   Text(
                     'WIR SIND DIE BEWEGUNG FÜR GERECHTIGKEIT',
-                    style: MyTextStyles.authSmallHeading
+                    style: TextThemeConfig.authSmallHeading
                   ),
                 ],
               ),
             ),
             const SizedBox(height: 20.0),
-            ImageSwitcher(),
+            ImageAnimationHelper(),
             const SizedBox(height: 20.0),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.0),
-              child: Text('Willkommen,', style: MyTextStyles.authWelcome1Text),
+              child: Text('Willkommen,', style: TextThemeConfig.authWelcome1Text),
             ),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.0),
-              child: Text('schön dich wiederzusehen', style: MyTextStyles.authWelcome2Text),
+              child: Text('schön dich wiederzusehen', style: TextThemeConfig.authWelcome2Text),
             ),
             Padding(
               padding: EdgeInsets.all(16.0),
@@ -118,7 +118,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         child: const Text(
                           'Login',
-                          style: MyTextStyles.buttonText,
+                          style: TextThemeConfig.buttonText,
                         ),
                       ),
                       const SizedBox(height: 8.0),

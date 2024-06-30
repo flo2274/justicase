@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../services/api_service.dart';
+import '../../../services/api_service.dart';
 
 class IndustryCasesPage extends StatefulWidget {
   final String industry;

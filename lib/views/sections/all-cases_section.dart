@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile_anw/models/case.dart';
-import 'package:mobile_anw/utils/emoji_helper.dart';
-import 'package:mobile_anw/utils/case_notifier.dart';
-import 'package:mobile_anw/utils/case_state.dart';
-import 'package:mobile_anw/utils/text_theme_config.dart';
-import '../cards/middle_card.dart';
+import 'package:mobile_anw/utils/helpers/emoji_helper.dart';
+import 'package:mobile_anw/state/notifiers/case_notifier.dart';
+import 'package:mobile_anw/state/models/case_state.dart';
+import 'package:mobile_anw/utils/configs/text_theme_config.dart';
+import '../items/big-case_item.dart';
 
 class AllCasesSection extends ConsumerWidget {
   const AllCasesSection({Key? key}) : super(key: key);
@@ -32,7 +32,7 @@ class AllCasesSection extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: 16.0),
-        Text('Alle Fälle', style: MyTextStyles.smallHeading),
+        Text('Alle Fälle', style: TextThemeConfig.smallHeading),
         const SizedBox(height: 8.0),
         LimitedBox(
           maxHeight: MediaQuery.of(context).size.height * 1,
@@ -46,7 +46,7 @@ class AllCasesSection extends ConsumerWidget {
             itemCount: caseState.allCases.length,
             itemBuilder: (context, index) {
               final caseItem = caseState.allCases[index];
-              return MiddleCard(caseItem: caseItem);
+              return BigCaseItem(caseItem: caseItem);
             },
           ),
         ),

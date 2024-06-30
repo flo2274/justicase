@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:mobile_anw/models/case.dart'; // Adjust import path as per your project structure
 import 'package:go_router/go_router.dart';
-import 'package:mobile_anw/utils/text_theme_config.dart';
-import 'package:mobile_anw/views/widgets/sections/category_section.dart';
-import 'package:mobile_anw/views/widgets/sections/suggestions_section.dart';
-import 'package:mobile_anw/views/widgets/sections/recent_section.dart';
-import '../../services/api_service.dart';
-import '../../utils/case_notifier.dart'; // Adjust import path as per your project structure
-import '../../utils/case_state.dart';
-import '../../utils/user_preferences.dart'; // Adjust import path as per your project structure
+import 'package:mobile_anw/utils/configs/text_theme_config.dart';
+import '../../../services/api_service.dart';
+import '../../../state/notifiers/case_notifier.dart';
+import '../../../utils/user_preferences.dart';
+import '../../sections/category_section.dart';
+import '../../sections/recent_section.dart';
+import '../../sections/suggestions_section.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -93,14 +90,14 @@ class _HomePageState extends ConsumerState<HomePage> {
                     alignment: Alignment.centerLeft,
                     child: Text(
                       'Willkommen zurück, ',
-                      style: MyTextStyles.middleHeading1,
+                      style: TextThemeConfig.middleHeading1,
                     ),
                   ),
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
                       _username,
-                      style: MyTextStyles.middleHeading2,
+                      style: TextThemeConfig.middleHeading2,
                     ),
                   ),
                 ],

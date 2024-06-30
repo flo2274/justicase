@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mobile_anw/utils/text_theme_config.dart';
+import 'package:mobile_anw/utils/configs/text_theme_config.dart';
 import 'package:mobile_anw/models/case.dart';
-import 'package:mobile_anw/views/widgets/sections/all-cases_section.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../utils/case_notifier.dart';
-import '../../utils/case_state.dart';
+import '../../../state/notifiers/case_notifier.dart';
+import '../../../state/models/case_state.dart';
+import '../../sections/all-cases_section.dart';
 
 class SearchPage extends ConsumerStatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -65,7 +65,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                     child: const ListTile(
                       title: Text(
                         'Kein Fall gefunden. Erstelle einen neuen Fall',
-                        style: MyTextStyles.alertText,
+                        style: TextThemeConfig.alertText,
                       ),
                     ),
                   );
@@ -89,7 +89,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Expanded(
+                  const Expanded(
                     child: SingleChildScrollView(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,

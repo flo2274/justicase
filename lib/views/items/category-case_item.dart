@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_anw/utils/emoji_helper.dart'; // Importiere die EmojiHelper-Klasse
+import 'package:mobile_anw/utils/helpers/emoji_helper.dart'; // Importiere die EmojiHelper-Klasse
 
-class MiniCard extends StatelessWidget {
+class CategoryCaseItem extends StatelessWidget {
   final String name;
 
-  MiniCard({required this.name});
+CategoryCaseItem({required this.name});
 
   @override
   Widget build(BuildContext context) {
