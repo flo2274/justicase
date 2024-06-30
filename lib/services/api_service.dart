@@ -4,6 +4,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mobile_anw/models/user.dart';
 import 'package:mobile_anw/models/case.dart';
+import '../utils/validations.dart';
 
 class APIService {
   static const String baseURL = 'http://localhost:3000';
@@ -18,10 +19,15 @@ class APIService {
   static const String deleteUserURL = '$baseURL/deleteuser';
   static const String deleteCaseURL = '$baseURL/deletecase';
 
-
   static final storage = FlutterSecureStorage();
 
   static Future<bool> register(String firstName, String lastName, String username, String email, String password) async {
+    if (!Validations.isNotEmpty(firstName)) throw Exception('First name cannot be empty');
+    if (!Validations.isNotEmpty(lastName)) throw Exception('Last name cannot be empty');
+    if (!Validations.isValidUsername(username)) throw Exception('Invalid username');
+    if (!Validations.isValidEmail(email)) throw Exception('Invalid email');
+    if (!Validations.isValidPassword(password)) throw Exception('Invalid password');
+
     try {
       final response = await http.post(
         Uri.parse(registerURL),
@@ -57,6 +63,9 @@ class APIService {
   }
 
   static Future<bool> login(String email, String password) async {
+    if (!Validations.isValidEmail(email)) throw Exception('Invalid email');
+    if (!Validations.isValidPassword(password)) throw Exception('Invalid password');
+
     final response = await http.post(
       Uri.parse(loginURL),
       body: jsonEncode({'email': email, 'password': password}),
@@ -66,7 +75,6 @@ class APIService {
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
 
-      // Ensure the data contains the expected structure
       if (data != null && data.containsKey('token') && data['user'] != null && data['user'].containsKey('username') && data['user'].containsKey('role')) {
         final String token = data['token'];
         final int userId = data['user']['id'];
