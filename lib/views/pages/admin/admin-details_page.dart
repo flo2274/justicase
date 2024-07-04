@@ -187,7 +187,7 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
                     _deleteUser(userId);
                   },
                   onRemoveUserFromCase: (userId) {
-                    _removeUserFromCase(context, userId, widget.myCase!.id!);
+                    _removeUserFromCase(context, widget.myCase!.id!, userId: userId);
                   },
                   onGetCasesByUser: (userItem) {
                     Navigator.push(
@@ -229,7 +229,7 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
     }
   }
 
-  void _removeUserFromCase(BuildContext context, int userId, int caseId) async {
+  void _removeUserFromCase(BuildContext context, int caseId, {int? userId}) async {
     try {
       await APIService.removeUserFromCase(caseId, userId: userId);
       ScaffoldMessenger.of(context).showSnackBar(

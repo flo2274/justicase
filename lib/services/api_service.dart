@@ -8,16 +8,12 @@ import '../utils/validations.dart';
 
 class APIService {
   static const String baseURL = 'http://localhost:3000';
-  static const String registerURL = '$baseURL/register';
-  static const String loginURL = '$baseURL/login';
+  static const String registerURL = '$baseURL/auth/register';
+  static const String loginURL = '$baseURL/auth/login';
   static const String usersURL = '$baseURL/users';
   static const String casesURL = '$baseURL/cases';
-  static const String casesByUsersURL = '$baseURL/getcasesbyuser';
-  static const String usersByCaseURL = '$baseURL/getusersbycase';
-  static const String addUserToCaseURL = '$baseURL/addusertocase';
-  static const String removeUserFromCaseURL = '$baseURL/removeuserfromcase';
-  static const String deleteUserURL = '$baseURL/deleteuser';
-  static const String deleteCaseURL = '$baseURL/deletecase';
+  static const String casesByUsersURL = '$casesURL/user';
+  static const String usersByCaseURL = '$usersURL/case';
 
   static final storage = FlutterSecureStorage();
 
@@ -44,7 +40,6 @@ class APIService {
       if (response.statusCode == 201) {
         return true;
       } else if (response.statusCode == 400) {
-        // Handle validation errors
         final Map<String, dynamic> errorResponse = jsonDecode(response.body);
         String errorMessage = 'Registration failed';
         if (errorResponse.containsKey('errors')) {
@@ -147,7 +142,6 @@ class APIService {
     }
   }
 
-
   static Future<List<Case>> getAllCases() async {
     final token = await getToken();
     final response = await http.get(
@@ -186,7 +180,11 @@ class APIService {
   }
 
   static Future<List<dynamic>> getCasesByIndustry(String industry) async {
-    final response = await http.get(Uri.parse('$baseURL/casesbyindustry/$industry'));
+    final token = await getToken();
+    final response = await http.get(
+      Uri.parse('$casesURL/industry?industry=$industry'),
+      headers: {'Authorization': 'Bearer $token'},
+    );
 
     if (response.statusCode == 200) {
       List<dynamic> cases = jsonDecode(response.body);
@@ -213,14 +211,13 @@ class APIService {
 
   static Future<void> addUserToCase(int caseId, {int? userId}) async {
     final token = await getToken();
-    String url = userId != null ? '$addUserToCaseURL?userId=$userId' : addUserToCaseURL;
-    //String url = userId != null ? '$addUserToCaseURL/$userId' : addUserToCaseURL; So?
+    String url = '$casesURL/$caseId/user';
+    if (userId != null) {
+      url += '?userId=$userId';
+    }
 
     final response = await http.post(
       Uri.parse(url),
-      body: jsonEncode({
-        'caseId': caseId,
-      }),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
@@ -230,104 +227,64 @@ class APIService {
     if (response.statusCode == 201) {
       return;
     } else {
-      throw Exception('Failed to enroll into case');
+      throw Exception('Failed to add user to case');
     }
   }
 
   static Future<void> removeUserFromCase(int caseId, {int? userId}) async {
-    try {
-      final token = await getToken();
-      final url = Uri.parse(removeUserFromCaseURL);
+    final token = await getToken();
+    String url = '$casesURL/$caseId/user';
 
-      final body = {
-        'caseId': caseId,
-      };
+    if (userId != null) {
+      url += '?userId=$userId';
+    }
 
-      // Fügt userId hinzu, wenn es nicht null ist
-      if (userId != null) {
-        body['userId'] = userId;
-      }
+    final response = await http.delete(
+      Uri.parse(url),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
 
-      final response = await http.post(
-        url,
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token',
-        },
-        body: jsonEncode(body),
-      );
-
-      if (response.statusCode == 200) {
-        print('User removed from case successfully');
-        return;
-      } else if (response.statusCode == 400) {
-        final Map<String, dynamic> errorResponse = jsonDecode(response.body);
-        String errorMessage = 'Failed to remove user from case';
-        if (errorResponse.containsKey('error')) {
-          errorMessage = errorResponse['error'];
-        }
-        throw Exception(errorMessage);
-      } else {
-        throw Exception('Failed to remove user from case: ${response.statusCode}');
-      }
-    } catch (e) {
-      print('Error removing user from case: $e');
-      throw Exception('Failed to remove user from case: $e');
+    if (response.statusCode == 200) {
+      return;
+    } else {
+      throw Exception('Failed to remove user from case');
     }
   }
 
   static Future<void> deleteUser(int userId) async {
-    try {
-      final token = await getToken();
+    final token = await getToken();
 
-      final response = await http.delete(
-        Uri.parse('$deleteUserURL/$userId'),
-        headers: {
-          'Authorization': 'Bearer $token',
-        },
-      );
+    final response = await http.delete(
+      Uri.parse('$usersURL/$userId'),
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+    );
 
-      if (response.statusCode == 200) {
-        print('User deleted successfully');
-      } else {
-        final Map<String, dynamic> errorResponse = jsonDecode(response.body);
-        String errorMessage = 'Failed to delete user';
-        if (errorResponse.containsKey('error')) {
-          errorMessage = errorResponse['error'];
-        }
-        throw Exception(errorMessage);
-      }
-    } catch (e) {
-      print('Error deleting user: $e');
-      throw Exception('Failed to delete user: $e');
+    if (response.statusCode == 200) {
+      return;
+    } else {
+      throw Exception('Failed to delete user');
     }
   }
 
   static Future<void> deleteCase(int caseId) async {
-    try {
-      final token = await getToken(); // Implement your token retrieval method
+    final token = await getToken();
 
-      final response = await http.delete(
-        Uri.parse('$deleteCaseURL/$caseId'),
-        headers: {
-          'Authorization': 'Bearer $token',
-          'Content-Type': 'application/json',
-        },
-      );
+    final response = await http.delete(
+      Uri.parse('$casesURL/$caseId'),
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+    );
 
-      if (response.statusCode == 200) {
-        print('Case deleted successfully');
-      } else {
-        final Map<String, dynamic> errorResponse = jsonDecode(response.body);
-        String errorMessage = 'Failed to delete case';
-        if (errorResponse.containsKey('error')) {
-          errorMessage = errorResponse['error'];
-        }
-        throw Exception(errorMessage);
-      }
-    } catch (e) {
-      print('Error deleting case: $e');
-      throw Exception('Failed to delete case: $e');
+    if (response.statusCode == 200) {
+      return;
+    } else {
+      throw Exception('Failed to delete case');
     }
   }
 
@@ -336,7 +293,7 @@ class APIService {
       final token = await getToken();
 
       final response = await http.get(
-        Uri.parse('$baseURL/getenrolleduserscount/$caseId'),
+        Uri.parse('$casesURL/$caseId/count/users'),
         headers: {'Authorization': 'Bearer $token'},
       );
 
