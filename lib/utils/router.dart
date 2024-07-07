@@ -9,14 +9,14 @@ import 'package:mobile_anw/views/pages/case/case-details_page.dart';
 import 'package:mobile_anw/views/pages/scaffold_with_nested_navigation.dart';
 import 'package:mobile_anw/views/pages/auth/registration_page.dart';
 import 'package:mobile_anw/views/pages/auth/login_page.dart';
-import 'dart:developer';
+import 'package:mobile_anw/views/pages/chat_screen.dart'; // Import der ChatScreen-Klasse
 
 import '../models/case.dart';
 import '../models/user.dart';
 import '../views/pages/admin/admin-details_page.dart';
 import '../views/pages/home/industry_page.dart';
 
-// private navigators (underscore makes it private)
+// private navigators (Unterstrich macht sie privat)
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorHomeKey = GlobalKey<NavigatorState>(debugLabel: 'shellHome');
 final _shellNavigatorSearchKey = GlobalKey<NavigatorState>(debugLabel: 'shellSearch');
@@ -44,35 +44,41 @@ final goRouter = GoRouter(
           navigatorKey: _shellNavigatorHomeKey,
           routes: [
             GoRoute(
-                path: '/home',
-                pageBuilder: (context, state) => const NoTransitionPage(
-                  child: HomePage(),
+              path: '/home',
+              pageBuilder: (context, state) => const NoTransitionPage(
+                child: HomePage(),
+              ),
+              routes: [
+                GoRoute(
+                  path: 'adminPanel',
+                  pageBuilder: (context, state) => const NoTransitionPage(
+                    child: AdminPanelPage(),
+                  ),
                 ),
-                routes: [
-                  GoRoute(
-                    path: 'adminPanel',
-                    pageBuilder: (context, state) => const NoTransitionPage(
-                      child: AdminPanelPage(),
+                GoRoute(
+                  path: 'adminDetails',
+                  pageBuilder: (context, state) => NoTransitionPage(
+                    child: AdminDetailsPage(
+                      myCase: state.extra as Case,
+                      myUser: state.extra as User,
                     ),
                   ),
-                  GoRoute(
-                    path: 'adminDetails',
-                    pageBuilder: (context, state) => NoTransitionPage(
-                      child: AdminDetailsPage(
-                        myCase: state.extra as Case,
-                        myUser: state.extra as User,
-                      ),
+                ),
+                GoRoute(
+                  path: 'industry',
+                  pageBuilder: (context, state) => NoTransitionPage(
+                    child: IndustryCasesPage(
+                      industry: state.extra as String,
                     ),
                   ),
-                  GoRoute(
-                    path: 'industry',
-                    pageBuilder: (context, state) => NoTransitionPage(
-                      child: IndustryCasesPage(
-                        industry: state.extra as String,
-                      ),
-                    ),
+                ),
+                GoRoute(
+                  path: 'chat', // Beispiel für den ChatScreen
+                  pageBuilder: (context, state) => NoTransitionPage(
+                    child: ChatScreen(), // Verwenden Sie ChatScreen() statt const ChatScreen()
                   ),
-                ]
+                ),
+              ],
             ),
           ],
         ),

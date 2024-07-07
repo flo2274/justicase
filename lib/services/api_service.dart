@@ -4,6 +4,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mobile_anw/models/user.dart';
 import 'package:mobile_anw/models/case.dart';
+import 'package:mobile_anw/models/chat_message.dart';
 import '../utils/validations.dart';
 
 class APIService {
@@ -291,61 +292,101 @@ class APIService {
   static Future<int> getEnrolledUsersCount(int caseId) async {
     try {
       final token = await getToken();
-
       final response = await http.get(
-        Uri.parse('$casesURL/$caseId/count/users'),
+        Uri.parse('$casesURL/$caseId/enrolled-users/count'),
         headers: {'Authorization': 'Bearer $token'},
       );
 
       if (response.statusCode == 200) {
-        final Map<String, dynamic> data = jsonDecode(response.body);
-        final int count = data['count'];
+        final count = int.parse(response.body);
         return count;
       } else {
         throw Exception('Failed to fetch enrolled users count');
       }
     } catch (e) {
-      print('Error fetching enrolled users count: $e');
       throw Exception('Failed to fetch enrolled users count: $e');
     }
   }
 
-  /*static Future<List<Case>> getAllCasesWithEnrolledUsersCount() async {
+  static Future<List<ChatMessage>> getMessages(int caseId) async {
+    final token = await getToken();
+    final response = await http.get(
+      Uri.parse('$casesURL/$caseId/messages'),
+      headers: {'Authorization': 'Bearer $token'},
+    );
+
+    if (response.statusCode == 200) {
+      final List<dynamic> messagesJson = jsonDecode(response.body);
+      return messagesJson.map((json) => ChatMessage.fromJson(json)).toList();
+    } else {
+      throw Exception('Failed to load messages');
+    }
+  }
+
+  static Future<bool> sendMessage(int caseId, ChatMessage message) async {
     try {
       final token = await getToken();
 
-      // Get all cases
-      final response = await http.get(
-        Uri.parse(casesURL),
-        headers: {'Authorization': 'Bearer $token'},
+      final response = await http.post(
+        Uri.parse('$casesURL/$caseId/messages'),
+        body: jsonEncode({
+          'text': message.text,
+          'sender': message.sender,
+          'timestamp': message.timestamp.toIso8601String(),
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
       );
 
-      if (response.statusCode == 200) {
-        final List<dynamic> casesJson = jsonDecode(response.body);
-
-        // Create a list to store Case objects with enrolled users count
-        List<Case> cases = [];
-
-        // Iterate through each case and fetch enrolled users count
-        for (var caseJson in casesJson) {
-          Case caseObj = Case.fromJson(caseJson);
-
-          // Get enrolled users count for the current case
-          final enrolledUsersCount = await getEnrolledUsersCount(caseObj.id!);
-          caseObj.userCount = enrolledUsersCount;
-
-          // Add the updated case object to the list
-          cases.add(caseObj);
-        }
-
-        return cases;
+      if (response.statusCode == 201) {
+        return true;
       } else {
-        throw Exception('Failed to load cases');
+        print('Failed to send message: ${response.statusCode}');
+        return false;
       }
     } catch (e) {
-      print('Error fetching cases with enrolled users count: $e');
-      throw Exception('Failed to fetch cases with enrolled users count: $e');
+      print('Failed to send message: $e');
+      return false;
     }
-  }*/
+  }
 
+
+
+// Auskommentierte Methoden für Kommentare, die derzeit nicht verwendet werden
+
+// static Future<List<Comment>> getComments(int caseId) async {
+//   final token = await getToken();
+//   final response = await http.get(
+//     Uri.parse('$casesURL/$caseId/comments'),
+//     headers: {'Authorization': 'Bearer $token'},
+//   );
+
+//   if (response.statusCode == 200) {
+//     final List<dynamic> commentsJson = jsonDecode(response.body);
+//     return commentsJson.map((json) => Comment.fromJson(json)).toList();
+//   } else {
+//     throw Exception('Failed to load comments');
+//   }
+// }
+
+// static Future<bool> postComment(int caseId, Comment comment) async {
+//   final token = await getToken();
+
+//   final response = await http.post(
+//     Uri.parse('$casesURL/$caseId/comments'),
+//     body: jsonEncode(comment.toJson()),
+//     headers: {
+//       'Content-Type': 'application/json',
+//       'Authorization': 'Bearer $token',
+//     },
+//   );
+
+//   if (response.statusCode == 201) {
+//     return true;
+//   } else {
+//     throw Exception('Failed to post comment');
+//   }
+// }
 }
