@@ -72,12 +72,6 @@ final goRouter = GoRouter(
                     ),
                   ),
                 ),
-                GoRoute(
-                  path: 'chat', // Beispiel für den ChatScreen
-                  pageBuilder: (context, state) => NoTransitionPage(
-                    child: ChatScreen(), // Verwenden Sie ChatScreen() statt const ChatScreen()
-                  ),
-                ),
               ],
             ),
           ],

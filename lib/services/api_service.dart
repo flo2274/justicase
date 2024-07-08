@@ -323,35 +323,41 @@ class APIService {
     }
   }
 
-  static Future<List<ChatMessage>> getMessages(int caseId) async {
-    final token = await getToken();
-    final response = await http.get(
-      Uri.parse('${ApiConfig.casesURL}/$caseId/messages'),
-      headers: {'Authorization': 'Bearer $token'},
-    );
+  static Future<List<ChatMessage>> getMessagesFromCase(int caseId) async {
+    try {
+      final token = await getToken();
+      final response = await http.get(
+        Uri.parse('${ApiConfig.casesURL}/$caseId/messages'),
+        headers: {
+          'Authorization': 'Bearer $token',
+        },
+      );
 
-    if (response.statusCode == 200) {
-      final List<dynamic> messagesJson = jsonDecode(response.body);
-      return messagesJson.map((json) => ChatMessage.fromJson(json)).toList();
-    } else {
+      if (response.statusCode == 200) {
+        final List<dynamic> messagesJson = jsonDecode(response.body);
+        return messagesJson.map((json) => ChatMessage.fromJson(json)).toList();
+      } else {
+        throw Exception('Failed to load chat messages: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error in getMessagesFromCase: $e');
       throw Exception('Failed to load chat messages');
     }
   }
 
-  static Future<bool> sendMessage(int caseId, ChatMessage message) async {
-    final token = await getToken();
 
+
+  static Future<bool> sendMessageToCase(int caseId, ChatMessage message) async {
+    final token = await getToken();
     final response = await http.post(
       Uri.parse('${ApiConfig.casesURL}/$caseId/messages'),
-      body: jsonEncode({
-        'text': message.text,
-        'sender': message.sender,
-        'timestamp': message.timestamp.toIso8601String(),
-      }),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
       },
+      body: jsonEncode({
+        'text': message.text,
+      }),
     );
 
     if (response.statusCode == 201) {
