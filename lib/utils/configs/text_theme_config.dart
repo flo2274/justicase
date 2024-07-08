@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 class TextThemeConfig {
 
   static const Color textPrimary = Colors.black;
-  static const Color textSecondary = Color(0xFF5E5E5E);
+  static const Color textSecondary = Color(0xFF2C2C2C);//0xFF5E5E5E
   static const Color? textBlueAccent = Colors.blue;
 
   static TextStyle largeHeading = GoogleFonts.barlow( // Changed from headlineLarge to headline6
@@ -26,8 +26,8 @@ class TextThemeConfig {
   );
 
   static TextStyle smallHeading = GoogleFonts.barlow(
-    fontSize: 16.0,
-    fontWeight: FontWeight.bold,
+    fontSize: 17.0,
+    fontWeight: FontWeight.w700,
     color: textSecondary,
   );
 

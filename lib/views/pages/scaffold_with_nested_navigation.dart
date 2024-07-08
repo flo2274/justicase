@@ -46,6 +46,7 @@ class ScaffoldWithNavigationBar extends StatelessWidget {
       body: body,
       bottomNavigationBar: NavigationBar(
         selectedIndex: selectedIndex,
+        backgroundColor: Colors.white,
         destinations: const [
           NavigationDestination(label: 'Home', icon: Icon(Icons.home)),
           NavigationDestination(label: 'Search', icon: Icon(Icons.search)),

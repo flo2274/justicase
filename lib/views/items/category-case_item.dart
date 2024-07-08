@@ -9,7 +9,7 @@ CategoryCaseItem({required this.name});
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 2.0, // Höhe des Schattens
+      //elevation: 2.0, // Höhe des Schattens
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8.0), // Optionale Abrundung der Ecken
       ),

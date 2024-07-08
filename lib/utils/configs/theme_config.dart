@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 class ThemeConfig {
   // Farben für das Theme
-  static const Color background = Color(0xFFF1F1F3); // Leicht dunkleres Weiß
+  static const Color background = Color(0xFFF1F1F3); // Leicht dunkleres Weiß0xFFF1F1F3
   static Color primary = Colors.white;
   static Color blueAccent = Colors.blue; // Elegantes Dunkelblau
   static Color blackAccent = Colors.black;
@@ -20,8 +20,8 @@ class ThemeConfig {
     primaryColor: Color(0xFF6E0F53),
     scaffoldBackgroundColor: background, // Haupthintergrundfarbe
     appBarTheme: AppBarTheme(
-      backgroundColor: primary,
-      elevation: 0,
+      backgroundColor: Colors.white,
+      elevation: 1,
       iconTheme: IconThemeData(color: blackAccent),
       titleTextStyle: GoogleFonts.ptSerif(
         textStyle: const TextStyle(
@@ -36,6 +36,7 @@ class ThemeConfig {
       unselectedIconTheme: IconThemeData(size: 35),
       selectedItemColor: null,
       unselectedItemColor: null,
+      backgroundColor: Colors.white,
     ),
     textTheme: const TextTheme(
       /*titleLarge: TextStyle( // Changed from headlineLarge to headline6
@@ -92,6 +93,14 @@ class ThemeConfig {
       onPrimary: Colors.white, // Füllt Schaltfläche bei Create Case
       onSecondary: Color(0xFFE308A7),
       onSurface: textPrimary, // Schriftfarbe bei Homepage-Case-Elementen
+    ),
+
+    cardTheme: CardTheme(
+      color: Colors.white, // Standardhintergrundfarbe für Card
+      elevation: 1, // Standard-Elevation für Card
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
     ),
   );
 }
