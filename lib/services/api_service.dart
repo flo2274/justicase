@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mobile_anw/models/user.dart';
 import 'package:mobile_anw/models/case.dart';
 import 'package:mobile_anw/models/chat_message.dart';
+import 'package:mobile_anw/services/api_config.dart';
 import '../utils/validations.dart';
 
 class APIService {
@@ -293,25 +294,39 @@ class APIService {
     try {
       final token = await getToken();
       final response = await http.get(
-        Uri.parse('$casesURL/$caseId/enrolled-users/count'),
+        Uri.parse('$casesURL/$caseId/enrolled-users-count'),
         headers: {'Authorization': 'Bearer $token'},
       );
 
       if (response.statusCode == 200) {
-        final count = int.parse(response.body);
-        return count;
+        return int.parse(response.body);
       } else {
-        throw Exception('Failed to fetch enrolled users count');
+        throw Exception('Failed to get enrolled users count');
       }
     } catch (e) {
-      throw Exception('Failed to fetch enrolled users count: $e');
+      throw Exception('Failed to get enrolled users count: $e');
+    }
+  }
+
+  static Future<List<Case>> fetchCasesWithMostEnrolledUsers() async {
+    final token = await getToken();
+    final response = await http.get(
+      Uri.parse('$casesURL/most-enrolled'),
+      headers: {'Authorization': 'Bearer $token'},
+    );
+
+    if (response.statusCode == 200) {
+      final List<dynamic> jsonResponse = jsonDecode(response.body);
+      return jsonResponse.map((data) => Case.fromJson(data)).toList();
+    } else {
+      throw Exception('Failed to load suggested cases');
     }
   }
 
   static Future<List<ChatMessage>> getMessages(int caseId) async {
     final token = await getToken();
     final response = await http.get(
-      Uri.parse('$casesURL/$caseId/messages'),
+      Uri.parse('${ApiConfig.casesURL}/$caseId/messages'),
       headers: {'Authorization': 'Bearer $token'},
     );
 
@@ -319,74 +334,45 @@ class APIService {
       final List<dynamic> messagesJson = jsonDecode(response.body);
       return messagesJson.map((json) => ChatMessage.fromJson(json)).toList();
     } else {
-      throw Exception('Failed to load messages');
+      throw Exception('Failed to load chat messages');
     }
   }
 
   static Future<bool> sendMessage(int caseId, ChatMessage message) async {
-    try {
-      final token = await getToken();
+    final token = await getToken();
 
-      final response = await http.post(
-        Uri.parse('$casesURL/$caseId/messages'),
-        body: jsonEncode({
-          'text': message.text,
-          'sender': message.sender,
-          'timestamp': message.timestamp.toIso8601String(),
-        }),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token',
-        },
-      );
+    final response = await http.post(
+      Uri.parse('${ApiConfig.casesURL}/$caseId/messages'),
+      body: jsonEncode({
+        'text': message.text,
+        'sender': message.sender,
+        'timestamp': message.timestamp.toIso8601String(),
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
 
-      if (response.statusCode == 201) {
-        return true;
-      } else {
-        print('Failed to send message: ${response.statusCode}');
-        return false;
-      }
-    } catch (e) {
-      print('Failed to send message: $e');
-      return false;
+    if (response.statusCode == 201) {
+      return true;
+    } else {
+      throw Exception('Failed to send chat message');
     }
   }
 
+  static Future<List<Case>> getCasesWithMostEnrolledUsers() async {
+    final token = await getToken();
+    final response = await http.get(
+      Uri.parse('$casesURL/most-enrolled'),
+      headers: {'Authorization': 'Bearer $token'},
+    );
 
-
-// Auskommentierte Methoden für Kommentare, die derzeit nicht verwendet werden
-
-// static Future<List<Comment>> getComments(int caseId) async {
-//   final token = await getToken();
-//   final response = await http.get(
-//     Uri.parse('$casesURL/$caseId/comments'),
-//     headers: {'Authorization': 'Bearer $token'},
-//   );
-
-//   if (response.statusCode == 200) {
-//     final List<dynamic> commentsJson = jsonDecode(response.body);
-//     return commentsJson.map((json) => Comment.fromJson(json)).toList();
-//   } else {
-//     throw Exception('Failed to load comments');
-//   }
-// }
-
-// static Future<bool> postComment(int caseId, Comment comment) async {
-//   final token = await getToken();
-
-//   final response = await http.post(
-//     Uri.parse('$casesURL/$caseId/comments'),
-//     body: jsonEncode(comment.toJson()),
-//     headers: {
-//       'Content-Type': 'application/json',
-//       'Authorization': 'Bearer $token',
-//     },
-//   );
-
-//   if (response.statusCode == 201) {
-//     return true;
-//   } else {
-//     throw Exception('Failed to post comment');
-//   }
-// }
+    if (response.statusCode == 200) {
+      final List<dynamic> jsonResponse = jsonDecode(response.body);
+      return jsonResponse.map((data) => Case.fromJson(data)).toList();
+    } else {
+      throw Exception('Failed to load cases with most enrolled users');
+    }
+  }
 }
