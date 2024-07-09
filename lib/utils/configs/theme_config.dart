@@ -4,10 +4,9 @@ import 'package:google_fonts/google_fonts.dart';
 
 
 class ThemeConfig {
-  // Farben für das Theme
-  static const Color background = Color(0xFFF1F1F3); // Leicht dunkleres Weiß
+  static const Color background = Color(0xFFF1F1F3);
   static Color primary = Colors.white;
-  static Color blueAccent = Colors.blue; // Elegantes Dunkelblau
+  static Color blueAccent = Colors.blue;
   static Color blackAccent = Colors.black;
   static Color lightGreyAccent = Color(0xFFA2A1A1);
   static Color darkGreyAccent = Color(0xFF5E5E5E);
@@ -18,7 +17,7 @@ class ThemeConfig {
 
   static ThemeData lightTheme = ThemeData(
     primaryColor: Color(0xFF6E0F53),
-    scaffoldBackgroundColor: background, // Haupthintergrundfarbe
+    scaffoldBackgroundColor: background,
     appBarTheme: AppBarTheme(
       backgroundColor: primary,
       elevation: 0,
@@ -64,34 +63,34 @@ class ThemeConfig {
 
     ),
     inputDecorationTheme: InputDecorationTheme(
-      hintStyle: const TextStyle(color: textSecondary), // Hinweisfarbe für Textfelder
+      hintStyle: const TextStyle(color: textSecondary),
       border: OutlineInputBorder(
-        borderSide: BorderSide(color: lightGreyAccent), // Umrandungsfarbe für Textfelder (Gelb)
+        borderSide: BorderSide(color: lightGreyAccent),
       ),
       focusedBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: lightGreyAccent), // Umrandungsfarbe im Fokus
+        borderSide: BorderSide(color: lightGreyAccent),
       ),
       enabledBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: lightGreyAccent), // Umrandungsfarbe im Standardzustand
+        borderSide: BorderSide(color: lightGreyAccent),
       ),
       filled: true,
-      fillColor: background, // Hintergrundfarbe für Textfelder
+      fillColor: background,
     ),
 
     dialogTheme: DialogTheme(
-      backgroundColor: Colors.white, // Hier die gewünschte Hintergrundfarbe setzen
+      backgroundColor: Colors.white,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0), // Optional: Runde die Ecken des Dialogs
+        borderRadius: BorderRadius.circular(10.0),
       ),
     ),
 
     colorScheme: ColorScheme.fromSwatch().copyWith(
-      primary: lightGreyAccent, // Für Dinge wie Umrandung bei der Searchbar
+      primary: lightGreyAccent,
       secondary: Colors.white,
-      surface: Colors.white, // Füllt Vorschläge bei der Searchbar
-      onPrimary: Colors.white, // Füllt Schaltfläche bei Create Case
+      surface: Colors.white,
+      onPrimary: Colors.white,
       onSecondary: Color(0xFFE308A7),
-      onSurface: textPrimary, // Schriftfarbe bei Homepage-Case-Elementen
+      onSurface: textPrimary,
     ),
   );
 }

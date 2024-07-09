@@ -12,7 +12,6 @@ class RecentSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Nehmen wir an, dass wir die letzten vier Fälle für die kürzlich hinzugefügten Fälle verwenden
     final displayCases = cases.length >= 4 ? cases.sublist(0, 4) : cases;
 
     return Padding(
@@ -22,11 +21,11 @@ class RecentSection extends StatelessWidget {
         children: [
           const SizedBox(height: 20.0),
           Text('Aktuelles', style: TextThemeConfig.smallHeading,),
-          const SizedBox(height: 5.0), // Abstand zwischen Überschrift und Karten
+          const SizedBox(height: 5.0),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: displayCases
-                .take(2) // Zwei Karten in einer Reihe
+                .take(2)
                 .map((caseItem) => Expanded(
               child: GestureDetector(
                 onTap: () {
@@ -37,12 +36,12 @@ class RecentSection extends StatelessWidget {
             ))
                 .toList(),
           ),
-          const SizedBox(height: 5.0), // Abstand zwischen den Reihen
+          const SizedBox(height: 5.0),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: displayCases
                 .skip(2)
-                .take(2) // Zwei Karten in einer Reihe
+                .take(2)
                 .map((caseItem) => Expanded(
               child: GestureDetector(
                 onTap: () {

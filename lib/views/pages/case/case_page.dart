@@ -105,7 +105,6 @@ class _CasePageState extends ConsumerState<CasePage> {
                             } else if (snapshot.hasError) {
                               return Center(child: Text('Error: ${snapshot.error}'));
                             } else {
-                              // Update the caseInfo.userCount with the enrolled users count
                               caseInfo.userCount = snapshot.data ?? 0;
                               return CaseItem(caseInfo: caseInfo);
                             }

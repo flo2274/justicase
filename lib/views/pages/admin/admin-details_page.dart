@@ -42,7 +42,6 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
       });
     } catch (e) {
       print('Failed to load cases: $e');
-      // Handle error as needed
     }
   }
 
@@ -54,7 +53,6 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
       });
     } catch (e) {
       print('Failed to load users: $e');
-      // Handle error as needed
     }
   }
 
@@ -119,7 +117,6 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
                     } else if (snapshot.hasError) {
                       return Center(child: Text('Error: ${snapshot.error}'));
                     } else {
-                      // Update the caseItem.userCount with the enrolled users count
                       myCase.userCount = snapshot.data ?? 0;
                       return AdminCaseItem(
                         caseItem: myCase,
@@ -239,7 +236,6 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
         ),
       );
 
-      // Update user list after successful removal
       _fetchUsersByCase(caseId);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(

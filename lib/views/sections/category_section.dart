@@ -3,7 +3,7 @@ import 'package:mobile_anw/utils/configs/text_theme_config.dart';
 import 'package:mobile_anw/data/constants/case_data.dart';
 import 'package:go_router/go_router.dart';
 
-import '../items/category-case_item.dart'; // Import der go_router Bibliothek für die Navigation
+import '../items/category-case_item.dart';
 
 class CategorySection extends StatelessWidget {
   @override
@@ -18,7 +18,7 @@ class CategorySection extends StatelessWidget {
             'Kategorien',
             style: TextThemeConfig.smallHeading,
           ),
-          const SizedBox(height: 5.0), // Abstand zwischen Überschrift und Karten
+          const SizedBox(height: 5.0),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(

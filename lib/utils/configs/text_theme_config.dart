@@ -7,7 +7,7 @@ class TextThemeConfig {
   static const Color textSecondary = Color(0xFF5E5E5E);
   static const Color? textBlueAccent = Colors.blue;
 
-  static TextStyle largeHeading = GoogleFonts.barlow( // Changed from headlineLarge to headline6
+  static TextStyle largeHeading = GoogleFonts.barlow(
     fontSize: 20.0,
     fontWeight: FontWeight.bold,
     color: textPrimary,

@@ -15,7 +15,7 @@ class CaseDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2, // Number of tabs
+      length: 2,
       child: Scaffold(
         appBar: AppBar(
           title: Text('JUSTICASE'),
@@ -29,8 +29,8 @@ class CaseDetailsPage extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            CaseDetailsForum(myCase: myCase), // First tab content
-            CaseDetailsEnrolled(myCase: myCase), // Second tab content
+            CaseDetailsForum(myCase: myCase),
+            CaseDetailsEnrolled(myCase: myCase),
           ],
         ),
       ),

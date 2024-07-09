@@ -52,9 +52,8 @@ class _IndustryCasesPageState extends State<IndustryCasesPage> {
         itemBuilder: (context, index) {
           var caseItem = cases[index];
           return ListTile(
-            title: Text(caseItem['name']), // Adjust based on your case object structure
-            subtitle: Text(caseItem['companyType']), // Adjust based on your case object structure
-            // Add more widgets to display other case details as needed
+            title: Text(caseItem['name']),
+            subtitle: Text(caseItem['companyType']),
           );
         },
       ),

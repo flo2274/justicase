@@ -12,7 +12,7 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
   void _goBranch(int index) {
     navigationShell.goBranch(
       index,
-      initialLocation: index == navigationShell.currentIndex,// navigate to the initial location when tapping the item that is
+      initialLocation: index == navigationShell.currentIndex,
     );
 
   }

@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile_anw/models/case.dart';
-import 'package:mobile_anw/services/api_service.dart'; // APIService importieren
+import 'package:mobile_anw/services/api_service.dart';
 
 import '../../utils/configs/text_theme_config.dart';
 import '../items/big-case_item.dart';
 
 class SuggestionsSection extends StatefulWidget {
-  final List<Case> cases; // Hier muss der Parameter hinzugefügt werden
+  final List<Case> cases;
 
   SuggestionsSection({Key? key, required this.cases}) : super(key: key);
 

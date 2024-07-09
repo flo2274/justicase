@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_anw/utils/helpers/emoji_helper.dart'; // Importiere die EmojiHelper-Klasse
+import 'package:mobile_anw/utils/helpers/emoji_helper.dart';
 
 class CategoryCaseItem extends StatelessWidget {
   final String name;
@@ -9,14 +9,14 @@ CategoryCaseItem({required this.name});
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 2.0, // Höhe des Schattens
+      elevation: 2.0,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8.0), // Optionale Abrundung der Ecken
+        borderRadius: BorderRadius.circular(8.0),
       ),
       child: Container(
         width: 120,
         height: 35,
-        padding: const EdgeInsets.symmetric(horizontal: 12.0), // Padding für den Inhalt der Karte
+        padding: const EdgeInsets.symmetric(horizontal: 12.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

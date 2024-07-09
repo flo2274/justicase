@@ -16,8 +16,23 @@ class _RegistrationPageState extends State<RegistrationPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _passwordVisible = false;
+  String _errorMessage = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _clearErrorMessage();
+  }
+
+  void _clearErrorMessage() {
+    setState(() {
+      _errorMessage = '';
+    });
+  }
 
   void _register() async {
+    _clearErrorMessage();
+
     final String firstName = _firstNameController.text.trim();
     final String lastName = _lastNameController.text.trim();
     final String username = _usernameController.text.trim();
@@ -27,42 +42,45 @@ class _RegistrationPageState extends State<RegistrationPage> {
     try {
       final success = await APIService.register(firstName, lastName, username, email, password);
       if (success) {
-        // After successful registration, automatically login
-        await _login(email, password);
-      } else {
-        // Handle registration failure
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Registration failed')),
-        );
+        _performLogin(email, password);
       }
     } catch (e) {
-      // Handle registration failure
-      print('Registration failed: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Registration failed')),
-      );
+      _handleError(e);
     }
   }
 
-  Future<void> _login(String email, String password) async {
+  void _handleError(dynamic error) {
+    String errorMessage = error.toString();
+    if (errorMessage.contains('Registration failed')) {
+      errorMessage = 'Nutzer bereits vorhanden.';
+    } else if (errorMessage.contains('Invalid email')) {
+      errorMessage = 'Ungültige Email.';
+    } else if (errorMessage.contains('Invalid password')) {
+      errorMessage = 'Ungültiges Passwort.';
+    } else if (errorMessage.contains('Invalid username')) {
+      errorMessage = 'Ungültiger Benutzername.';
+    } else {
+      errorMessage = 'Ein Fehler ist aufgetreten: $errorMessage';
+    }
+    setState(() {
+      _errorMessage = errorMessage;
+    });
+  }
+
+  void _performLogin(String email, String password) async {
+    _clearErrorMessage();
+
     try {
       final success = await APIService.login(email, password);
       if (success) {
-        if (mounted) {
-          context.go('/home');
-        }
+        context.go('/home');
       } else {
-        // Handle login failure
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Login failed')),
-        );
+        setState(() {
+          _errorMessage = 'Fehler beim automatischen Login nach der Registrierung.';
+        });
       }
     } catch (e) {
-      // Handle login failure
-      print('Login failed: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Login failed')),
-      );
+      _handleError(e);
     }
   }
 
@@ -84,24 +102,22 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   ),
                   SizedBox(height: 10.0),
                   Text(
-                      'WERDEN SIE TEIL UNSERER BEWEGUNG FÜR GERECHTIGKEIT',
-                      style: TextThemeConfig.authSmallHeading
+                    'WIR SIND DIE BEWEGUNG FÜR GERECHTIGKEIT',
+                    style: TextThemeConfig.authSmallHeading,
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 70.0),
+            const SizedBox(height: 20.0),
+            ImageAnimationHelper(),
+            const SizedBox(height: 20.0),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.0),
-              child: Text('Registrieren,', style: TextThemeConfig.authWelcome1Text),
+              child: Text('Willkommen,', style: TextThemeConfig.authWelcome1Text),
             ),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.0),
-              child: Text('denn gemeinsam Recht haben', style: TextThemeConfig.authWelcome2Text),
-            ),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.0),
-              child: Text('war nie einfacher!', style: TextThemeConfig.authWelcome2Text),
+              child: Text('schön dich wiederzusehen', style: TextThemeConfig.authWelcome2Text),
             ),
             Padding(
               padding: EdgeInsets.all(16.0),
@@ -115,8 +131,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     children: [
                       TextField(
                         controller: _firstNameController,
+                        maxLength: 30,
                         decoration: const InputDecoration(
-                          labelText: 'Dein Vorname',
+                          labelText: 'Vorname',
                           prefixIcon: Icon(Icons.person_outline),
                           border: OutlineInputBorder(),
                         ),
@@ -124,8 +141,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       const SizedBox(height: 16.0),
                       TextField(
                         controller: _lastNameController,
+                        maxLength: 30,
                         decoration: const InputDecoration(
-                          labelText: 'Dein Nachname',
+                          labelText: 'Nachname',
                           prefixIcon: Icon(Icons.person_outline),
                           border: OutlineInputBorder(),
                         ),
@@ -133,8 +151,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       const SizedBox(height: 16.0),
                       TextField(
                         controller: _usernameController,
+                        maxLength: 20,
                         decoration: const InputDecoration(
-                          labelText: 'Dein Benutzername',
+                          labelText: 'Benutzername',
                           prefixIcon: Icon(Icons.person_outline),
                           border: OutlineInputBorder(),
                         ),
@@ -142,8 +161,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       const SizedBox(height: 16.0),
                       TextField(
                         controller: _emailController,
+                        maxLength: 50,
                         decoration: const InputDecoration(
-                          labelText: 'Deine E-Mail-Adresse',
+                          labelText: 'E-Mail-Adresse',
                           prefixIcon: Icon(Icons.email_outlined),
                           border: OutlineInputBorder(),
                         ),
@@ -151,9 +171,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       const SizedBox(height: 16.0),
                       TextField(
                         controller: _passwordController,
+                        maxLength: 20,
                         obscureText: !_passwordVisible,
                         decoration: InputDecoration(
-                          labelText: 'Dein Passwort',
+                          labelText: 'Passwort',
                           prefixIcon: Icon(Icons.lock_outlined),
                           border: OutlineInputBorder(),
                           suffixIcon: IconButton(
@@ -183,6 +204,12 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         ),
                       ),
                       const SizedBox(height: 8.0),
+                      if (_errorMessage.isNotEmpty) ...[
+                        Text(
+                          _errorMessage,
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      ],
                       TextButton(
                         onPressed: () {
                           context.go('/login');

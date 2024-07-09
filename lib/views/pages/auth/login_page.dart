@@ -13,24 +13,36 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _passwordVisible = false;
+  String _errorMessage = '';
 
   void _login() async {
+    setState(() {
+      _errorMessage = '';
+    });
+
     final String email = _emailController.text.trim();
     final String password = _passwordController.text.trim();
 
     try {
       final success = await APIService.login(email, password);
       if (success) {
-        // Navigate to another page upon successful login
-        if (mounted) {
-          context.go('/home');
-        }
+        context.go('/home');
       } else {
-        // Handle login failure
+        setState(() {
+          _errorMessage = 'Fehler beim Einloggen. Überprüfen Sie Ihre Eingaben.';
+        });
       }
     } catch (e) {
-      // Handle login failure
-      print('Login failed: $e');
+      String errorMessage = e.toString();
+      if (errorMessage.startsWith('Exception: ')) {
+        errorMessage = errorMessage.substring('Exception: '.length);
+        if (errorMessage == 'Invalid email') {
+          errorMessage = 'Ungültige E-Mail.';
+        }
+      }
+      setState(() {
+        _errorMessage = 'Ein Fehler ist aufgetreten: $errorMessage';
+      });
     }
   }
 
@@ -48,12 +60,12 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   Text(
                     'JUSTICE FOR YOUR CASE',
-                    style: TextThemeConfig.authLargeHeading
+                    style: TextThemeConfig.authLargeHeading,
                   ),
                   SizedBox(height: 10.0),
                   Text(
                     'WIR SIND DIE BEWEGUNG FÜR GERECHTIGKEIT',
-                    style: TextThemeConfig.authSmallHeading
+                    style: TextThemeConfig.authSmallHeading,
                   ),
                 ],
               ),
@@ -81,6 +93,7 @@ class _LoginPageState extends State<LoginPage> {
                     children: [
                       TextField(
                         controller: _emailController,
+                        maxLength: 50,
                         decoration: const InputDecoration(
                           labelText: 'Deine E-Mail-Adresse',
                           prefixIcon: Icon(Icons.email_outlined),
@@ -90,6 +103,7 @@ class _LoginPageState extends State<LoginPage> {
                       const SizedBox(height: 16.0),
                       TextField(
                         controller: _passwordController,
+                        maxLength: 20,
                         obscureText: !_passwordVisible,
                         decoration: InputDecoration(
                           labelText: 'Dein Passwort',
@@ -113,7 +127,7 @@ class _LoginPageState extends State<LoginPage> {
                           backgroundColor: Colors.blue,
                           padding: EdgeInsets.symmetric(vertical: 16.0),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10), // Runde Ecken
+                            borderRadius: BorderRadius.circular(10),
                           ),
                         ),
                         child: const Text(
@@ -122,6 +136,11 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       const SizedBox(height: 8.0),
+                      if (_errorMessage.isNotEmpty)
+                        Text(
+                          _errorMessage,
+                          style: TextStyle(color: Colors.red),
+                        ),
                       TextButton(
                         onPressed: () {
                           context.go('/registration');

@@ -9,7 +9,7 @@ class BigCaseItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    IconData iconData = EmojiHelper.getIndustryIcon(caseItem.industry!); // Verwende EmojiHelper für das Icon
+    IconData iconData = EmojiHelper.getIndustryIcon(caseItem.industry!);
 
     return Card(
       elevation: 2.0,

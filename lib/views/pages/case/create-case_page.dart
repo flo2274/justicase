@@ -124,11 +124,15 @@ class _CreateCasePageState extends ConsumerState<CreateCasePage> {
               if (value == null || value.isEmpty) {
                 return 'Bitte geben Sie den Namen des Unternehmens ein';
               }
+              if (value.length > 50) {
+                return 'Der Name des Unternehmens darf maximal 50 Zeichen lang sein';
+              }
               return null;
             },
             onSaved: (value) {
               _newCase.name = value!;
             },
+            maxLength: 50,
           ),
           const SizedBox(height: 10),
           DropdownButtonFormField<String>(
@@ -146,7 +150,7 @@ class _CreateCasePageState extends ConsumerState<CreateCasePage> {
             }).toList(),
             onChanged: (value) {
               setState(() {
-                _newCase.companyType = value ?? ''; // Handle null case
+                _newCase.companyType = value ?? '';
               });
             },
             validator: (value) {
@@ -171,7 +175,7 @@ class _CreateCasePageState extends ConsumerState<CreateCasePage> {
             }).toList(),
             onChanged: (value) {
               setState(() {
-                _newCase.industry = value ?? ''; // Handle null case
+                _newCase.industry = value ?? '';
               });
             },
             validator: (value) {
@@ -232,9 +236,8 @@ class _CreateCasePageState extends ConsumerState<CreateCasePage> {
         content: const Text('Fall erfolgreich erstellt'),
         backgroundColor: Colors.green,
       ));
-      // Refetch user cases after creating a new case
       ref.read(caseProvider.notifier).fetchUserCases();
-      context.go('/case'); // Navigate back to the previous page (e.g., CasePage)
+      context.go('/case');
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text('Fehler beim Erstellen des Falls: $e'),

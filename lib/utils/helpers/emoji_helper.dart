@@ -16,7 +16,7 @@ class EmojiHelper {
       case 'Online':
         return Icons.web;
       default:
-        return Icons.business; // Standard-Icon für unbekannte Industrie
+        return Icons.business;
     }
   }
 }

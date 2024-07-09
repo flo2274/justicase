@@ -26,8 +26,8 @@ class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
   @override
   void initState() {
     super.initState();
-    ref.read(caseProvider.notifier).fetchAllCases(); // Trigger fetching all cases on widget initialization
-    ref.read(userProvider.notifier).getAllUsers(); // Trigger fetching all users on widget initialization
+    ref.read(caseProvider.notifier).fetchAllCases();
+    ref.read(userProvider.notifier).getAllUsers();
   }
 
   @override
@@ -97,7 +97,7 @@ class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
   void _deleteUser(int userId) async {
     try {
       await APIService.deleteUser(userId);
-      ref.read(userProvider.notifier).refreshAllUsers(); // Refresh user list after deletion
+      ref.read(userProvider.notifier).refreshAllUsers();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('User deleted successfully'),
@@ -186,7 +186,6 @@ class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
             } else if (snapshot.hasError) {
               return Center(child: Text('Error: ${snapshot.error}'));
             } else {
-              // Update the caseItem.userCount with the enrolled users count
               caseInfo.userCount = snapshot.data ?? 0;
               return AdminCaseItem(
                 caseItem: caseInfo,
@@ -225,7 +224,7 @@ class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
   void _deleteCase(int caseId) async {
     try {
       await ref.read(caseProvider.notifier).deleteCase(caseId);
-      await ref.read(caseProvider.notifier).fetchAllCases(); // Refresh case list after deletion
+      await ref.read(caseProvider.notifier).fetchAllCases();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Case deleted successfully'),

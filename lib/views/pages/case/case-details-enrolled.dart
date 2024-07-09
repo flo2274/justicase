@@ -19,9 +19,9 @@ class CaseDetailsEnrolled extends ConsumerStatefulWidget {
 
 class _CaseDetailsEnrolledState extends ConsumerState<CaseDetailsEnrolled> {
   List<User> enrolledUsers = [];
-  late int caseId; // Variable to store the case ID
-  bool isEnrolled = false; // Variable to track if current user is enrolled
-  bool _isLoading = false; // Loading state for API operations
+  late int caseId;
+  bool isEnrolled = false;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -47,7 +47,6 @@ class _CaseDetailsEnrolledState extends ConsumerState<CaseDetailsEnrolled> {
         _isLoading = false;
       });
       print('Failed to load enrolled users: $e');
-      // Handle error as needed
     }
   }
 
@@ -63,7 +62,7 @@ class _CaseDetailsEnrolledState extends ConsumerState<CaseDetailsEnrolled> {
 
   void _toggleEnrollment() async {
     setState(() {
-      _isLoading = true; // Assuming _isLoading is defined in your state
+      _isLoading = true;
     });
 
     try {
@@ -72,14 +71,13 @@ class _CaseDetailsEnrolledState extends ConsumerState<CaseDetailsEnrolled> {
       } else {
         await _enrollUser();
       }
-      // After toggle enrollment, trigger fetchUserCases using caseProvider
       ref.read(caseProvider.notifier).fetchUserCases();
     } catch (e) {
       print('Failed to toggle enrollment: $e');
       // Handle error as needed
     } finally {
       setState(() {
-        _isLoading = false; // Assuming _isLoading is defined in your state
+        _isLoading = false;
       });
     }
   }
@@ -88,11 +86,9 @@ class _CaseDetailsEnrolledState extends ConsumerState<CaseDetailsEnrolled> {
   Future<void> _enrollUser() async {
     try {
       await APIService.addUserToCase(caseId);
-      // Refresh enrolled users list after enrollment
       await _fetchEnrolledUsers();
     } catch (e) {
       print('Failed to enroll user: $e');
-      // Handle error as needed
     } finally {
       setState(() {
         _isLoading = false;
@@ -103,11 +99,9 @@ class _CaseDetailsEnrolledState extends ConsumerState<CaseDetailsEnrolled> {
   Future<void> _removeFromCase() async {
     try {
       await APIService.removeUserFromCase(caseId);
-      // Refresh enrolled users list after removal
       await _fetchEnrolledUsers();
     } catch (e) {
       print('Failed to remove user from case: $e');
-      // Handle error as needed
     } finally {
       setState(() {
         _isLoading = false;

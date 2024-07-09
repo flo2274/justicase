@@ -1,7 +1,7 @@
 import 'package:mobile_anw/models/user.dart';
 
 class UserState {
-  final List<User> allUsers; // List of all users
+  final List<User> allUsers;
   final bool isLoading;
   final String? errorMessage;
 

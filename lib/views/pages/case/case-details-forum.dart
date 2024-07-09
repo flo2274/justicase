@@ -5,6 +5,7 @@ import 'package:mobile_anw/models/chat_message.dart';
 import 'package:mobile_anw/services/api_service.dart';
 import '../../../utils/configs/text_theme_config.dart';
 import '../../../utils/user_preferences.dart';
+import '../../items/message-bubble_item.dart';
 
 class CaseDetailsForum extends StatefulWidget {
   final Case myCase;
@@ -18,6 +19,7 @@ class CaseDetailsForum extends StatefulWidget {
 class _CaseDetailsForumState extends State<CaseDetailsForum> {
   List<ChatMessage> _messages = [];
   final TextEditingController _messageController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
   late int _userId;
   late String _username;
   late bool _isAdmin;
@@ -42,6 +44,7 @@ class _CaseDetailsForumState extends State<CaseDetailsForum> {
   @override
   void dispose() {
     _timer.cancel();
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -53,7 +56,7 @@ class _CaseDetailsForumState extends State<CaseDetailsForum> {
         _isAdmin = isAdmin;
         _isUserDataLoaded = true;
       });
-      _loadMessages(); // Load messages once user data is loaded
+      _loadMessages();
     });
   }
 
@@ -64,9 +67,9 @@ class _CaseDetailsForumState extends State<CaseDetailsForum> {
       setState(() {
         _messages = messages;
       });
+      _scrollToBottom();
     } catch (e) {
       print('Failed to load messages: $e');
-      // Handle the error appropriately
     }
   }
 
@@ -79,15 +82,16 @@ class _CaseDetailsForumState extends State<CaseDetailsForum> {
       final message = ChatMessage(
         text: _messageController.text,
         username: _username,
-        timestamp: DateTime.now(),
+        timestamp: DateTime.now().toUtc(),
       );
 
       final success = await APIService.sendMessageToCase(caseId, message);
       if (success) {
         setState(() {
-          _messages.add(message); // Add new message to the end of the list
+          _messages.add(message);
         });
         _messageController.clear();
+        _scrollToBottom();
       } else {
         print('Failed to send message');
       }
@@ -96,108 +100,69 @@ class _CaseDetailsForumState extends State<CaseDetailsForum> {
     }
   }
 
+  void _scrollToBottom() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_scrollController.hasClients) {
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          Expanded(
-            child: _messages.isEmpty
-                ? Center(child: Text('Im Forum gibt es bisher keine Nachrichten...'))
-                : ListView.builder(
-              itemCount: _messages.length,
-              itemBuilder: (ctx, index) {
-                final message = _messages[index];
-                return MessageBubble(
-                  key: ValueKey(message.id),
-                  message: message.text,
-                  sender: message.username,
-                  timestamp: message.timestamp,
-                  isMe: message.username == _username,
-                );
-              },
-            ),
+      backgroundColor: Colors.white,
+      body: Center(
+        child: Container(
+          margin: EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.white, width: 2),
+            borderRadius: BorderRadius.circular(12),
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _messageController,
-                    decoration: InputDecoration(labelText: 'Send a message...'),
-                  ),
+          child: Column(
+            children: [
+              Expanded(
+                child: _messages.isEmpty
+                    ? Center(child: Text('Im Forum gibt es bisher keine Nachrichten...'))
+                    : ListView.builder(
+                  controller: _scrollController,
+                  itemCount: _messages.length,
+                  itemBuilder: (ctx, index) {
+                    final message = _messages[index];
+                    return MessageBubble(
+                      key: ValueKey(message.id),
+                      message: message.text,
+                      sender: message.username,
+                      timestamp: message.timestamp,
+                      isMe: message.username == _username,
+                    );
+                  },
                 ),
-                SizedBox(width: 8),
-                IconButton(
-                  icon: Icon(Icons.send),
-                  onPressed: _sendMessage,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: _messageController,
+                        decoration: InputDecoration(labelText: 'Send a message...'),
+                      ),
+                    ),
+                    SizedBox(width: 8),
+                    IconButton(
+                      icon: Icon(Icons.send),
+                      onPressed: _sendMessage,
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
-      ),
-    );
-  }
-}
-
-class MessageBubble extends StatelessWidget {
-  final String message;
-  final String sender;
-  final DateTime timestamp;
-  final bool isMe;
-
-  const MessageBubble({
-    Key? key,
-    required this.message,
-    required this.sender,
-    required this.timestamp,
-    required this.isMe,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Align(
-      alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
-      child: Container(
-        margin: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
-        decoration: BoxDecoration(
-          color: isMe ? Colors.blue : Colors.grey[300],
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(12),
-            topRight: Radius.circular(12),
-            bottomLeft: isMe ? Radius.circular(12) : Radius.zero,
-            bottomRight: isMe ? Radius.zero : Radius.circular(12),
-          ),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              sender,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: isMe ? Colors.white : Colors.black,
-              ),
-            ),
-            SizedBox(height: 4),
-            Text(
-              message,
-              style: TextStyle(
-                color: isMe ? Colors.white : Colors.black,
-              ),
-            ),
-            SizedBox(height: 4),
-            Text(
-              '${timestamp.hour}:${timestamp.minute}',
-              style: TextStyle(
-                fontSize: 10,
-                color: isMe ? Colors.white60 : Colors.black54,
-              ),
-            ),
-          ],
         ),
       ),
     );

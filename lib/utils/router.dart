@@ -16,7 +16,6 @@ import '../models/user.dart';
 import '../views/pages/admin/admin-details_page.dart';
 import '../views/pages/home/industry_page.dart';
 
-// private navigators (Unterstrich macht sie privat)
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorHomeKey = GlobalKey<NavigatorState>(debugLabel: 'shellHome');
 final _shellNavigatorSearchKey = GlobalKey<NavigatorState>(debugLabel: 'shellSearch');
