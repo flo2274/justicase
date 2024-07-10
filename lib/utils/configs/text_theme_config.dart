@@ -5,6 +5,7 @@ class TextThemeConfig {
 
   static const Color textPrimary = Colors.black;
   static const Color textSecondary = Color(0xFF5E5E5E);
+  static const Color textLightSecondary = Color(0xFF9D9D9D);
   static const Color? textBlueAccent = Colors.blue;
 
   static TextStyle largeHeading = GoogleFonts.barlow(
@@ -80,13 +81,13 @@ class TextThemeConfig {
   static const TextStyle largeCardText = TextStyle(
     fontSize: 16.0,
     fontWeight: FontWeight.normal,
-    color: Colors.black87,
+    color: textSecondary,
   );
 
   static const TextStyle smallCardText = TextStyle(
-    fontSize: 10.0,
+    fontSize: 14.0,
     fontWeight: FontWeight.normal,
-    color: textSecondary,
+    color: textLightSecondary,
   );
 
   static const TextStyle buttonText = TextStyle(

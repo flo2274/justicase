@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
-
-import '../../../services/api_service.dart';
+import 'package:mobile_anw/models/case.dart';
+import 'package:mobile_anw/utils/helpers/emoji_helper.dart';
+import 'package:go_router/go_router.dart';
+import 'package:mobile_anw/services/api_service.dart';
+import '../../../utils/configs/text_theme_config.dart';
+import '../../items/case_item.dart'; // Stelle sicher, dass der Import richtig ist
 
 class IndustryCasesPage extends StatefulWidget {
   final String industry;
@@ -12,7 +16,7 @@ class IndustryCasesPage extends StatefulWidget {
 }
 
 class _IndustryCasesPageState extends State<IndustryCasesPage> {
-  List<dynamic> cases = [];
+  List<Case> cases = [];
   bool isLoading = true;
   String error = '';
 
@@ -25,8 +29,15 @@ class _IndustryCasesPageState extends State<IndustryCasesPage> {
   Future<void> fetchCasesByIndustry() async {
     try {
       var fetchedCases = await APIService.getCasesByIndustry(widget.industry);
+      List<Case> updatedCases = [];
+      for (var caseJson in fetchedCases) {
+        Case caseInfo = Case.fromJson(caseJson);
+        int enrolledUsersCount = await APIService.getEnrolledUsersCount(caseInfo.id!);
+        caseInfo.userCount = enrolledUsersCount;
+        updatedCases.add(caseInfo);
+      }
       setState(() {
-        cases = fetchedCases;
+        cases = updatedCases;
         isLoading = false;
       });
     } catch (e) {
@@ -41,21 +52,34 @@ class _IndustryCasesPageState extends State<IndustryCasesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Cases by Industry: ${widget.industry}'),
+        title: Text('JUSTICASE'),
+        centerTitle: true,
       ),
       body: isLoading
           ? Center(child: CircularProgressIndicator())
           : error.isNotEmpty
           ? Center(child: Text(error))
-          : ListView.builder(
-        itemCount: cases.length,
-        itemBuilder: (context, index) {
-          var caseItem = cases[index];
-          return ListTile(
-            title: Text(caseItem['name']),
-            subtitle: Text(caseItem['companyType']),
-          );
-        },
+          : Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              '${widget.industry}',
+              style: TextThemeConfig.smallHeading,
+            ),
+            SizedBox(height: 5.0),
+            Expanded(
+              child: ListView.builder(
+                itemCount: cases.length,
+                itemBuilder: (context, index) {
+                  var caseInfo = cases[index];
+                  return CaseItem(caseInfo: caseInfo);
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

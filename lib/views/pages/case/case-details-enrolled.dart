@@ -119,26 +119,6 @@ class _CaseDetailsEnrolledState extends ConsumerState<CaseDetailsEnrolled> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Neuen Fall erstellen', style: TextThemeConfig.largeHeading,),
-                        Text(
-                          'Case Name: ${widget.myCase.name}',
-                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(height: 8),
-                        Text('Company Type: ${widget.myCase.companyType ?? 'N/A'}'),
-                        SizedBox(height: 8),
-                        Text('Industry: ${widget.myCase.industry ?? 'N/A'}'),
-                        SizedBox(height: 8),
-                        Text('ID: ${widget.myCase.id ?? 'N/A'}'),
-                      ],
-                    ),
-                  ),
-
                   // Enrolled Users List
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),

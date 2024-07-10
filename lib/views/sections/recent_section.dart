@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart'; // Import the go_router package
+import 'package:go_router/go_router.dart';
 import 'package:mobile_anw/models/case.dart';
 
 import '../../utils/configs/text_theme_config.dart';
@@ -12,6 +12,10 @@ class RecentSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Sortiere die Fälle nach dem Erstellungsdatum (neueste zuerst)
+    cases.sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
+
+    // Zeige die ersten 4 Fälle an oder weniger, wenn weniger als 4 vorhanden sind
     final displayCases = cases.length >= 4 ? cases.sublist(0, 4) : cases;
 
     return Padding(
@@ -20,7 +24,7 @@ class RecentSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 20.0),
-          Text('Aktuelles', style: TextThemeConfig.smallHeading,),
+          Text('Aktuelles', style: TextThemeConfig.smallHeading),
           const SizedBox(height: 5.0),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,

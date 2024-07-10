@@ -3,6 +3,8 @@ import 'package:mobile_anw/models/case.dart';
 import 'package:mobile_anw/utils/helpers/emoji_helper.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../utils/configs/text_theme_config.dart';
+
 class CaseItem extends StatelessWidget {
   final Case caseInfo;
 
@@ -21,51 +23,80 @@ class CaseItem extends StatelessWidget {
         },
         child: Container(
           height: 110.0, // Feste Höhe für den CaseItem
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(12.0),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Icon(
-                EmojiHelper.getIndustryIcon(caseInfo.industry ?? ''),
-                size: 30,
-                color: Colors.blue,
+              // Industry Icon
+              Container(
+                alignment: Alignment.center,
+                child: Icon(
+                  EmojiHelper.getIndustryIcon(caseInfo.industry ?? ''),
+                  size: 30,
+                  color: Colors.blue,
+                ),
               ),
-              SizedBox(width: 8),
+              SizedBox(width: 12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    // Case Name
                     Text(
                       caseInfo.name ?? '',
-                      style: TextStyle(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.normal,
-                        color: Colors.black,
-                      ),
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
+                      style: TextThemeConfig.largeCardText
                     ),
                     SizedBox(height: 4),
+                    // Company Type
                     Text(
                       caseInfo.companyType ?? 'Kein Unternehmen',
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
+                      style: TextThemeConfig.smallCardText,
                     ),
                     SizedBox(height: 8),
-                    Container(
-                      height: 10,
-                      child: LinearProgressIndicator(
-                        value: progress,
-                        backgroundColor: Colors.grey[300]!,
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                          progress >= 1.0 ? Colors.green : Colors.blue,
+                    // Progress Indicator and User Count
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        // Progress Indicator
+                        Expanded(
+                          child: Stack(
+                            children: [
+                              Container(
+                                height: 8,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[300]!,
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                              ),
+                              Container(
+                                height: 8,
+                                width: progress * 100.0,
+                                decoration: BoxDecoration(
+                                  color: progress >= 1.0 ? Colors.green : Colors.blue,
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
+                        SizedBox(width: 8),
+                        // User Count
+                        Text(
+                          '${caseInfo.userCount ?? 0} / 50',
+                          style: TextStyle(
+                            fontSize: 12.0,
+                            color: Colors.black54,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
               ),
-              SizedBox(width: 8),
+              SizedBox(width: 12),
               Icon(Icons.arrow_forward_ios, size: 16),
             ],
           ),

@@ -28,9 +28,7 @@ class _LoginPageState extends State<LoginPage> {
       if (success) {
         context.go('/home');
       } else {
-        setState(() {
-          _errorMessage = 'Fehler beim Einloggen. Überprüfen Sie Ihre Eingaben.';
-        });
+        _showErrorBanner('Fehler beim Einloggen. Überprüfen Sie Ihre Eingaben.');
       }
     } catch (e) {
       String errorMessage = e.toString();
@@ -40,10 +38,20 @@ class _LoginPageState extends State<LoginPage> {
           errorMessage = 'Ungültige E-Mail.';
         }
       }
-      setState(() {
-        _errorMessage = 'Ein Fehler ist aufgetreten: $errorMessage';
-      });
+      _showErrorBanner('Ein Fehler ist aufgetreten: $errorMessage');
     }
+  }
+
+  void _showErrorBanner(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Colors.red,
+      ),
+    );
+    setState(() {
+      _errorMessage = message;
+    });
   }
 
   @override
@@ -98,6 +106,8 @@ class _LoginPageState extends State<LoginPage> {
                           labelText: 'Deine E-Mail-Adresse',
                           prefixIcon: Icon(Icons.email_outlined),
                           border: OutlineInputBorder(),
+                          counterText: '',
+                          counterStyle: TextStyle(fontSize: 0, height: 0), // Hide counter text
                         ),
                       ),
                       const SizedBox(height: 16.0),
@@ -117,6 +127,8 @@ class _LoginPageState extends State<LoginPage> {
                               });
                             },
                           ),
+                          counterText: '',
+                          counterStyle: TextStyle(fontSize: 0, height: 0), // Hide counter text
                         ),
                       ),
                       const SizedBox(height: 16.0),
@@ -136,11 +148,6 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       const SizedBox(height: 8.0),
-                      if (_errorMessage.isNotEmpty)
-                        Text(
-                          _errorMessage,
-                          style: TextStyle(color: Colors.red),
-                        ),
                       TextButton(
                         onPressed: () {
                           context.go('/registration');

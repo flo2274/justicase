@@ -40,7 +40,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
     final String password = _passwordController.text.trim();
 
     try {
-      final success = await APIService.register(firstName, lastName, username, email, password);
+      final success = await APIService.register(
+          firstName, lastName, username, email, password);
       if (success) {
         _performLogin(email, password);
       }
@@ -62,6 +63,15 @@ class _RegistrationPageState extends State<RegistrationPage> {
     } else {
       errorMessage = 'Ein Fehler ist aufgetreten: $errorMessage';
     }
+
+    // Show the error message in a banner
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(errorMessage),
+        backgroundColor: Colors.red,
+      ),
+    );
+
     setState(() {
       _errorMessage = errorMessage;
     });
@@ -76,7 +86,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
         context.go('/home');
       } else {
         setState(() {
-          _errorMessage = 'Fehler beim automatischen Login nach der Registrierung.';
+          _errorMessage =
+          'Fehler beim automatischen Login nach der Registrierung.';
         });
       }
     } catch (e) {
@@ -113,78 +124,67 @@ class _RegistrationPageState extends State<RegistrationPage> {
             const SizedBox(height: 20.0),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.0),
-              child: Text('Willkommen,', style: TextThemeConfig.authWelcome1Text),
+              child: Text(
+                  'Willkommen,', style: TextThemeConfig.authWelcome1Text),
             ),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.0),
-              child: Text('schön dich wiederzusehen', style: TextThemeConfig.authWelcome2Text),
+              child: Text('schön dich wiederzusehen',
+                  style: TextThemeConfig.authWelcome2Text),
             ),
             Padding(
               padding: EdgeInsets.all(16.0),
               child: Card(
                 elevation: 2.0,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0)),
                 child: Padding(
                   padding: const EdgeInsets.all(24.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      TextField(
+                      _buildTextField(
                         controller: _firstNameController,
+                        labelText: 'Vorname',
                         maxLength: 30,
-                        decoration: const InputDecoration(
-                          labelText: 'Vorname',
-                          prefixIcon: Icon(Icons.person_outline),
-                          border: OutlineInputBorder(),
-                        ),
+                        prefixIcon: Icons.person_outline,
                       ),
                       const SizedBox(height: 16.0),
-                      TextField(
+                      _buildTextField(
                         controller: _lastNameController,
+                        labelText: 'Nachname',
                         maxLength: 30,
-                        decoration: const InputDecoration(
-                          labelText: 'Nachname',
-                          prefixIcon: Icon(Icons.person_outline),
-                          border: OutlineInputBorder(),
-                        ),
+                        prefixIcon: Icons.person_outline,
                       ),
                       const SizedBox(height: 16.0),
-                      TextField(
+                      _buildTextField(
                         controller: _usernameController,
+                        labelText: 'Benutzername',
                         maxLength: 20,
-                        decoration: const InputDecoration(
-                          labelText: 'Benutzername',
-                          prefixIcon: Icon(Icons.person_outline),
-                          border: OutlineInputBorder(),
-                        ),
+                        prefixIcon: Icons.person_outline,
                       ),
                       const SizedBox(height: 16.0),
-                      TextField(
+                      _buildTextField(
                         controller: _emailController,
+                        labelText: 'E-Mail-Adresse',
                         maxLength: 50,
-                        decoration: const InputDecoration(
-                          labelText: 'E-Mail-Adresse',
-                          prefixIcon: Icon(Icons.email_outlined),
-                          border: OutlineInputBorder(),
-                        ),
+                        prefixIcon: Icons.email_outlined,
                       ),
                       const SizedBox(height: 16.0),
-                      TextField(
+                      _buildTextField(
                         controller: _passwordController,
+                        labelText: 'Passwort',
                         maxLength: 20,
+                        prefixIcon: Icons.lock_outlined,
                         obscureText: !_passwordVisible,
-                        decoration: InputDecoration(
-                          labelText: 'Passwort',
-                          prefixIcon: Icon(Icons.lock_outlined),
-                          border: OutlineInputBorder(),
-                          suffixIcon: IconButton(
-                            icon: Icon(_passwordVisible ? Icons.visibility : Icons.visibility_off),
-                            onPressed: () {
-                              setState(() {
-                                _passwordVisible = !_passwordVisible;
-                              });
-                            },
-                          ),
+                        suffixIcon: IconButton(
+                          icon: Icon(_passwordVisible ? Icons.visibility : Icons
+                              .visibility_off),
+                          onPressed: () {
+                            setState(() {
+                              _passwordVisible = !_passwordVisible;
+                            });
+                          },
                         ),
                       ),
                       const SizedBox(height: 16.0),
@@ -204,12 +204,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         ),
                       ),
                       const SizedBox(height: 8.0),
-                      if (_errorMessage.isNotEmpty) ...[
-                        Text(
-                          _errorMessage,
-                          style: TextStyle(color: Colors.red),
-                        ),
-                      ],
                       TextButton(
                         onPressed: () {
                           context.go('/login');
@@ -226,6 +220,29 @@ class _RegistrationPageState extends State<RegistrationPage> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildTextField({
+    required TextEditingController controller,
+    required String labelText,
+    required int maxLength,
+    required IconData prefixIcon,
+    bool obscureText = false,
+    Widget? suffixIcon,
+  }) {
+    return TextField(
+      controller: controller,
+      maxLength: maxLength,
+      obscureText: obscureText,
+      decoration: InputDecoration(
+        labelText: labelText,
+        prefixIcon: Icon(prefixIcon),
+        counterText: '',
+        counterStyle: TextStyle(fontSize: 0, height: 0), // Set size and height to 0 to hide
+        border: OutlineInputBorder(),
+        suffixIcon: suffixIcon,
       ),
     );
   }

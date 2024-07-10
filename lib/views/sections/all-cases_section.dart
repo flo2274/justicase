@@ -6,6 +6,7 @@ import 'package:mobile_anw/state/notifiers/case_notifier.dart';
 import 'package:mobile_anw/state/models/case_state.dart';
 import 'package:mobile_anw/utils/configs/text_theme_config.dart';
 import '../items/big-case_item.dart';
+import 'package:go_router/go_router.dart';
 
 class AllCasesSection extends ConsumerWidget {
   const AllCasesSection({Key? key}) : super(key: key);
@@ -13,8 +14,6 @@ class AllCasesSection extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final caseState = ref.watch(caseProvider);
-
-
 
     if (caseState.isLoading) {
       return Center(child: CircularProgressIndicator());
@@ -46,7 +45,12 @@ class AllCasesSection extends ConsumerWidget {
             itemCount: caseState.allCases.length,
             itemBuilder: (context, index) {
               final caseItem = caseState.allCases[index];
-              return BigCaseItem(caseItem: caseItem);
+              return GestureDetector(
+                onTap: () {
+                  context.go('/case/caseDetails', extra: caseItem);
+                },
+                child: BigCaseItem(caseItem: caseItem),
+              );
             },
           ),
         ),

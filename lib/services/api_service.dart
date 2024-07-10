@@ -9,26 +9,19 @@ import 'package:mobile_anw/services/api_config.dart';
 import '../utils/validations.dart';
 
 class APIService {
-  static const String baseURL = 'http://localhost:3000';
-  static const String registerURL = '$baseURL/auth/register';
-  static const String loginURL = '$baseURL/auth/login';
-  static const String usersURL = '$baseURL/users';
-  static const String casesURL = '$baseURL/cases';
-  static const String casesByUsersURL = '$casesURL/user';
-  static const String usersByCaseURL = '$usersURL/case';
 
   static final storage = FlutterSecureStorage();
 
   static Future<bool> register(String firstName, String lastName, String username, String email, String password) async {
-    if (!Validations.isNotEmpty(firstName)) throw Exception('First name cannot be empty');
-    if (!Validations.isNotEmpty(lastName)) throw Exception('Last name cannot be empty');
-    if (!Validations.isValidUsername(username)) throw Exception('Invalid username');
-    if (!Validations.isValidEmail(email)) throw Exception('Invalid email');
-    if (!Validations.isValidPassword(password)) throw Exception('Invalid password');
+    if (!Validations.isNotEmpty(firstName)) throw 'Vorname darf nicht leer sein';
+    if (!Validations.isNotEmpty(lastName)) throw 'Nachname darf nicht leer sein';
+    if (!Validations.isValidUsername(username)) throw 'Ungültiger Benutzername';
+    if (!Validations.isValidEmail(email)) throw 'Ungültige E-Mail-Adresse';
+    if (!Validations.isValidPassword(password)) throw 'Ungültiges Passwort';
 
     try {
       final response = await http.post(
-        Uri.parse(registerURL),
+        Uri.parse(ApiConfig.registerURL),
         body: jsonEncode({
           'firstName': firstName,
           'lastName': lastName,
@@ -43,28 +36,30 @@ class APIService {
         return true;
       } else if (response.statusCode == 400) {
         final Map<String, dynamic> errorResponse = jsonDecode(response.body);
-        String errorMessage = 'Registration failed';
+        String errorMessage = 'Registrierung fehlgeschlagen: ';
         if (errorResponse.containsKey('errors')) {
-          errorMessage = errorResponse['errors'].join('\n');
+          errorMessage += errorResponse['errors'].join('\n');
+        } else if (errorResponse.containsKey('message')) {
+          errorMessage += errorResponse['message'];
         }
-        print('Registration failed: $errorMessage');
-        throw Exception(errorMessage);
+        print('Registrierung fehlgeschlagen: $errorMessage');
+        throw errorMessage;
       } else {
-        print('Failed to register: ${response.statusCode}');
-        throw Exception('Failed to register: ${response.statusCode}');
+        print('Registrierung fehlgeschlagen: ${response.statusCode}');
+        throw 'Registrierung fehlgeschlagen: ${response.statusCode}';
       }
     } catch (e) {
-      print('Registration failed: $e');
-      throw Exception('Failed to register: $e');
+      print('Registrierung fehlgeschlagen: $e');
+      throw 'Registrierung fehlgeschlagen: $e';
     }
   }
 
   static Future<bool> login(String email, String password) async {
-    if (!Validations.isValidEmail(email)) throw Exception('Invalid email');
-    if (!Validations.isValidPassword(password)) throw Exception('Invalid password');
+    if (!Validations.isValidEmail(email)) throw Exception('Ungültige E-Mail-Adresse');
+    if (!Validations.isValidPassword(password)) throw Exception('Ungültiges Passwort');
 
     final response = await http.post(
-      Uri.parse(loginURL),
+      Uri.parse(ApiConfig.loginURL),
       body: jsonEncode({'email': email, 'password': password}),
       headers: {'Content-Type': 'application/json'},
     );
@@ -87,11 +82,11 @@ class APIService {
 
         return true;
       } else {
-        print('Unexpected JSON structure: $data');
+        print('Unerwartete JSON-Struktur: $data');
         return false;
       }
     } else {
-      print('Failed to login: ${response.body}');
+      print('Anmeldung fehlgeschlagen: ${response.body}');
       return false;
     }
   }
@@ -109,7 +104,7 @@ class APIService {
   static Future<List<User>> getUsers() async {
     final token = await getToken();
     final response = await http.get(
-      Uri.parse(usersURL),
+      Uri.parse(ApiConfig.usersURL),
       headers: {'Authorization': 'Bearer $token'},
     );
 
@@ -117,7 +112,7 @@ class APIService {
       final List<dynamic> usersJson = jsonDecode(response.body);
       return usersJson.map((json) => User.fromJson(json)).toList();
     } else {
-      throw Exception('Failed to load users');
+      throw Exception('Fehler beim Laden der Benutzer');
     }
   }
 
@@ -125,7 +120,7 @@ class APIService {
     final token = await getToken();
 
     final response = await http.post(
-      Uri.parse(casesURL),
+      Uri.parse(ApiConfig.casesURL),
       body: jsonEncode({
         'name': newCase.name,
         'companyType': newCase.companyType,
@@ -140,14 +135,14 @@ class APIService {
     if (response.statusCode == 201) {
       return true;
     } else {
-      throw Exception('Failed to create case');
+      throw Exception('Fehler beim Erstellen des Falls');
     }
   }
 
   static Future<List<Case>> getAllCases() async {
     final token = await getToken();
     final response = await http.get(
-      Uri.parse(casesURL),
+      Uri.parse(ApiConfig.casesURL),
       headers: {'Authorization': 'Bearer $token'},
     );
 
@@ -156,14 +151,14 @@ class APIService {
       return casesJson.map((json) => Case.fromJson(json)).toList();
     } else {
       print(response.statusCode);
-      throw Exception('Failed to load cases');
+      throw Exception('Fehler beim Laden der Fälle');
     }
   }
 
   static Future<List<Case>> getCasesByUser({int? userId}) async {
     final token = await getToken();
 
-    String url = casesByUsersURL;
+    String url = ApiConfig.casesByUsersURL;
     if (userId != null) {
       url += '?userId=$userId';
     }
@@ -177,14 +172,14 @@ class APIService {
       final List<dynamic> casesJson = jsonDecode(response.body);
       return casesJson.map((json) => Case.fromJson(json)).toList();
     } else {
-      throw Exception('Failed to load cases');
+      throw Exception('Fehler beim Laden der Fälle');
     }
   }
 
   static Future<List<dynamic>> getCasesByIndustry(String industry) async {
     final token = await getToken();
     final response = await http.get(
-      Uri.parse('$casesURL/industry?industry=$industry'),
+      Uri.parse('${ApiConfig.casesURL}/industry?industry=$industry'),
       headers: {'Authorization': 'Bearer $token'},
     );
 
@@ -192,14 +187,14 @@ class APIService {
       List<dynamic> cases = jsonDecode(response.body);
       return cases;
     } else {
-      throw Exception('Failed to load cases by industry');
+      throw Exception('Fehler beim Laden der Fälle nach Branche');
     }
   }
 
   static Future<List<User>> getUsersByCase(int caseId) async {
     final token = await getToken();
     final response = await http.get(
-      Uri.parse('$usersByCaseURL/$caseId'),
+      Uri.parse('${ApiConfig.usersByCaseURL}/$caseId'),
       headers: {'Authorization': 'Bearer $token'},
     );
 
@@ -207,13 +202,13 @@ class APIService {
       final List<dynamic> usersJson = jsonDecode(response.body);
       return usersJson.map((json) => User.fromJson(json)).toList();
     } else {
-      throw Exception('Failed to load users by case');
+      throw Exception('Fehler beim Laden der Benutzer für den Fall');
     }
   }
 
   static Future<void> addUserToCase(int caseId, {int? userId}) async {
     final token = await getToken();
-    String url = '$casesURL/$caseId/user';
+    String url = '${ApiConfig.casesURL}/$caseId/user';
     if (userId != null) {
       url += '?userId=$userId';
     }
@@ -229,13 +224,13 @@ class APIService {
     if (response.statusCode == 201) {
       return;
     } else {
-      throw Exception('Failed to add user to case');
+      throw Exception('Fehler beim Hinzufügen des Benutzers zum Fall');
     }
   }
 
   static Future<void> removeUserFromCase(int caseId, {int? userId}) async {
     final token = await getToken();
-    String url = '$casesURL/$caseId/user';
+    String url = '${ApiConfig.casesURL}/$caseId/user';
 
     if (userId != null) {
       url += '?userId=$userId';
@@ -252,7 +247,7 @@ class APIService {
     if (response.statusCode == 200) {
       return;
     } else {
-      throw Exception('Failed to remove user from case');
+      throw Exception('Fehler beim Entfernen des Benutzers aus dem Fall');
     }
   }
 
@@ -260,7 +255,7 @@ class APIService {
     final token = await getToken();
 
     final response = await http.delete(
-      Uri.parse('$usersURL/$userId'),
+      Uri.parse('${ApiConfig.usersURL}/$userId'),
       headers: {
         'Authorization': 'Bearer $token',
       },
@@ -269,7 +264,7 @@ class APIService {
     if (response.statusCode == 200) {
       return;
     } else {
-      throw Exception('Failed to delete user');
+      throw Exception('Fehler beim Löschen des Benutzers');
     }
   }
 
@@ -277,7 +272,7 @@ class APIService {
     final token = await getToken();
 
     final response = await http.delete(
-      Uri.parse('$casesURL/$caseId'),
+      Uri.parse('${ApiConfig.casesURL}/$caseId'),
       headers: {
         'Authorization': 'Bearer $token',
       },
@@ -286,7 +281,7 @@ class APIService {
     if (response.statusCode == 200) {
       return;
     } else {
-      throw Exception('Failed to delete case');
+      throw Exception('Fehler beim Löschen des Falls');
     }
   }
 
@@ -294,24 +289,26 @@ class APIService {
     try {
       final token = await getToken();
       final response = await http.get(
-        Uri.parse('$casesURL/$caseId/enrolled-users-count'),
+        Uri.parse('${ApiConfig.casesURL}/$caseId/count/users'),
         headers: {'Authorization': 'Bearer $token'},
       );
 
       if (response.statusCode == 200) {
-        return int.parse(response.body);
+        final Map<String, dynamic> data = jsonDecode(response.body);
+        final int count = data['count'];
+        return count;
       } else {
-        throw Exception('Failed to get enrolled users count');
+        throw Exception('Fehler beim Abrufen der Anzahl der eingeschriebenen Benutzer');
       }
     } catch (e) {
-      throw Exception('Failed to get enrolled users count: $e');
+      throw Exception('Fehler beim Abrufen der Anzahl der eingeschriebenen Benutzer: $e');
     }
   }
 
   static Future<List<Case>> fetchCasesWithMostEnrolledUsers() async {
     final token = await getToken();
     final response = await http.get(
-      Uri.parse('$casesURL/most-enrolled'),
+      Uri.parse('${ApiConfig.casesURL}/most-enrolled'),
       headers: {'Authorization': 'Bearer $token'},
     );
 
@@ -319,7 +316,7 @@ class APIService {
       final List<dynamic> jsonResponse = jsonDecode(response.body);
       return jsonResponse.map((data) => Case.fromJson(data)).toList();
     } else {
-      throw Exception('Failed to load suggested cases');
+      throw Exception('Fehler beim Laden der vorgeschlagenen Fälle');
     }
   }
 
@@ -337,15 +334,13 @@ class APIService {
         final List<dynamic> messagesJson = jsonDecode(response.body);
         return messagesJson.map((json) => ChatMessage.fromJson(json)).toList();
       } else {
-        throw Exception('Failed to load chat messages: ${response.statusCode}');
+        throw Exception('Fehler beim Laden der Chat-Nachrichten: ${response.statusCode}');
       }
     } catch (e) {
-      print('Error in getMessagesFromCase: $e');
-      throw Exception('Failed to load chat messages');
+      print('Fehler in getMessagesFromCase: $e');
+      throw Exception('Fehler beim Laden der Chat-Nachrichten');
     }
   }
-
-
 
   static Future<bool> sendMessageToCase(int caseId, ChatMessage message) async {
     final token = await getToken();
@@ -363,14 +358,14 @@ class APIService {
     if (response.statusCode == 201) {
       return true;
     } else {
-      throw Exception('Failed to send chat message');
+      throw Exception('Fehler beim Senden der Chat-Nachricht');
     }
   }
 
   static Future<List<Case>> getCasesWithMostEnrolledUsers() async {
     final token = await getToken();
     final response = await http.get(
-      Uri.parse('$casesURL/most-enrolled'),
+      Uri.parse('${ApiConfig.casesURL}/most-enrolled'),
       headers: {'Authorization': 'Bearer $token'},
     );
 
@@ -378,7 +373,7 @@ class APIService {
       final List<dynamic> jsonResponse = jsonDecode(response.body);
       return jsonResponse.map((data) => Case.fromJson(data)).toList();
     } else {
-      throw Exception('Failed to load cases with most enrolled users');
+      throw Exception('Fehler beim Laden der Fälle mit den meisten eingeschriebenen Benutzern');
     }
   }
 }

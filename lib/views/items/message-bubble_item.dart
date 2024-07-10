@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../utils/configs/text_theme_config.dart';
+
 class MessageBubble extends StatelessWidget {
   final String message;
   final String sender;
@@ -37,7 +39,7 @@ class MessageBubble extends StatelessWidget {
               sender,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
+                color: isMe ? Colors.white : TextThemeConfig.textSecondary,
               ),
             ),
             SizedBox(height: 4),

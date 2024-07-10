@@ -133,6 +133,8 @@ class _CreateCasePageState extends ConsumerState<CreateCasePage> {
               _newCase.name = value!;
             },
             maxLength: 50,
+            // Anpassung: Maximale Zeichenanzeige ausblenden
+            buildCounter: (BuildContext context, { required int currentLength, required int? maxLength, required bool isFocused }) => null,
           ),
           const SizedBox(height: 10),
           DropdownButtonFormField<String>(
@@ -216,6 +218,8 @@ class _CreateCasePageState extends ConsumerState<CreateCasePage> {
           TextFormField(
             decoration: const InputDecoration(
               labelText: 'Beschreibung des Falls für das Forum',
+              // Anpassung: Maximale Zeichenanzeige ausblenden
+              counterText: null,
             ),
             maxLines: 3,
             onChanged: (value) {
@@ -228,6 +232,7 @@ class _CreateCasePageState extends ConsumerState<CreateCasePage> {
       ),
     );
   }
+
 
   void _createCase(BuildContext context) async {
     try {
