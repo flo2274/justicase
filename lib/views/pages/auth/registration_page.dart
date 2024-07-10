@@ -119,9 +119,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 ],
               ),
             ),
-            const SizedBox(height: 20.0),
-            ImageAnimationHelper(),
-            const SizedBox(height: 20.0),
+            const SizedBox(height: 40.0),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.0),
               child: Text(

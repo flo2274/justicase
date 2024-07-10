@@ -33,93 +33,90 @@ class _SearchPageState extends ConsumerState<SearchPage> {
         title: Text('JUSTICASE'),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: TypeAheadField<Case>(
-                suggestionsCallback: (search) {
-                  if (search.isEmpty) {
-                    return [];
-                  }
-                  return caseState.allCases
-                      .where((c) => c.name!.toLowerCase().contains(search.toLowerCase()))
-                      .toList();
-                },
-                itemBuilder: (context, Case suggestion) {
-                  return ListTile(
-                    title: Text(suggestion.name!),
-                  );
-                },
-                onSelected: (Case suggestion) {
-                  context.go('/case/caseDetails', extra: suggestion);
-                },
-                emptyBuilder: (context) {
-                  return InkWell(
-                    onTap: () {
-                      context.go('/case/createCase');
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: TypeAheadField<Case>(
+                    suggestionsCallback: (search) {
+                      if (search.isEmpty) {
+                        return [];
+                      }
+                      return caseState.allCases
+                          .where((c) => c.name!.toLowerCase().contains(search.toLowerCase()))
+                          .toList();
                     },
-                    child: const ListTile(
-                      title: Text(
-                        'Kein Fall gefunden. Erstelle einen neuen Fall',
-                        style: TextThemeConfig.alertText,
-                      ),
-                    ),
-                  );
-                },
-                builder: (context, controller, focusNode) {
-                  return TextField(
-                    controller: controller,
-                    focusNode: focusNode,
-                    autofocus: true,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: ' Suche nach einem Fall...',
-                      prefixIcon: Icon(Icons.search),
-                    ),
-                  );
-                },
-              ),
-            ),
-            const SizedBox(height: 16.0),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  const Expanded(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          AllCasesSection(),
-                          const SizedBox(height: 16.0),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Padding(
-                      padding: const EdgeInsets.only(bottom: 16.0),
-                      child: FloatingActionButton.extended(
-                        onPressed: () {
-                          WidgetsBinding.instance!.addPostFrameCallback((_) {
-                            context.go('/case/createCase');
-                          });
+                    itemBuilder: (context, Case suggestion) {
+                      return ListTile(
+                        title: Text(suggestion.name!),
+                      );
+                    },
+                    onSelected: (Case suggestion) {
+                      context.go('/case/caseDetails', extra: suggestion);
+                    },
+                    emptyBuilder: (context) {
+                      return InkWell(
+                        onTap: () {
+                          context.go('/case/createCase');
                         },
-                        icon: Icon(Icons.add),
-                        label: Text('Erstelle einen neuen Fall'),
-                      ),
-                    ),
+                        child: const ListTile(
+                          title: Text(
+                            'Kein Fall gefunden. Erstelle einen neuen Fall',
+                            style: TextThemeConfig.alertText,
+                          ),
+                        ),
+                      );
+                    },
+                    builder: (context, controller, focusNode) {
+                      return TextField(
+                        controller: controller,
+                        focusNode: focusNode,
+                        autofocus: true,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: ' Suche nach einem Fall...',
+                          prefixIcon: Icon(Icons.search),
+                        ),
+                      );
+                    },
                   ),
-                ],
+                ),
+                const SizedBox(height: 16.0),
+                AllCasesSection(),
+              ],
+            ),
+          ),
+          Positioned(
+            bottom: 16.0,
+            left: 20.0,
+            right: 20.0,
+            child: ElevatedButton.icon(
+              onPressed: () {
+                WidgetsBinding.instance!.addPostFrameCallback((_) {
+                  context.go('/case/createCase');
+                });
+              },
+              icon: Icon(Icons.add),
+              label: Text(
+                'Erstelle einen neuen Fall',
+                style: TextStyle(color: Colors.white), // Textfarbe auf Weiß setzen
+              ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

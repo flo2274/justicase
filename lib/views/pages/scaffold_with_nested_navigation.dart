@@ -14,7 +14,6 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
       index,
       initialLocation: index == navigationShell.currentIndex,
     );
-
   }
 
   @override
@@ -31,11 +30,12 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
 
 class ScaffoldWithNavigationBar extends StatelessWidget {
   const ScaffoldWithNavigationBar({
-    super.key,
+    Key? key,
     required this.body,
     required this.selectedIndex,
     required this.onDestinationSelected,
-  });
+  }) : super(key: key);
+
   final Widget body;
   final int selectedIndex;
   final ValueChanged<int> onDestinationSelected;

@@ -21,20 +21,22 @@ class AdminCaseItem extends StatelessWidget {
         ? caseItem.userCount / 50.0 // Todo: make 50 a constant global variable
         : 0.0;
 
+    bool isProgressBarFull = progress >= 1.0;
+
     return GestureDetector(
       onTap: () => onGetUsersByCase(caseItem),
       child: Card(
         margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
         child: Padding(
           padding: EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: ListTile(
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ListTile(
                       contentPadding: EdgeInsets.zero,
                       leading: Icon(
                         EmojiHelper.getIndustryIcon(caseItem.industry ?? ''),
@@ -44,7 +46,9 @@ class AdminCaseItem extends StatelessWidget {
                       title: Text(
                         '${caseItem.name}',
                         style: TextStyle(
-                            fontSize: 18.0, fontWeight: FontWeight.bold),
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -56,50 +60,52 @@ class AdminCaseItem extends StatelessWidget {
                         ],
                       ),
                     ),
+                    SizedBox(height: 8.0),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.0),
+                      child: LinearProgressIndicator(
+                        value: progress,
+                        backgroundColor: Colors.grey[300],
+                        minHeight: 10,
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          isProgressBarFull ? Colors.green : Colors.blue,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  GestureDetector(
+                    onTap: () => _showDeleteConfirmationDialog(context),
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 0.0),
+                      child: Icon(
+                        Icons.delete_outline_rounded,
+                        color: ThemeConfig.darkGreyAccent,
+                        size: 30.0,
+                      ),
+                    ),
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    // Ensure icons are top-aligned
-                    children: [
-                      GestureDetector(
-                        onTap: () => _showDeleteConfirmationDialog(context),
-                        child: Padding(
-                          padding: EdgeInsets.only(top: 0.0),
-                          // Adjust top padding
-                          child: Icon(
-                            Icons.delete_outline_rounded,
-                            color: ThemeConfig.darkGreyAccent,
-                            size: 30.0,
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 15.0), // Add space between icons
-                      GestureDetector(
-                        onTap: () => onGetUsersByCase(caseItem),
-                        child: Icon(
-                          Icons.chevron_right,
-                          color: ThemeConfig.darkGreyAccent,
-                          size: 25.0,
-                        ),
-                      ),
-                      SizedBox(height: 20.0),
-                    ],
+                  SizedBox(height: 15.0),
+                  GestureDetector(
+                    onTap: () => onGetUsersByCase(caseItem),
+                    child: Icon(
+                      Icons.chevron_right,
+                      color: ThemeConfig.darkGreyAccent,
+                      size: 25.0,
+                    ),
+                  ),
+                  SizedBox(height: 15.0),
+                  Icon(
+                    Icons.outgoing_mail,
+                    color: isProgressBarFull ? Colors.green : Colors.grey[400],
+                    size: 30.0,
                   ),
                 ],
-              ),
-              SizedBox(height: 8.0),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.0),
-                // Horizontal padding
-                child: LinearProgressIndicator(
-                  value: progress,
-                  backgroundColor: Colors.grey[300],
-                  minHeight: 10,
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    progress >= 1.0 ? Colors.green : Colors.blue,
-                  ),
-                ),
               ),
             ],
           ),

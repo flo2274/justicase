@@ -32,7 +32,7 @@ class AllCasesSection extends ConsumerWidget {
       children: [
         const SizedBox(height: 16.0),
         Text('Alle Fälle', style: TextThemeConfig.smallHeading),
-        const SizedBox(height: 8.0),
+        const SizedBox(height: 5.0),
         LimitedBox(
           maxHeight: MediaQuery.of(context).size.height * 1,
           child: GridView.builder(

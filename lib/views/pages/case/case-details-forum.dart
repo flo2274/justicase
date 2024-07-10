@@ -150,7 +150,7 @@ class _CaseDetailsForumState extends State<CaseDetailsForum> {
                     Expanded(
                       child: TextField(
                         controller: _messageController,
-                        decoration: InputDecoration(labelText: 'Send a message...'),
+                        decoration: InputDecoration(labelText: 'Nachricht senden...'),
                       ),
                     ),
                     SizedBox(width: 8),

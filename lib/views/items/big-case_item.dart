@@ -7,6 +7,32 @@ class BigCaseItem extends StatelessWidget {
 
   BigCaseItem({required this.caseItem});
 
+  String truncateText(String text, TextStyle style, double maxWidth) {
+    final textPainter = TextPainter(
+      text: TextSpan(text: text, style: style),
+      maxLines: 1,
+      textDirection: TextDirection.ltr,
+    );
+
+    textPainter.layout(minWidth: 0, maxWidth: double.infinity);
+
+    if (textPainter.width > maxWidth) {
+      for (int endIndex = text.length - 1; endIndex >= 0; endIndex--) {
+        final truncatedText = text.substring(0, endIndex) + '...';
+        textPainter.text = TextSpan(text: truncatedText, style: style);
+        textPainter.layout(minWidth: 0, maxWidth: double.infinity);
+
+        if (textPainter.width <= maxWidth) {
+          return truncatedText;
+        }
+      }
+
+      return '...';
+    } else {
+      return text;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     IconData iconData = EmojiHelper.getIndustryIcon(caseItem.industry!);
@@ -25,7 +51,11 @@ class BigCaseItem extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              caseItem.name!,
+              truncateText(
+                caseItem.name!,
+                const TextStyle(fontSize: 22.0),
+                MediaQuery.of(context).size.width / 2.5 - 32.0, // 32.0 for padding
+              ),
               style: const TextStyle(fontSize: 22.0),
               textAlign: TextAlign.start,
             ),
