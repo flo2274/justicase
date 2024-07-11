@@ -68,12 +68,14 @@ class CaseDetailsForumState extends State<CaseDetailsForum> {
       });
       _scrollToBottom();
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Fehler beim Laden der Nachrichten'),
-          backgroundColor: Colors.red,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Fehler beim Laden der Nachrichten'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
 
@@ -97,20 +99,24 @@ class CaseDetailsForumState extends State<CaseDetailsForum> {
         _messageController.clear();
         _scrollToBottom();
       } else {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Fehler beim Senden der Nachricht'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Fehler beim Senden der Nachricht'),
+          SnackBar(
+            content: Text('Fehler beim Senden der Nachricht: $e'),
             backgroundColor: Colors.red,
           ),
         );
       }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Fehler beim Senden der Nachricht: $e'),
-          backgroundColor: Colors.red,
-        ),
-      );
     }
   }
 

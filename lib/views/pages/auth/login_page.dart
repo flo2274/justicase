@@ -22,10 +22,12 @@ class LoginPageState extends State<LoginPage> {
 
     try {
       final success = await APIService.login(email, password);
-      if (success) {
-        context.go('/home');
-      } else {
-        _showErrorBanner('Fehler beim Einloggen. Überprüfen Sie Ihre Eingaben.');
+      if (mounted) {
+        if (success) {
+          context.go('/home');
+        } else {
+          _showErrorBanner('Fehler beim Einloggen. Überprüfen Sie Ihre Eingaben.');
+        }
       }
     } catch (e) {
       String errorMessage = e.toString();

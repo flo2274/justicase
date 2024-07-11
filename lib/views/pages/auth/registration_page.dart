@@ -41,7 +41,9 @@ class RegistrationPageState extends State<RegistrationPage> {
     try {
       final success = await APIService.login(email, password);
       if (success) {
-        context.go('/home');
+        if (mounted) {
+          context.go('/home');
+        }
       } else {
         _showErrorBanner('Fehler beim automatischen Login nach der Registrierung.');
       }

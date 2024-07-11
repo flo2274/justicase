@@ -254,13 +254,14 @@ class AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
   void _removeUserFromCase(BuildContext context, int caseId, {int? userId}) async {
     try {
       await APIService.removeUserFromCase(caseId, userId: userId);
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('User removed from case successfully'),
-          backgroundColor: Colors.green,
-        ),
-      );
-
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('User removed from case successfully'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
       _fetchUsersByCase(caseId);
     } catch (e) {
       _showError('Failed to remove user from case: $e');
@@ -271,12 +272,14 @@ class AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
     try {
       await ref.read(caseProvider.notifier).deleteCase(caseId);
       await ref.read(caseProvider.notifier).fetchAllCases();
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Fall erfolgreich gelöscht'),
-          backgroundColor: Colors.green,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Fall erfolgreich gelöscht'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
     } catch (e) {
       _showError('Fehler beim Löschen des Falls: $e');
     }

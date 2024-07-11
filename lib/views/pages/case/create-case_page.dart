@@ -259,10 +259,14 @@ class CreateCasePageState extends ConsumerState<CreateCasePage> {
 
       // Holt die ID des gerade erstellten Falls
       List<Case> cases = await APIService.getAllCases();
-      int newCaseId = cases.firstWhere((c) => c.name == _newCase.name).id!;
+      int newCaseId = cases
+          .firstWhere((c) => c.name == _newCase.name)
+          .id!;
 
       // Sendet die Beschreibung als erste Nachricht, wenn sie nicht leer ist
-      if (_yourCaseDescription.trim().isNotEmpty) {
+      if (_yourCaseDescription
+          .trim()
+          .isNotEmpty) {
         ChatMessage initialMessage = ChatMessage(
           text: _yourCaseDescription.trim(),
           username: _username, // Verwende den abgerufenen Benutzernamen
@@ -272,20 +276,21 @@ class CreateCasePageState extends ConsumerState<CreateCasePage> {
         await APIService.sendMessageToCase(newCaseId, initialMessage);
       }
 
-      // Zeigt eine Bestätigungsnachricht an
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Fall erfolgreich erstellt'),
-        backgroundColor: Colors.green,
-      ));
-
-      // Lädt die Fälle des Benutzers neu und navigiert zur Fallseite
-      ref.read(caseProvider.notifier).fetchUserCases();
-      context.go('/case');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('Fall erfolgreich erstellt'),
+          backgroundColor: Colors.green,
+        ));
+        ref.read(caseProvider.notifier).fetchUserCases();
+        context.go('/case');
+      }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Fehler beim Erstellen des Falls: $e'),
-        backgroundColor: Colors.red,
-      ));
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('Fehler beim Erstellen des Falls: $e'),
+          backgroundColor: Colors.red,
+        ));
+      }
     }
   }
 }

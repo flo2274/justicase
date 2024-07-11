@@ -225,19 +225,23 @@ class AdminPanelPageState extends ConsumerState<AdminPanelPage> {
     try {
       await ref.read(caseProvider.notifier).deleteCase(caseId);
       await ref.read(caseProvider.notifier).fetchAllCases();
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Fall erfolgreich gelöscht'),
-          backgroundColor: Colors.green,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Fall erfolgreich gelöscht'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Fehler beim Löschen des Falls: $e'),
-          backgroundColor: Colors.red,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Fehler beim Löschen des Falls: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
 }

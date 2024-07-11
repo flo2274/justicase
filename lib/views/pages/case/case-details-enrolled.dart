@@ -71,12 +71,14 @@ class CaseDetailsEnrolledState extends ConsumerState<CaseDetailsEnrolled> {
       }
       ref.read(caseProvider.notifier).fetchUserCases();
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Fehler beim Ein-/Ausschreiben'),
-          backgroundColor: Colors.red,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Fehler beim Ein-/Ausschreiben'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     } finally {
       setState(() {
         _isLoading = false;
@@ -89,12 +91,14 @@ class CaseDetailsEnrolledState extends ConsumerState<CaseDetailsEnrolled> {
       await APIService.addUserToCase(caseId);
       await _fetchEnrolledUsers();
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Fehler beim Eintragen des Benutzers in den Fall'),
-          backgroundColor: Colors.red,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Fehler beim Eintragen des Benutzers in den Fall'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     } finally {
       setState(() {
         _isLoading = false;
@@ -107,12 +111,14 @@ class CaseDetailsEnrolledState extends ConsumerState<CaseDetailsEnrolled> {
       await APIService.removeUserFromCase(caseId);
       await _fetchEnrolledUsers();
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Fehler beim Entfernen des Benutzers aus dem Fall'),
-          backgroundColor: Colors.red,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Fehler beim Entfernen des Benutzers aus dem Fall'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     } finally {
       setState(() {
         _isLoading = false;
