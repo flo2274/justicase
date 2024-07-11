@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile_anw/state/notifiers/case_notifier.dart';
 import 'package:mobile_anw/utils/configs/text_theme_config.dart';
-import '../items/big-case_item.dart';
-
-import '../pages/case/case-details_page.dart';
+import '../items/big_case_item.dart';
+import '../pages/case/case_details_page.dart';
 
 class AllCasesSection extends ConsumerWidget {
   const AllCasesSection({super.key});

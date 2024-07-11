@@ -138,7 +138,6 @@ class CreateCasePageState extends ConsumerState<CreateCasePage> {
             initialValue: _newCase.name ?? '',
             decoration: const InputDecoration(
               labelText: '*Name des Unternehmens',
-              // Anpassung: Maximale Zeichenanzeige ausblenden
               counterText: null,
             ),
             validator: (value) {
@@ -254,22 +253,19 @@ class CreateCasePageState extends ConsumerState<CreateCasePage> {
 
   void _createCase(BuildContext context) async {
     try {
-      // Erstellt den Fall
       await ref.read(caseProvider.notifier).createCase(_newCase);
 
-      // Holt die ID des gerade erstellten Falls
       List<Case> cases = await APIService.getAllCases();
       int newCaseId = cases
           .firstWhere((c) => c.name == _newCase.name)
           .id!;
 
-      // Sendet die Beschreibung als erste Nachricht, wenn sie nicht leer ist
       if (_yourCaseDescription
           .trim()
           .isNotEmpty) {
         ChatMessage initialMessage = ChatMessage(
           text: _yourCaseDescription.trim(),
-          username: _username, // Verwende den abgerufenen Benutzernamen
+          username: _username,
           timestamp: DateTime.now(),
         );
 

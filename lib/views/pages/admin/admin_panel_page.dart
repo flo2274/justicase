@@ -9,9 +9,9 @@ import 'package:mobile_anw/state/models/case_state.dart';
 import 'package:mobile_anw/state/notifiers/user_notifier.dart';
 import 'package:mobile_anw/state/models/user_state.dart';
 import '../../../data/constants/case_data.dart';
-import '../../items/admin/admin-case_item.dart';
-import '../../items/admin/admin-user_item.dart';
-import 'admin-details_page.dart';
+import '../../items/admin/admin_case_item.dart';
+import '../../items/admin/admin_user_item.dart';
+import 'admin_details_page.dart';
 
 class AdminPanelPage extends ConsumerStatefulWidget {
   const AdminPanelPage({super.key});

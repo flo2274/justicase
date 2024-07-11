@@ -3,8 +3,8 @@ import 'package:mobile_anw/models/case.dart';
 import 'package:mobile_anw/services/api_service.dart';
 
 import '../../utils/configs/text_theme_config.dart';
-import '../items/big-case_item.dart';
-import '../pages/case/case-details_page.dart';
+import '../items/big_case_item.dart';
+import '../pages/case/case_details_page.dart';
 
 class SuggestionsSection extends StatefulWidget {
   final List<Case> cases;

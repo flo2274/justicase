@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:mobile_anw/utils/configs/text_theme_config.dart';
 import 'package:mobile_anw/models/case.dart';
 import '../../../state/notifiers/case_notifier.dart';
-import '../../sections/all-cases_section.dart';
+import '../../sections/all_cases_section.dart';
 
 class SearchPage extends ConsumerStatefulWidget {
   const SearchPage({super.key});

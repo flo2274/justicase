@@ -6,8 +6,8 @@ import 'package:mobile_anw/state/notifiers/user_notifier.dart';
 import '../../../models/case.dart';
 import '../../../models/user.dart';
 import '../../../utils/configs/text_theme_config.dart';
-import '../../items/admin/admin-case_item.dart';
-import '../../items/admin/admin-user_item.dart';
+import '../../items/admin/admin_case_item.dart';
+import '../../items/admin/admin_user_item.dart';
 
 class AdminDetailsPage extends ConsumerStatefulWidget {
   final User? myUser;

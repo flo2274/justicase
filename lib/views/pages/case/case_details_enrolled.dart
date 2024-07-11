@@ -185,7 +185,7 @@ class CaseDetailsEnrolledState extends ConsumerState<CaseDetailsEnrolled> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                child: Text(isEnrolled ? 'Verlassen' : 'Einschreiben'),
+                child: Text(isEnrolled ? 'Verlassen' : 'Eintragen'),
               ),
             ),
           ),

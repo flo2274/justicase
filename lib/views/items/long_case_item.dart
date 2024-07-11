@@ -3,7 +3,7 @@ import 'package:mobile_anw/data/constants/case_data.dart';
 import 'package:mobile_anw/models/case.dart';
 import 'package:mobile_anw/utils/helpers/emoji_helper.dart';
 import '../../utils/configs/text_theme_config.dart';
-import '../pages/case/case-details_page.dart';
+import '../pages/case/case_details_page.dart';
 
 class LongCaseItem extends StatelessWidget {
   final Case caseInfo;

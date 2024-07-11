@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_anw/models/case.dart';
 import 'package:mobile_anw/services/api_service.dart';
 import '../../../utils/configs/text_theme_config.dart';
-import '../../items/long-case_item.dart';
+import '../../items/long_case_item.dart';
 
 class IndustryCasesPage extends StatefulWidget {
   final String industry;

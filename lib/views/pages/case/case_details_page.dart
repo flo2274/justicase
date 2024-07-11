@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_anw/models/case.dart';
-import 'package:mobile_anw/views/pages/case/case-details-enrolled.dart';
-import 'package:mobile_anw/views/pages/case/case-details-forum.dart';
+import 'package:mobile_anw/views/pages/case/case_details_enrolled.dart';
+import 'package:mobile_anw/views/pages/case/case_details_forum.dart';
 
 class CaseDetailsPage extends StatelessWidget {
   final Case myCase;

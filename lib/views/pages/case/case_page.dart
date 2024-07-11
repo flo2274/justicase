@@ -4,7 +4,7 @@ import 'package:mobile_anw/services/api_service.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile_anw/state/notifiers/case_notifier.dart';
 import '../../../utils/configs/text_theme_config.dart';
-import '../../items/long-case_item.dart';
+import '../../items/long_case_item.dart';
 
 class CasePage extends ConsumerStatefulWidget {
   const CasePage({

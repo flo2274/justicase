@@ -5,7 +5,7 @@ import 'package:mobile_anw/models/chat_message.dart';
 import 'package:mobile_anw/services/api_service.dart';
 import '../../../utils/configs/theme_config.dart';
 import '../../../utils/user_preferences.dart';
-import '../../items/message-bubble_item.dart';
+import '../../items/message_bubble_item.dart';
 
 class CaseDetailsForum extends StatefulWidget {
   final Case myCase;

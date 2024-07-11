@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mobile_anw/views/pages/admin/admin-panel_page.dart';
+import 'package:mobile_anw/views/pages/admin/admin_panel_page.dart';
 import 'package:mobile_anw/views/pages/case/case_page.dart';
-import 'package:mobile_anw/views/pages/case/create-case_page.dart';
+import 'package:mobile_anw/views/pages/case/create_case_page.dart';
 import 'package:mobile_anw/views/pages/search/search_page.dart';
 import 'package:mobile_anw/views/pages/home/home_page.dart';
-import 'package:mobile_anw/views/pages/case/case-details_page.dart';
 import 'package:mobile_anw/views/pages/scaffold_with_nested_navigation.dart';
 import 'package:mobile_anw/views/pages/auth/registration_page.dart';
 import 'package:mobile_anw/views/pages/auth/login_page.dart';
-
 import '../models/case.dart';
 import '../models/user.dart';
-import '../views/pages/admin/admin-details_page.dart';
+import '../views/pages/admin/admin_details_page.dart';
 import '../views/pages/home/industry_page.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -80,7 +78,7 @@ final goRouter = GoRouter(
             GoRoute(
               path: '/search',
               pageBuilder: (context, state) => const NoTransitionPage(
-                child: SearchPage(/*label: 'SearchP', detailsPath: '/search/details'*/),
+                child: SearchPage(),
               ),
             ),
           ],
