@@ -4,7 +4,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserPreferences {
-  static final storage = FlutterSecureStorage();
+  static const storage = FlutterSecureStorage();
 
   static Future<void> saveUserData(String token, int userId, String username, String role) async {
     await storage.write(key: 'token', value: token);

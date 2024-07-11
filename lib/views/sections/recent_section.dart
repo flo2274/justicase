@@ -4,11 +4,12 @@ import 'package:mobile_anw/models/case.dart';
 
 import '../../utils/configs/text_theme_config.dart';
 import '../items/big-case_item.dart';
+import '../pages/case/case-details_page.dart';
 
 class RecentSection extends StatelessWidget {
   final List<Case> cases;
 
-  RecentSection({required this.cases});
+  const RecentSection({super.key, required this.cases});
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +32,12 @@ class RecentSection extends StatelessWidget {
                 .map((caseItem) => Expanded(
               child: GestureDetector(
                 onTap: () {
-                  context.go('/case/caseDetails', extra: caseItem);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CaseDetailsPage(myCase: caseItem),
+                    ),
+                  );
                 },
                 child: BigCaseItem(caseItem: caseItem),
               ),
@@ -47,7 +53,12 @@ class RecentSection extends StatelessWidget {
                 .map((caseItem) => Expanded(
               child: GestureDetector(
                 onTap: () {
-                  context.go('/case/caseDetails', extra: caseItem);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CaseDetailsPage(myCase: caseItem),
+                    ),
+                  );
                 },
                 child: BigCaseItem(caseItem: caseItem),
               ),

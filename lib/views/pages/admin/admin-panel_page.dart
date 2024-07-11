@@ -14,7 +14,7 @@ import '../../items/admin/admin-user_item.dart';
 import 'admin-details_page.dart';
 
 class AdminPanelPage extends ConsumerStatefulWidget {
-  const AdminPanelPage({Key? key}) : super(key: key);
+  const AdminPanelPage({super.key});
 
   @override
   _AdminPanelPageState createState() => _AdminPanelPageState();
@@ -41,7 +41,7 @@ class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
         appBar: AppBar(
           title: const Text('ADMIN PANEL'),
           centerTitle: true,
-          bottom: TabBar(
+          bottom: const TabBar(
             tabs: [
               Tab(text: 'Users'),
               Tab(text: 'Cases'),
@@ -49,7 +49,7 @@ class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
           ),
         ),
         body: userState.isLoading || caseState.isLoading
-            ? Center(child: CircularProgressIndicator())
+            ? const Center(child: CircularProgressIndicator())
             : TabBarView(
           children: [
             _buildUsersTab(context, userState),
@@ -81,7 +81,7 @@ class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
   Widget _buildUsersList(BuildContext context, UserState userState) {
     return ListView.builder(
       shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       itemCount: userState.allUsers.length,
       itemBuilder: (context, index) {
         final user = userState.allUsers[index];
@@ -96,18 +96,18 @@ class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
 
   void _deleteUser(int userId) async {
     try {
-      await APIService.deleteUser(userId);
+      ref.read(userProvider.notifier).deleteUser(userId);
       ref.read(userProvider.notifier).refreshAllUsers();
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('User deleted successfully'),
+        const SnackBar(
+          content: Text('Benutzer erfolgreich gelöscht'),
           backgroundColor: Colors.green,
         ),
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Failed to delete user: $e'),
+          content: Text('Fehler beim Löschen des Benutzers: $e'),
           backgroundColor: Colors.red,
         ),
       );
@@ -131,7 +131,7 @@ class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
                 return ChoiceChip(
                   label: Text(
                     option,
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                   ),
                   selected: selectedFilter == option,
                   selectedColor: Colors.blue,
@@ -174,7 +174,7 @@ class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
   Widget _buildCasesList(BuildContext context, List<Case> filteredCases) {
     return ListView.builder(
       shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       itemCount: filteredCases.length,
       itemBuilder: (context, index) {
         final caseInfo = filteredCases[index];
@@ -182,7 +182,7 @@ class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
           future: APIService.getEnrolledUsersCount(caseInfo.id!),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
               return Center(child: Text('Error: ${snapshot.error}'));
             } else {
@@ -226,15 +226,15 @@ class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
       await ref.read(caseProvider.notifier).deleteCase(caseId);
       await ref.read(caseProvider.notifier).fetchAllCases();
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Case deleted successfully'),
+        const SnackBar(
+          content: Text('Fall erfolgreich gelöscht'),
           backgroundColor: Colors.green,
         ),
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Failed to delete case: $e'),
+          content: Text('Fehler beim Löschen des Falls: $e'),
           backgroundColor: Colors.red,
         ),
       );

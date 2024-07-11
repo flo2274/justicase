@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:mobile_anw/utils/user_preferences.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mobile_anw/models/user.dart';
 import 'package:mobile_anw/models/case.dart';
 import 'package:mobile_anw/models/chat_message.dart';
@@ -11,7 +10,7 @@ import '../utils/validations.dart';
 
 class APIService {
 
-  static final storage = FlutterSecureStorage();
+  static const storage = FlutterSecureStorage();
 
   static Future<bool> register(String firstName, String lastName, String username, String email, String password) async {
     if (!Validations.isNotEmpty(firstName)) throw 'Vorname darf nicht leer sein';
@@ -43,14 +42,11 @@ class APIService {
         } else if (errorResponse.containsKey('message')) {
           errorMessage += errorResponse['message'];
         }
-        print('Registrierung fehlgeschlagen: $errorMessage');
         throw errorMessage;
       } else {
-        print('Registrierung fehlgeschlagen: ${response.statusCode}');
         throw 'Registrierung fehlgeschlagen: ${response.statusCode}';
       }
     } catch (e) {
-      print('Registrierung fehlgeschlagen: $e');
       throw 'Registrierung fehlgeschlagen: $e';
     }
   }
@@ -78,11 +74,9 @@ class APIService {
 
         return true;
       } else {
-        print('Unerwartete JSON-Struktur: $data');
         return false;
       }
     } else {
-      print('Anmeldung fehlgeschlagen: ${response.body}');
       return false;
     }
   }
@@ -144,7 +138,6 @@ class APIService {
       final List<dynamic> casesJson = jsonDecode(response.body);
       return casesJson.map((json) => Case.fromJson(json)).toList();
     } else {
-      print(response.statusCode);
       throw Exception('Fehler beim Laden der Fälle');
     }
   }
@@ -331,7 +324,6 @@ class APIService {
         throw Exception('Fehler beim Laden der Chat-Nachrichten: ${response.statusCode}');
       }
     } catch (e) {
-      print('Fehler in getMessagesFromCase: $e');
       throw Exception('Fehler beim Laden der Chat-Nachrichten');
     }
   }

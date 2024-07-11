@@ -8,15 +8,15 @@ class ThemeConfig {
   static Color primary = Colors.white;
   static Color blueAccent = Colors.blue;
   static Color blackAccent = Colors.black;
-  static Color lightGreyAccent = Color(0xFFA2A1A1);
-  static Color darkGreyAccent = Color(0xFF5E5E5E);
+  static Color lightGreyAccent = const Color(0xFFA2A1A1);
+  static Color darkGreyAccent = const Color(0xFF5E5E5E);
   static Color yellowAccent = Colors.yellow;
   static const Color textPrimary = Colors.black;
   static const Color textSecondary = Color(0xFF5E5E5E);
-  static const Color? textBlueAccent = Colors.blue;
+  static const Color textBlueAccent = Colors.blue;
 
   static ThemeData lightTheme = ThemeData(
-    primaryColor: Color(0xFF6E0F53),
+    primaryColor: const Color(0xFF6E0F53),
     scaffoldBackgroundColor: background,
     appBarTheme: AppBarTheme(
       backgroundColor: primary,
@@ -37,30 +37,12 @@ class ThemeConfig {
       unselectedItemColor: null,
     ),
     textTheme: const TextTheme(
-      /*titleLarge: TextStyle( // Changed from headlineLarge to headline6
-        fontSize: 20.0,
-        fontWeight: FontWeight.bold,
-        color: textPrimary,
-      ),
-      titleMedium: TextStyle(
-        fontSize: 24.0,
-        fontWeight: FontWeight.bold,
-        color: textBlueAccent,
-      ),
-      titleSmall: TextStyle(
-        fontSize: 16.0,
-        fontWeight: FontWeight.bold,
-        color: textSecondary,
-      ),*/
-      bodyMedium: TextStyle( // This is the default text style for DropdownMenuItem
+      bodyMedium: TextStyle(
         fontSize: 16.0,
         fontWeight: FontWeight.normal,
         color: textPrimary,
       ),
-      //HeadlineMedium is Text of Dropdown
       headlineMedium: TextStyle(fontSize: 16.0, fontWeight: FontWeight.normal, color: textPrimary),
-      //Login Title
-
     ),
     inputDecorationTheme: InputDecorationTheme(
       hintStyle: const TextStyle(color: textSecondary),
@@ -89,8 +71,18 @@ class ThemeConfig {
       secondary: Colors.white,
       surface: Colors.white,
       onPrimary: Colors.white,
-      onSecondary: Color(0xFFE308A7),
+      onSecondary: const Color(0xFFE308A7),
       onSurface: textPrimary,
+    ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.blue,
+        foregroundColor: Colors.white,
+        padding: const EdgeInsets.symmetric(vertical: 16.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
     ),
   );
 }

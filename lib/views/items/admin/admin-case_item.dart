@@ -3,32 +3,32 @@ import 'package:mobile_anw/models/case.dart';
 import 'package:mobile_anw/utils/helpers/emoji_helper.dart';
 import 'package:mobile_anw/utils/configs/theme_config.dart';
 
+import '../../../data/constants/case_data.dart';
+
 class AdminCaseItem extends StatelessWidget {
   final Case caseItem;
   final Function onDelete;
   final Function onGetUsersByCase;
 
   const AdminCaseItem({
-    Key? key,
+    super.key,
     required this.caseItem,
     required this.onDelete,
     required this.onGetUsersByCase,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
-    double progress = caseItem.userCount != null
-        ? caseItem.userCount / 50.0 // Todo: make 50 a constant global variable
-        : 0.0;
+    double progress = caseItem.userCount / CaseData.caseClosedUserCount;
 
     bool isProgressBarFull = progress >= 1.0;
 
     return GestureDetector(
       onTap: () => onGetUsersByCase(caseItem),
       child: Card(
-        margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+        margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
         child: Padding(
-          padding: EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -45,7 +45,7 @@ class AdminCaseItem extends StatelessWidget {
                       ),
                       title: Text(
                         '${caseItem.name}',
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 18.0,
                           fontWeight: FontWeight.bold,
                         ),
@@ -53,16 +53,16 @@ class AdminCaseItem extends StatelessWidget {
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(height: 8.0),
+                          const SizedBox(height: 8.0),
                           Text('ID: ${caseItem.id}'),
-                          SizedBox(height: 8.0),
+                          const SizedBox(height: 8.0),
                           Text('Unternehmensform: ${caseItem.companyType}'),
                         ],
                       ),
                     ),
-                    SizedBox(height: 8.0),
+                    const SizedBox(height: 8.0),
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: LinearProgressIndicator(
                         value: progress,
                         backgroundColor: Colors.grey[300],
@@ -82,7 +82,7 @@ class AdminCaseItem extends StatelessWidget {
                   GestureDetector(
                     onTap: () => _showDeleteConfirmationDialog(context),
                     child: Padding(
-                      padding: EdgeInsets.only(top: 0.0),
+                      padding: const EdgeInsets.only(top: 0.0),
                       child: Icon(
                         Icons.delete_outline_rounded,
                         color: ThemeConfig.darkGreyAccent,
@@ -90,7 +90,7 @@ class AdminCaseItem extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(height: 15.0),
+                  const SizedBox(height: 15.0),
                   GestureDetector(
                     onTap: () => onGetUsersByCase(caseItem),
                     child: Icon(
@@ -99,7 +99,7 @@ class AdminCaseItem extends StatelessWidget {
                       size: 25.0,
                     ),
                   ),
-                  SizedBox(height: 15.0),
+                  const SizedBox(height: 15.0),
                   Icon(
                     Icons.outgoing_mail,
                     color: isProgressBarFull ? Colors.green : Colors.grey[400],
@@ -119,17 +119,17 @@ class AdminCaseItem extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Löschen bestätigen"),
-          content: Text("Möchten Sie diesen Fall wirklich löschen?"),
+          title: const Text("Löschen bestätigen"),
+          content: const Text("Möchten Sie diesen Fall wirklich löschen?"),
           actions: <Widget>[
             TextButton(
-              child: Text("Abbrechen"),
+              child: const Text("Abbrechen"),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text(
+              child: const Text(
                 "Löschen",
                 style: TextStyle(color: Colors.red),
               ),

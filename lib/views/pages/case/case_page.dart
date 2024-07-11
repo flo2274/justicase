@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mobile_anw/models/case.dart';
 import 'package:mobile_anw/services/api_service.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mobile_anw/state/notifiers/case_notifier.dart'; // Adjust import path as per your project structure
+import 'package:mobile_anw/state/notifiers/case_notifier.dart';
 import '../../../utils/configs/text_theme_config.dart';
 import '../../items/long-case_item.dart';
 
 class CasePage extends ConsumerStatefulWidget {
   const CasePage({
     required this.label,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final String label;
 
@@ -30,7 +29,7 @@ class _CasePageState extends ConsumerState<CasePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('JUSTICASE'),
+        title: const Text('JUSTICASE'),
         centerTitle: true,
       ),
       body: Consumer(
@@ -38,7 +37,7 @@ class _CasePageState extends ConsumerState<CasePage> {
           final caseState = ref.watch(caseProvider);
 
           if (caseState.isLoading) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
 
           if (caseState.userCases.isEmpty) {
@@ -46,8 +45,8 @@ class _CasePageState extends ConsumerState<CasePage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Sie haben sich in keinen Fall eingetragen.'),
-                  SizedBox(height: 20),
+                  const Text('Sie haben sich in keinen Fall eingetragen.'),
+                  const SizedBox(height: 20),
                   GestureDetector(
                     onTap: () {
                       context.go('/search');
@@ -101,7 +100,7 @@ class _CasePageState extends ConsumerState<CasePage> {
                           future: APIService.getEnrolledUsersCount(caseInfo.id!),
                           builder: (context, snapshot) {
                             if (snapshot.connectionState == ConnectionState.waiting) {
-                              return Center(child: CircularProgressIndicator());
+                              return const Center(child: CircularProgressIndicator());
                             } else if (snapshot.hasError) {
                               return Center(child: Text('Error: ${snapshot.error}'));
                             } else {

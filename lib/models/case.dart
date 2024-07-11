@@ -1,5 +1,3 @@
-import 'user.dart';
-
 class Case {
   final int? id;
   String? name;

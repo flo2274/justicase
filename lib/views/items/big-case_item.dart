@@ -7,7 +7,7 @@ import '../../utils/configs/text_theme_config.dart';
 class BigCaseItem extends StatelessWidget {
   final Case caseItem;
 
-  BigCaseItem({required this.caseItem});
+  const BigCaseItem({super.key, required this.caseItem});
 
   String truncateText(String text, TextStyle style, double maxWidth) {
     final textPainter = TextPainter(
@@ -20,7 +20,7 @@ class BigCaseItem extends StatelessWidget {
 
     if (textPainter.width > maxWidth) {
       for (int endIndex = text.length - 1; endIndex >= 0; endIndex--) {
-        final truncatedText = text.substring(0, endIndex) + '...';
+        final truncatedText = '${text.substring(0, endIndex)}...';
         textPainter.text = TextSpan(text: truncatedText, style: style);
         textPainter.layout(minWidth: 0, maxWidth: double.infinity);
 
@@ -64,7 +64,7 @@ class BigCaseItem extends StatelessWidget {
             const SizedBox(height: 8.0),
             Text(
               '${caseItem.companyType}',
-              style: TextStyle(fontSize: 16.0, color: Colors.grey),
+              style: const TextStyle(fontSize: 16.0, color: Colors.grey),
               textAlign: TextAlign.start,
             ),
             const SizedBox(height: 8.0),

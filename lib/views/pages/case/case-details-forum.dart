@@ -3,14 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:mobile_anw/models/case.dart';
 import 'package:mobile_anw/models/chat_message.dart';
 import 'package:mobile_anw/services/api_service.dart';
-import '../../../utils/configs/text_theme_config.dart';
 import '../../../utils/user_preferences.dart';
 import '../../items/message-bubble_item.dart';
 
 class CaseDetailsForum extends StatefulWidget {
   final Case myCase;
 
-  const CaseDetailsForum({Key? key, required this.myCase}) : super(key: key);
+  const CaseDetailsForum({super.key, required this.myCase});
 
   @override
   _CaseDetailsForumState createState() => _CaseDetailsForumState();
@@ -20,9 +19,7 @@ class _CaseDetailsForumState extends State<CaseDetailsForum> {
   List<ChatMessage> _messages = [];
   final TextEditingController _messageController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
-  late int _userId;
   late String _username;
-  late bool _isAdmin;
   late Timer _timer;
   bool _isUserDataLoaded = false;
 
@@ -34,7 +31,7 @@ class _CaseDetailsForumState extends State<CaseDetailsForum> {
   }
 
   void _startMessageLoading() {
-    _timer = Timer.periodic(Duration(seconds: 10), (Timer t) {
+    _timer = Timer.periodic(const Duration(seconds: 10), (Timer t) {
       if (_isUserDataLoaded) {
         _loadMessages();
       }
@@ -51,9 +48,7 @@ class _CaseDetailsForumState extends State<CaseDetailsForum> {
   Future<void> _loadUserData() async {
     await UserPreferences.fetchUserData((userId, username, isAdmin) {
       setState(() {
-        _userId = userId;
         _username = username;
-        _isAdmin = isAdmin;
         _isUserDataLoaded = true;
       });
       _loadMessages();
@@ -105,7 +100,7 @@ class _CaseDetailsForumState extends State<CaseDetailsForum> {
       if (_scrollController.hasClients) {
         _scrollController.animateTo(
           _scrollController.position.maxScrollExtent,
-          duration: Duration(milliseconds: 300),
+          duration: const Duration(milliseconds: 300),
           curve: Curves.easeOut,
         );
       }
@@ -118,7 +113,7 @@ class _CaseDetailsForumState extends State<CaseDetailsForum> {
       backgroundColor: Colors.white,
       body: Center(
         child: Container(
-          margin: EdgeInsets.all(16),
+          margin: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             border: Border.all(color: Colors.white, width: 2),
             borderRadius: BorderRadius.circular(12),
@@ -127,7 +122,7 @@ class _CaseDetailsForumState extends State<CaseDetailsForum> {
             children: [
               Expanded(
                 child: _messages.isEmpty
-                    ? Center(child: Text('Im Forum gibt es bisher keine Nachrichten...'))
+                    ? const Center(child: Text('Im Forum gibt es bisher keine Nachrichten...'))
                     : ListView.builder(
                   controller: _scrollController,
                   itemCount: _messages.length,
@@ -150,12 +145,12 @@ class _CaseDetailsForumState extends State<CaseDetailsForum> {
                     Expanded(
                       child: TextField(
                         controller: _messageController,
-                        decoration: InputDecoration(labelText: 'Nachricht senden...'),
+                        decoration: const InputDecoration(labelText: 'Nachricht senden...'),
                       ),
                     ),
-                    SizedBox(width: 8),
+                    const SizedBox(width: 8),
                     IconButton(
-                      icon: Icon(Icons.send),
+                      icon: const Icon(Icons.send),
                       onPressed: _sendMessage,
                     ),
                   ],

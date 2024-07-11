@@ -16,4 +16,7 @@ class CaseData {
   ];
 
   static final List<String> filterOptions = ['Alle', 'Vollständig', 'Leer'];
+
+  static const int caseClosedUserCount = 50;
 }
+

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile_anw/services/api_service.dart';
-import 'package:mobile_anw/state/models/user_state.dart';
 import 'package:mobile_anw/state/notifiers/case_notifier.dart';
 import 'package:mobile_anw/state/notifiers/user_notifier.dart';
 import '../../../models/case.dart';
@@ -14,7 +13,7 @@ class AdminDetailsPage extends ConsumerStatefulWidget {
   final User? myUser;
   final Case? myCase;
 
-  const AdminDetailsPage({Key? key, this.myUser, this.myCase}) : super(key: key);
+  const AdminDetailsPage({super.key, this.myUser, this.myCase});
 
   @override
   _AdminDetailsPageState createState() => _AdminDetailsPageState();
@@ -65,9 +64,9 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
     } else {
       return Scaffold(
         appBar: AppBar(
-          title: Text('Admin Details'),
+          title: const Text('Admin Details'),
         ),
-        body: Center(
+        body: const Center(
           child: Text('No data available'),
         ),
       );
@@ -79,11 +78,11 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('ADMIN PANEL'),
+        title: const Text('ADMIN PANEL'),
         centerTitle: true,
       ),
       body: caseState.isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : caseState.errorMessage != null
           ? Center(child: Text(caseState.errorMessage!))
           : Column(
@@ -113,9 +112,7 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
                   future: APIService.getEnrolledUsersCount(myCase.id!),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator());
-                    } else if (snapshot.hasError) {
-                      return Center(child: Text('Error: ${snapshot.error}'));
+                      return const Center(child: CircularProgressIndicator());
                     } else {
                       myCase.userCount = snapshot.data ?? 0;
                       return AdminCaseItem(
@@ -148,11 +145,11 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('ADMIN PANEL'),
+        title: const Text('ADMIN PANEL'),
         centerTitle: true,
       ),
       body: userState.isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : userState.errorMessage != null
           ? Center(child: Text(userState.errorMessage!))
           : Column(
@@ -205,21 +202,18 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
 
   void _deleteUser(int userId) async {
     try {
-      await APIService.deleteUser(userId);
-      setState(() {
-        caseUsers.removeWhere((user) => user.id == userId);
-      });
+      ref.read(userProvider.notifier).deleteUser(userId);
       ref.read(userProvider.notifier).refreshAllUsers();
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('User deleted successfully'),
+        const SnackBar(
+          content: Text('Benutzer erfolgreich gelöscht'),
           backgroundColor: Colors.green,
         ),
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Failed to delete user: $e'),
+          content: Text('Fehler beim Löschen des Benutzers: $e'),
           backgroundColor: Colors.red,
         ),
       );
@@ -230,7 +224,7 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
     try {
       await APIService.removeUserFromCase(caseId, userId: userId);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('User removed from case successfully'),
           backgroundColor: Colors.green,
         ),
@@ -249,21 +243,18 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
 
   void _deleteCase(int caseId) async {
     try {
-      await APIService.deleteCase(caseId);
-      setState(() {
-        userCases.removeWhere((caseItem) => caseItem.id == caseId);
-      });
-      ref.read(caseProvider.notifier).fetchAllCases();
+      await ref.read(caseProvider.notifier).deleteCase(caseId);
+      await ref.read(caseProvider.notifier).fetchAllCases();
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Case deleted successfully'),
+        const SnackBar(
+          content: Text('Fall erfolgreich gelöscht'),
           backgroundColor: Colors.green,
         ),
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Failed to delete case: $e'),
+          content: Text('Fehler beim Löschen des Falls: $e'),
           backgroundColor: Colors.red,
         ),
       );

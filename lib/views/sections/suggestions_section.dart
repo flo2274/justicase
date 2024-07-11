@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile_anw/models/case.dart';
 import 'package:mobile_anw/services/api_service.dart';
 
 import '../../utils/configs/text_theme_config.dart';
 import '../items/big-case_item.dart';
+import '../pages/case/case-details_page.dart';
 
 class SuggestionsSection extends StatefulWidget {
   final List<Case> cases;
 
-  SuggestionsSection({Key? key, required this.cases}) : super(key: key);
+  const SuggestionsSection({super.key, required this.cases});
 
   @override
   _SuggestionsSectionState createState() => _SuggestionsSectionState();
@@ -33,17 +33,17 @@ class _SuggestionsSectionState extends State<SuggestionsSection> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 16.0),
-          Text('Beliebteste', style: TextThemeConfig.smallHeading),
+          Text('Trends', style: TextThemeConfig.smallHeading),
           const SizedBox(height: 5.0),
           FutureBuilder<List<Case>>(
             future: _suggestedCases,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return CircularProgressIndicator();
+                return const CircularProgressIndicator();
               } else if (snapshot.hasError) {
                 return Text('Error: ${snapshot.error}');
               } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return Text('Keine Vorschläge verfügbar.');
+                return const Text('Keine Vorschläge verfügbar.');
               }
 
               final displayCases = snapshot.data!;
@@ -57,7 +57,12 @@ class _SuggestionsSectionState extends State<SuggestionsSection> {
                         .map((caseItem) => Expanded(
                       child: GestureDetector(
                         onTap: () {
-                          context.go('/case/caseDetails', extra: caseItem);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => CaseDetailsPage(myCase: caseItem),
+                            ),
+                          );
                         },
                         child: BigCaseItem(caseItem: caseItem),
                       ),
@@ -73,7 +78,12 @@ class _SuggestionsSectionState extends State<SuggestionsSection> {
                         .map((caseItem) => Expanded(
                       child: GestureDetector(
                         onTap: () {
-                          context.go('/case/caseDetails', extra: caseItem);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => CaseDetailsPage(myCase: caseItem),
+                            ),
+                          );
                         },
                         child: BigCaseItem(caseItem: caseItem),
                       ),

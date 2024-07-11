@@ -5,6 +5,8 @@ import 'package:mobile_anw/utils/helpers/image-animation_helper.dart';
 import 'package:mobile_anw/utils/configs/text_theme_config.dart';
 
 class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -13,13 +15,8 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _passwordVisible = false;
-  String _errorMessage = '';
 
   void _login() async {
-    setState(() {
-      _errorMessage = '';
-    });
-
     final String email = _emailController.text.trim();
     final String password = _passwordController.text.trim();
 
@@ -49,9 +46,6 @@ class _LoginPageState extends State<LoginPage> {
         backgroundColor: Colors.red,
       ),
     );
-    setState(() {
-      _errorMessage = message;
-    });
   }
 
   @override
@@ -63,15 +57,15 @@ class _LoginPageState extends State<LoginPage> {
             Container(
               color: Colors.grey[300],
               width: double.infinity,
-              padding: EdgeInsets.all(20.0),
+              padding: const EdgeInsets.all(20.0),
               child: Column(
                 children: [
                   Text(
                     'JUSTICE FOR YOUR CASE',
                     style: TextThemeConfig.authLargeHeading,
                   ),
-                  SizedBox(height: 10.0),
-                  Text(
+                  const SizedBox(height: 10.0),
+                  const Text(
                     'WIR SIND DIE BEWEGUNG FÜR GERECHTIGKEIT',
                     style: TextThemeConfig.authSmallHeading,
                   ),
@@ -79,7 +73,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             const SizedBox(height: 20.0),
-            ImageAnimationHelper(),
+            const ImageAnimationHelper(),
             const SizedBox(height: 20.0),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.0),
@@ -90,7 +84,7 @@ class _LoginPageState extends State<LoginPage> {
               child: Text('schön dich wiederzusehen', style: TextThemeConfig.authWelcome2Text),
             ),
             Padding(
-              padding: EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16.0),
               child: Card(
                 elevation: 2.0,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
@@ -117,8 +111,8 @@ class _LoginPageState extends State<LoginPage> {
                         obscureText: !_passwordVisible,
                         decoration: InputDecoration(
                           labelText: 'Dein Passwort',
-                          prefixIcon: Icon(Icons.lock_outlined),
-                          border: OutlineInputBorder(),
+                          prefixIcon: const Icon(Icons.lock_outlined),
+                          border: const OutlineInputBorder(),
                           suffixIcon: IconButton(
                             icon: Icon(_passwordVisible ? Icons.visibility : Icons.visibility_off),
                             onPressed: () {
@@ -128,7 +122,7 @@ class _LoginPageState extends State<LoginPage> {
                             },
                           ),
                           counterText: '',
-                          counterStyle: TextStyle(fontSize: 0, height: 0),
+                          counterStyle: const TextStyle(fontSize: 0, height: 0),
                         ),
                       ),
                       const SizedBox(height: 16.0),
@@ -137,7 +131,7 @@ class _LoginPageState extends State<LoginPage> {
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white,
                           backgroundColor: Colors.blue,
-                          padding: EdgeInsets.symmetric(vertical: 16.0),
+                          padding: const EdgeInsets.symmetric(vertical: 16.0),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),

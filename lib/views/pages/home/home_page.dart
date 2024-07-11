@@ -11,7 +11,7 @@ import '../../sections/recent_section.dart';
 import '../../sections/suggestions_section.dart';
 
 class HomePage extends ConsumerStatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -56,14 +56,14 @@ class _HomePageState extends ConsumerState<HomePage> {
         centerTitle: true,
         leading: _isAdmin
             ? IconButton(
-          icon: Icon(Icons.admin_panel_settings_outlined),
+          icon: const Icon(Icons.admin_panel_settings_outlined),
           onPressed: _navigateToAdminPanel,
           tooltip: 'Admin Panel',
         )
             : null,
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.logout),
+            icon: const Icon(Icons.logout),
             color: ThemeConfig.darkGreyAccent,
             onPressed: _logout,
             tooltip: 'Logout',
@@ -71,7 +71,7 @@ class _HomePageState extends ConsumerState<HomePage> {
         ],
       ),
       body: caseState.isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : caseState.errorMessage != null
           ? Center(
         child: Text(
@@ -82,7 +82,7 @@ class _HomePageState extends ConsumerState<HomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            CategorySection(),
+            const CategorySection(),
             const SizedBox(height: 20.0),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),

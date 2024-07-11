@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_anw/models/case.dart';
-import 'package:mobile_anw/utils/helpers/emoji_helper.dart';
-import 'package:go_router/go_router.dart';
 import 'package:mobile_anw/services/api_service.dart';
 import '../../../utils/configs/text_theme_config.dart';
-import '../../items/long-case_item.dart'; // Stelle sicher, dass der Import richtig ist
+import '../../items/long-case_item.dart';
 
 class IndustryCasesPage extends StatefulWidget {
   final String industry;
 
-  IndustryCasesPage({required this.industry});
+  const IndustryCasesPage({super.key, required this.industry});
 
   @override
   _IndustryCasesPageState createState() => _IndustryCasesPageState();
@@ -52,11 +50,11 @@ class _IndustryCasesPageState extends State<IndustryCasesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('JUSTICASE'),
+        title: const Text('JUSTICASE'),
         centerTitle: true,
       ),
       body: isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : error.isNotEmpty
           ? Center(child: Text(error))
           : Padding(
@@ -65,10 +63,10 @@ class _IndustryCasesPageState extends State<IndustryCasesPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              '${widget.industry}',
+              widget.industry,
               style: TextThemeConfig.smallHeading,
             ),
-            SizedBox(height: 5.0),
+            const SizedBox(height: 5.0),
             Expanded(
               child: ListView.builder(
                 itemCount: cases.length,

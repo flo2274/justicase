@@ -1,5 +1,4 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter/material.dart';
 import '../../models/case.dart';
 import '../../services/api_service.dart';
 import '../models/case_state.dart';

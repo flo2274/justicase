@@ -11,7 +11,7 @@ import '../../../utils/configs/text_theme_config.dart';
 class CaseDetailsEnrolled extends ConsumerStatefulWidget {
   final Case myCase;
 
-  const CaseDetailsEnrolled({Key? key, required this.myCase}) : super(key: key);
+  const CaseDetailsEnrolled({super.key, required this.myCase});
 
   @override
   _CaseDetailsEnrolledState createState() => _CaseDetailsEnrolledState();
@@ -127,19 +127,19 @@ class _CaseDetailsEnrolledState extends ConsumerState<CaseDetailsEnrolled> {
                       children: [
                         const SizedBox(height: 16.0),
                         Text('Eingetragene User', style: TextThemeConfig.smallHeading,),
-                        SizedBox(height: 5),
+                        const SizedBox(height: 5),
                         _isLoading
-                            ? Center(child: CircularProgressIndicator())
+                            ? const Center(child: CircularProgressIndicator())
                             : enrolledUsers.isEmpty
                             ? const Center(child: Text('Kein User ist eingetragen'))
                             : ListView.builder(
                           shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           itemCount: enrolledUsers.length,
                           itemBuilder: (BuildContext context, int index) {
                             return Card(
                               child: ListTile(
-                                leading: Icon(Icons.person),
+                                leading: const Icon(Icons.person),
                                 title: Text(enrolledUsers[index].username),
                                 subtitle: Text(enrolledUsers[index].email),
                               ),
@@ -163,7 +163,7 @@ class _CaseDetailsEnrolledState extends ConsumerState<CaseDetailsEnrolled> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
                   foregroundColor: Colors.white,
-                  padding: EdgeInsets.symmetric(vertical: 16.0),
+                  padding: const EdgeInsets.symmetric(vertical: 16.0),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),

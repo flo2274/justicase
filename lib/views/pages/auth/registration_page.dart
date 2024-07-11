@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile_anw/services/api_service.dart';
-import 'package:mobile_anw/utils/helpers/image-animation_helper.dart';
 import 'package:mobile_anw/utils/configs/text_theme_config.dart';
 
 class RegistrationPage extends StatefulWidget {
+  const RegistrationPage({super.key});
+
   @override
   _RegistrationPageState createState() => _RegistrationPageState();
 }
@@ -16,23 +17,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _passwordVisible = false;
-  String _errorMessage = '';
-
-  @override
-  void initState() {
-    super.initState();
-    _clearErrorMessage();
-  }
-
-  void _clearErrorMessage() {
-    setState(() {
-      _errorMessage = '';
-    });
-  }
 
   void _register() async {
-    _clearErrorMessage();
-
     final String firstName = _firstNameController.text.trim();
     final String lastName = _lastNameController.text.trim();
     final String username = _usernameController.text.trim();
@@ -40,59 +26,37 @@ class _RegistrationPageState extends State<RegistrationPage> {
     final String password = _passwordController.text.trim();
 
     try {
-      final success = await APIService.register(
-          firstName, lastName, username, email, password);
+      final success = await APIService.register(firstName, lastName, username, email, password);
       if (success) {
         _performLogin(email, password);
+      } else {
+        _showErrorBanner('Fehler beim Registrieren. Überprüfen Sie Ihre Eingaben.');
       }
     } catch (e) {
-      _handleError(e);
+      _showErrorBanner('Ein Fehler ist aufgetreten: $e');
     }
-  }
-
-  void _handleError(dynamic error) {
-    String errorMessage = error.toString();
-    if (errorMessage.contains('Registration failed')) {
-      errorMessage = 'Nutzer bereits vorhanden.';
-    } else if (errorMessage.contains('Invalid email')) {
-      errorMessage = 'Ungültige Email.';
-    } else if (errorMessage.contains('Invalid password')) {
-      errorMessage = 'Ungültiges Passwort.';
-    } else if (errorMessage.contains('Invalid username')) {
-      errorMessage = 'Ungültiger Benutzername.';
-    } else {
-      errorMessage = 'Ein Fehler ist aufgetreten: $errorMessage';
-    }
-
-    // Show the error message in a banner
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(errorMessage),
-        backgroundColor: Colors.red,
-      ),
-    );
-
-    setState(() {
-      _errorMessage = errorMessage;
-    });
   }
 
   void _performLogin(String email, String password) async {
-    _clearErrorMessage();
-
     try {
       final success = await APIService.login(email, password);
       if (success) {
         context.go('/home');
       } else {
-        setState(() {
-          _errorMessage =
-          'Fehler beim automatischen Login nach der Registrierung.';
-        });
+        _showErrorBanner('Fehler beim automatischen Login nach der Registrierung.');
       }
     } catch (e) {
-      _handleError(e);
+      _showErrorBanner('Ein Fehler ist aufgetreten: $e');
     }
+  }
+
+  void _showErrorBanner(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Colors.red,
+      ),
+    );
   }
 
   @override
@@ -104,15 +68,15 @@ class _RegistrationPageState extends State<RegistrationPage> {
             Container(
               color: Colors.grey[300],
               width: double.infinity,
-              padding: EdgeInsets.all(20.0),
+              padding: const EdgeInsets.all(20.0),
               child: Column(
                 children: [
                   Text(
                     'JUSTICE FOR YOUR CASE',
                     style: TextThemeConfig.authLargeHeading,
                   ),
-                  SizedBox(height: 10.0),
-                  Text(
+                  const SizedBox(height: 10.0),
+                  const Text(
                     'WIR SIND DIE BEWEGUNG FÜR GERECHTIGKEIT',
                     style: TextThemeConfig.authSmallHeading,
                   ),
@@ -123,19 +87,24 @@ class _RegistrationPageState extends State<RegistrationPage> {
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.0),
               child: Text(
-                  'Willkommen,', style: TextThemeConfig.authWelcome1Text),
+                'Willkommen,',
+                style: TextThemeConfig.authWelcome1Text,
+              ),
             ),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.0),
-              child: Text('schön dich wiederzusehen',
-                  style: TextThemeConfig.authWelcome2Text),
+              child: Text(
+                'schön dich wiederzusehen',
+                style: TextThemeConfig.authWelcome2Text,
+              ),
             ),
             Padding(
-              padding: EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16.0),
               child: Card(
                 elevation: 2.0,
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0)),
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
                 child: Padding(
                   padding: const EdgeInsets.all(24.0),
                   child: Column(
@@ -176,8 +145,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         prefixIcon: Icons.lock_outlined,
                         obscureText: !_passwordVisible,
                         suffixIcon: IconButton(
-                          icon: Icon(_passwordVisible ? Icons.visibility : Icons
-                              .visibility_off),
+                          icon: Icon(_passwordVisible ? Icons.visibility : Icons.visibility_off),
                           onPressed: () {
                             setState(() {
                               _passwordVisible = !_passwordVisible;
@@ -191,7 +159,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white,
                           backgroundColor: Colors.blue,
-                          padding: EdgeInsets.symmetric(vertical: 16.0),
+                          padding: const EdgeInsets.symmetric(vertical: 16.0),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
@@ -238,8 +206,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
         labelText: labelText,
         prefixIcon: Icon(prefixIcon),
         counterText: '',
-        counterStyle: TextStyle(fontSize: 0, height: 0), // Set size and height to 0 to hide
-        border: OutlineInputBorder(),
+        counterStyle: const TextStyle(fontSize: 0, height: 0),
+        border: const OutlineInputBorder(),
         suffixIcon: suffixIcon,
       ),
     );

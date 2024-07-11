@@ -6,6 +6,8 @@ import 'package:go_router/go_router.dart';
 import '../items/category-case_item.dart';
 
 class CategorySection extends StatelessWidget {
+  const CategorySection({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Padding(

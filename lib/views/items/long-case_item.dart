@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_anw/data/constants/case_data.dart';
 import 'package:mobile_anw/models/case.dart';
 import 'package:mobile_anw/utils/helpers/emoji_helper.dart';
 import 'package:go_router/go_router.dart';
@@ -8,13 +9,11 @@ import '../../utils/configs/text_theme_config.dart';
 class LongCaseItem extends StatelessWidget {
   final Case caseInfo;
 
-  const LongCaseItem({Key? key, required this.caseInfo}) : super(key: key);
+  const LongCaseItem({super.key, required this.caseInfo});
 
   @override
   Widget build(BuildContext context) {
-    double progress = caseInfo.userCount != null
-        ? caseInfo.userCount / 50.0 // Todo: make 50 constant global variable
-        : 0.0;
+    double progress = caseInfo.userCount / CaseData.caseClosedUserCount;
 
     return Card(
       child: InkWell(
@@ -36,7 +35,7 @@ class LongCaseItem extends StatelessWidget {
                   color: Colors.blue,
                 ),
               ),
-              SizedBox(width: 12),
+              const SizedBox(width: 12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -47,7 +46,7 @@ class LongCaseItem extends StatelessWidget {
                       caseInfo.name ?? '',
                       style: TextThemeConfig.primaryLongCaseText
                     ),
-                    SizedBox(height: 4),
+                    const SizedBox(height: 4),
                     // Company Type
                     Text(
                       caseInfo.companyType ?? 'Kein Unternehmen',
@@ -55,7 +54,7 @@ class LongCaseItem extends StatelessWidget {
                       maxLines: 1,
                       style: TextThemeConfig.secondaryLongCaseText,
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     // Progress Indicator and User Count
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -82,11 +81,11 @@ class LongCaseItem extends StatelessWidget {
                             ],
                           ),
                         ),
-                        SizedBox(width: 8),
+                        const SizedBox(width: 8),
                         // User Count
                         Text(
-                          '${caseInfo.userCount ?? 0} / 50',
-                          style: TextStyle(
+                          '${caseInfo.userCount} / ${CaseData.caseClosedUserCount}',
+                          style: const TextStyle(
                             fontSize: 12.0,
                             color: Colors.black54,
                           ),
@@ -96,8 +95,8 @@ class LongCaseItem extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(width: 12),
-              Icon(Icons.arrow_forward_ios, size: 16),
+              const SizedBox(width: 12),
+              const Icon(Icons.arrow_forward_ios, size: 16),
             ],
           ),
         ),

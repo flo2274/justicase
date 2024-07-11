@@ -27,11 +27,11 @@ final goRouter = GoRouter(
   routes: [
     GoRoute(
       path: '/registration',
-      builder: (context, state) => RegistrationPage(),
+      builder: (context, state) => const RegistrationPage(),
     ),
     GoRoute(
       path: '/login',
-      builder: (context, state) => LoginPage(),
+      builder: (context, state) => const LoginPage(),
     ),
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {

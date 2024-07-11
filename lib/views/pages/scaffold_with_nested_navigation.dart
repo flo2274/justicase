@@ -30,11 +30,11 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
 
 class ScaffoldWithNavigationBar extends StatelessWidget {
   const ScaffoldWithNavigationBar({
-    Key? key,
+    super.key,
     required this.body,
     required this.selectedIndex,
     required this.onDestinationSelected,
-  }) : super(key: key);
+  });
 
   final Widget body;
   final int selectedIndex;

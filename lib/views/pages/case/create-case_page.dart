@@ -5,13 +5,12 @@ import 'package:mobile_anw/services/api_service.dart';
 import 'package:mobile_anw/state/notifiers/case_notifier.dart';
 import 'package:mobile_anw/utils/configs/text_theme_config.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shared_preferences/shared_preferences.dart'; // Import für UserPreferences
 import '../../../data/constants/case_data.dart';
 import '../../../models/chat_message.dart';
 import '../../../utils/user_preferences.dart'; // Pfad zu UserPreferences anpassen
 
 class CreateCasePage extends ConsumerStatefulWidget {
-  const CreateCasePage({Key? key}) : super(key: key);
+  const CreateCasePage({super.key});
 
   @override
   _CreateCasePageState createState() => _CreateCasePageState();
@@ -20,7 +19,7 @@ class CreateCasePage extends ConsumerStatefulWidget {
 class _CreateCasePageState extends ConsumerState<CreateCasePage> {
   final _formKey = GlobalKey<FormState>();
   String _yourCaseDescription = '';
-  Case _newCase = Case(companyType: '', industry: '');
+  final Case _newCase = Case(companyType: '', industry: '');
   String _username = ''; // Hält den Benutzernamen
 
   @override
@@ -43,7 +42,7 @@ class _CreateCasePageState extends ConsumerState<CreateCasePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('JUSTICASE'),
+        title: const Text('JUSTICASE'),
         centerTitle: true,
       ),
       body: Consumer(
@@ -51,7 +50,7 @@ class _CreateCasePageState extends ConsumerState<CreateCasePage> {
           final caseState = ref.watch(caseProvider);
 
           if (caseState.isLoading) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
 
           return Column(

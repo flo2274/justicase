@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 class ImageAnimationHelper extends StatefulWidget {
+  const ImageAnimationHelper({super.key});
+
   @override
   _ImageAnimationHelperState createState() => _ImageAnimationHelperState();
 }
@@ -42,7 +44,7 @@ class _ImageAnimationHelperState extends State<ImageAnimationHelper> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 20.0),
+      margin: const EdgeInsets.symmetric(vertical: 20.0),
       width: double.infinity,
       height: 170.0,
       child: AnimatedSwitcher(

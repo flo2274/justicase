@@ -4,7 +4,7 @@ import 'package:mobile_anw/utils/helpers/emoji_helper.dart';
 class CategoryCaseItem extends StatelessWidget {
   final String name;
 
-CategoryCaseItem({required this.name});
+const CategoryCaseItem({super.key, required this.name});
 
   @override
   Widget build(BuildContext context) {

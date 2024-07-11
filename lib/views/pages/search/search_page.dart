@@ -4,14 +4,11 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile_anw/utils/configs/text_theme_config.dart';
 import 'package:mobile_anw/models/case.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../../state/notifiers/case_notifier.dart';
-import '../../../state/models/case_state.dart';
 import '../../sections/all-cases_section.dart';
 
 class SearchPage extends ConsumerStatefulWidget {
-  const SearchPage({Key? key}) : super(key: key);
+  const SearchPage({super.key});
 
   @override
   _SearchPageState createState() => _SearchPageState();
@@ -30,7 +27,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('JUSTICASE'),
+        title: const Text('JUSTICASE'),
         centerTitle: true,
       ),
       body: Stack(
@@ -86,7 +83,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                     },
                   ),
                 ),
-                AllCasesSection(),
+                const AllCasesSection(),
               ],
             ),
           ),
@@ -96,22 +93,14 @@ class _SearchPageState extends ConsumerState<SearchPage> {
             right: 50.0,
             child: ElevatedButton.icon(
               onPressed: () {
-                WidgetsBinding.instance!.addPostFrameCallback((_) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
                   context.go('/case/createCase');
                 });
               },
-              icon: Icon(Icons.add),
-              label: Text(
+              icon: const Icon(Icons.add),
+              label: const Text(
                 'Erstelle einen neuen Fall',
-                style: TextStyle(color: Colors.white), // Textfarbe auf Weiß setzen
-              ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(vertical: 16.0),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
+                style: TextStyle(color: Colors.white),
               ),
             ),
           ),

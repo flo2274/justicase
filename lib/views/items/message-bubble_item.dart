@@ -9,27 +9,27 @@ class MessageBubble extends StatelessWidget {
   final bool isMe;
 
   const MessageBubble({
-    Key? key,
+    super.key,
     required this.message,
     required this.sender,
     required this.timestamp,
     required this.isMe,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return Align(
       alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
-        margin: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+        margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
         decoration: BoxDecoration(
           color: isMe ? Colors.lightBlueAccent : Colors.grey[300],
           borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(12),
-            topRight: Radius.circular(12),
-            bottomLeft: isMe ? Radius.circular(12) : Radius.zero,
-            bottomRight: isMe ? Radius.zero : Radius.circular(12),
+            topLeft: const Radius.circular(12),
+            topRight: const Radius.circular(12),
+            bottomLeft: isMe ? const Radius.circular(12) : Radius.zero,
+            bottomRight: isMe ? Radius.zero : const Radius.circular(12),
           ),
         ),
         child: Column(
@@ -39,19 +39,19 @@ class MessageBubble extends StatelessWidget {
             if (!isMe)
               Text(
                 sender,
-                style: TextStyle(
+                style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   color: TextThemeConfig.textSecondary,
                 ),
               ),
-            if (!isMe) SizedBox(height: 4),
+            if (!isMe) const SizedBox(height: 4),
             Text(
               message,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.black54,
               ),
             ),
-            SizedBox(height: 4),
+            const SizedBox(height: 4),
             Text(
               '${timestamp.toLocal().hour.toString().padLeft(2, '0')}:${timestamp.toLocal().minute.toString().padLeft(2, '0')}',
               style: TextStyle(
