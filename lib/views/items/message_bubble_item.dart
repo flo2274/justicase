@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../../utils/configs/text_theme_config.dart';
 
 class MessageBubble extends StatelessWidget {

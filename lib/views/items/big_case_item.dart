@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_anw/models/case.dart';
 import 'package:mobile_anw/utils/helpers/emoji_helper.dart';
-
 import '../../utils/configs/text_theme_config.dart';
 
 class BigCaseItem extends StatelessWidget {

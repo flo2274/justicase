@@ -103,7 +103,7 @@ class LoginPageState extends State<LoginPage> {
                           prefixIcon: Icon(Icons.email_outlined),
                           border: OutlineInputBorder(),
                           counterText: '',
-                          counterStyle: TextStyle(fontSize: 0, height: 0), // Hide counter text
+                          counterStyle: TextStyle(fontSize: 0, height: 0),
                         ),
                       ),
                       const SizedBox(height: 16.0),

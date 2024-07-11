@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_anw/models/case.dart';
 import 'package:mobile_anw/services/api_service.dart';
-
 import '../../utils/configs/text_theme_config.dart';
 import '../items/big_case_item.dart';
 import '../pages/case/case_details_page.dart';
@@ -42,7 +41,7 @@ class SuggestionsSectionState extends State<SuggestionsSection> {
               } else if (snapshot.hasError) {
                 return Text('Error: ${snapshot.error}');
               } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return const Text('Keine Vorschläge verfügbar.');
+                return const Text('Keine Trends verfügbar.');
               }
 
               final displayCases = snapshot.data!;

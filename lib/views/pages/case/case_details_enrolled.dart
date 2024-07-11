@@ -4,7 +4,6 @@ import 'package:mobile_anw/models/case.dart';
 import 'package:mobile_anw/models/user.dart';
 import 'package:mobile_anw/services/api_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../../state/notifiers/case_notifier.dart';
 import '../../../utils/configs/text_theme_config.dart';
 

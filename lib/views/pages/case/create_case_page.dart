@@ -20,16 +20,14 @@ class CreateCasePageState extends ConsumerState<CreateCasePage> {
   final _formKey = GlobalKey<FormState>();
   String _yourCaseDescription = '';
   final Case _newCase = Case(companyType: '', industry: '');
-  String _username = ''; // Hält den Benutzernamen
+  String _username = '';
 
   @override
   void initState() {
     super.initState();
-    // Rufe Benutzerdaten (einschließlich des Benutzernamens) ab
     _fetchUserData();
   }
 
-  // Methode zum Abrufen der Benutzerdaten aus SharedPreferences
   void _fetchUserData() async {
     UserPreferences.fetchUserData((userId, username, isAdmin) {
       setState(() {

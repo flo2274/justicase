@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:mobile_anw/models/case.dart';
 import 'package:mobile_anw/utils/helpers/emoji_helper.dart';
 import 'package:mobile_anw/utils/configs/theme_config.dart';
-
 import '../../../data/constants/case_data.dart';
 
 class AdminCaseItem extends StatelessWidget {

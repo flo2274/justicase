@@ -6,6 +6,7 @@ import 'package:mobile_anw/utils/configs/text_theme_config.dart';
 import 'package:mobile_anw/models/case.dart';
 import '../../../state/notifiers/case_notifier.dart';
 import '../../sections/all_cases_section.dart';
+import '../case/case_details_page.dart';
 
 class SearchPage extends ConsumerStatefulWidget {
   const SearchPage({super.key});
@@ -54,7 +55,12 @@ class SearchPageState extends ConsumerState<SearchPage> {
                       );
                     },
                     onSelected: (Case suggestion) {
-                      context.go('/case/caseDetails', extra: suggestion);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CaseDetailsPage(myCase: suggestion),
+                        ),
+                      );
                     },
                     emptyBuilder: (context) {
                       return InkWell(
