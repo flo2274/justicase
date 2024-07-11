@@ -4,7 +4,7 @@ import 'package:mobile_anw/utils/helpers/emoji_helper.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile_anw/services/api_service.dart';
 import '../../../utils/configs/text_theme_config.dart';
-import '../../items/case_item.dart'; // Stelle sicher, dass der Import richtig ist
+import '../../items/long-case_item.dart'; // Stelle sicher, dass der Import richtig ist
 
 class IndustryCasesPage extends StatefulWidget {
   final String industry;
@@ -74,7 +74,7 @@ class _IndustryCasesPageState extends State<IndustryCasesPage> {
                 itemCount: cases.length,
                 itemBuilder: (context, index) {
                   var caseInfo = cases[index];
-                  return CaseItem(caseInfo: caseInfo);
+                  return LongCaseItem(caseInfo: caseInfo);
                 },
               ),
             ),

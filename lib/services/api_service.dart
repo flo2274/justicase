@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:mobile_anw/utils/user_preferences.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mobile_anw/models/user.dart';
 import 'package:mobile_anw/models/case.dart';
@@ -73,12 +74,7 @@ class APIService {
         final String username = data['user']['username'];
         final String role = data['user']['role'];
 
-        await storage.write(key: 'token', value: token);
-
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setInt('userId', userId);
-        await prefs.setString('username', username);
-        await prefs.setString('role', role);
+        await UserPreferences.saveUserData(token, userId, username, role);
 
         return true;
       } else {
@@ -96,9 +92,7 @@ class APIService {
   }
 
   static Future<void> logout() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await storage.delete(key: 'token');
-    await prefs.remove('username');
+    await UserPreferences.removeUserData();
   }
 
   static Future<List<User>> getUsers() async {

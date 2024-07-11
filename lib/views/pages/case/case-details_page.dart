@@ -23,7 +23,7 @@ class CaseDetailsPage extends StatelessWidget {
           bottom: const TabBar(
             tabs: [
               Tab(text: 'Forum'),
-              Tab(text: 'Enrolled'),
+              Tab(text: 'Eingetragen'),
             ],
           ),
         ),

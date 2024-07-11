@@ -12,14 +12,12 @@ class RecentSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Sortiere die Fälle nach dem Erstellungsdatum (neueste zuerst)
     cases.sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
 
-    // Zeige die ersten 4 Fälle an oder weniger, wenn weniger als 4 vorhanden sind
     final displayCases = cases.length >= 4 ? cases.sublist(0, 4) : cases;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

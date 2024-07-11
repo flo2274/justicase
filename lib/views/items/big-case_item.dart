@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mobile_anw/models/case.dart';
 import 'package:mobile_anw/utils/helpers/emoji_helper.dart';
 
+import '../../utils/configs/text_theme_config.dart';
+
 class BigCaseItem extends StatelessWidget {
   final Case caseItem;
 
@@ -54,9 +56,9 @@ class BigCaseItem extends StatelessWidget {
               truncateText(
                 caseItem.name!,
                 const TextStyle(fontSize: 22.0),
-                MediaQuery.of(context).size.width / 2.5 - 32.0, // 32.0 for padding
+                MediaQuery.of(context).size.width / 2.5 - 32.0,
               ),
-              style: const TextStyle(fontSize: 22.0),
+              style: TextThemeConfig.primaryBigCaseText,
               textAlign: TextAlign.start,
             ),
             const SizedBox(height: 8.0),

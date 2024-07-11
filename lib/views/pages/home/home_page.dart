@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile_anw/utils/configs/text_theme_config.dart';
+import 'package:mobile_anw/utils/configs/theme_config.dart';
 import '../../../services/api_service.dart';
 import '../../../state/notifiers/case_notifier.dart';
 import '../../../utils/user_preferences.dart';
@@ -63,6 +64,7 @@ class _HomePageState extends ConsumerState<HomePage> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.logout),
+            color: ThemeConfig.darkGreyAccent,
             onPressed: _logout,
             tooltip: 'Logout',
           ),
@@ -83,7 +85,7 @@ class _HomePageState extends ConsumerState<HomePage> {
             CategorySection(),
             const SizedBox(height: 20.0),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Row(
                 children: [
                   Align(

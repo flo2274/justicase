@@ -27,34 +27,38 @@ class AllCasesSection extends ConsumerWidget {
       return Center(child: Text('Keine Fälle gefunden.'));
     }
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SizedBox(height: 16.0),
-        Text('Alle Fälle', style: TextThemeConfig.smallHeading),
-        const SizedBox(height: 5.0),
-        LimitedBox(
-          maxHeight: MediaQuery.of(context).size.height * 1,
-          child: GridView.builder(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              crossAxisSpacing: 10.0,
-              mainAxisSpacing: 10.0,
-              childAspectRatio: 1.5,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: 16.0),
+          Text('Alle Fälle', style: TextThemeConfig.smallHeading),
+          const SizedBox(height: 5.0),
+          LimitedBox(
+            maxHeight: MediaQuery.of(context).size.height * 1,
+            child: GridView.builder(
+              padding: EdgeInsets.zero,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 10.0,
+                mainAxisSpacing: 10.0,
+                childAspectRatio: 1.5,
+              ),
+              itemCount: caseState.allCases.length,
+              itemBuilder: (context, index) {
+                final caseItem = caseState.allCases[index];
+                return GestureDetector(
+                  onTap: () {
+                    context.go('/case/caseDetails', extra: caseItem);
+                  },
+                  child: BigCaseItem(caseItem: caseItem),
+                );
+              },
             ),
-            itemCount: caseState.allCases.length,
-            itemBuilder: (context, index) {
-              final caseItem = caseState.allCases[index];
-              return GestureDetector(
-                onTap: () {
-                  context.go('/case/caseDetails', extra: caseItem);
-                },
-                child: BigCaseItem(caseItem: caseItem),
-              );
-            },
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

@@ -72,19 +72,19 @@ class TextThemeConfig {
     color: Colors.black87,
   );
 
-  static const TextStyle mainCardText = TextStyle(
-    fontSize: 16.0,
+  static const TextStyle primaryBigCaseText = TextStyle(
+    fontSize: 22.0,
     fontWeight: FontWeight.normal,
     color: Colors.black87,
   );
 
-  static const TextStyle largeCardText = TextStyle(
+  static const TextStyle primaryLongCaseText = TextStyle(
     fontSize: 16.0,
     fontWeight: FontWeight.normal,
-    color: textSecondary,
+    color: textPrimary,
   );
 
-  static const TextStyle smallCardText = TextStyle(
+  static const TextStyle secondaryLongCaseText = TextStyle(
     fontSize: 14.0,
     fontWeight: FontWeight.normal,
     color: textLightSecondary,

@@ -48,8 +48,8 @@ class ScaffoldWithNavigationBar extends StatelessWidget {
         selectedIndex: selectedIndex,
         destinations: const [
           NavigationDestination(label: 'Home', icon: Icon(Icons.home)),
-          NavigationDestination(label: 'Search', icon: Icon(Icons.search)),
-          NavigationDestination(label: 'Case', icon: Icon(Icons.balance)),
+          NavigationDestination(label: 'Suche', icon: Icon(Icons.search)),
+          NavigationDestination(label: 'Fall', icon: Icon(Icons.balance)),
         ],
         onDestinationSelected: onDestinationSelected,
       ),

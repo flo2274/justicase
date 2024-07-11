@@ -82,7 +82,7 @@ class _CreateCasePageState extends ConsumerState<CreateCasePage> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(20.0),
+                padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20.0),
                 child: SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(

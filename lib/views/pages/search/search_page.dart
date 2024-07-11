@@ -36,12 +36,12 @@ class _SearchPageState extends ConsumerState<SearchPage> {
       body: Stack(
         children: [
           SingleChildScrollView(
-            padding: const EdgeInsets.all(20.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  color: Colors.white,
+                  padding: const EdgeInsets.all(16.0),
                   child: TypeAheadField<Case>(
                     suggestionsCallback: (search) {
                       if (search.isEmpty) {
@@ -66,7 +66,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                         },
                         child: const ListTile(
                           title: Text(
-                            'Kein Fall gefunden. Erstelle einen neuen Fall',
+                            'Keinen Fall gefunden. Erstelle einen neuen Fall',
                             style: TextThemeConfig.alertText,
                           ),
                         ),
@@ -86,15 +86,14 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                     },
                   ),
                 ),
-                const SizedBox(height: 16.0),
                 AllCasesSection(),
               ],
             ),
           ),
           Positioned(
             bottom: 16.0,
-            left: 20.0,
-            right: 20.0,
+            left: 50.0,
+            right: 50.0,
             child: ElevatedButton.icon(
               onPressed: () {
                 WidgetsBinding.instance!.addPostFrameCallback((_) {
@@ -121,3 +120,4 @@ class _SearchPageState extends ConsumerState<SearchPage> {
     );
   }
 }
+

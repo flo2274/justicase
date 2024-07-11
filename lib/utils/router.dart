@@ -9,7 +9,6 @@ import 'package:mobile_anw/views/pages/case/case-details_page.dart';
 import 'package:mobile_anw/views/pages/scaffold_with_nested_navigation.dart';
 import 'package:mobile_anw/views/pages/auth/registration_page.dart';
 import 'package:mobile_anw/views/pages/auth/login_page.dart';
-import 'package:mobile_anw/views/pages/chat_screen.dart'; // Import der ChatScreen-Klasse
 
 import '../models/case.dart';
 import '../models/user.dart';

@@ -125,8 +125,9 @@ class _CaseDetailsEnrolledState extends ConsumerState<CaseDetailsEnrolled> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        const SizedBox(height: 16.0),
                         Text('Eingetragene User', style: TextThemeConfig.smallHeading,),
-                        SizedBox(height: 8),
+                        SizedBox(height: 5),
                         _isLoading
                             ? Center(child: CircularProgressIndicator())
                             : enrolledUsers.isEmpty
@@ -153,9 +154,8 @@ class _CaseDetailsEnrolledState extends ConsumerState<CaseDetailsEnrolled> {
             ),
           ),
 
-          // Enroll/Unenroll Button
           Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20.0),
             child: SizedBox(
               width: double.infinity,
               child: ElevatedButton(

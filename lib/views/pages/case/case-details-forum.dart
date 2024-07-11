@@ -118,7 +118,7 @@ class _CaseDetailsForumState extends State<CaseDetailsForum> {
       backgroundColor: Colors.white,
       body: Center(
         child: Container(
-          margin: EdgeInsets.all(24),
+          margin: EdgeInsets.all(16),
           decoration: BoxDecoration(
             border: Border.all(color: Colors.white, width: 2),
             borderRadius: BorderRadius.circular(12),

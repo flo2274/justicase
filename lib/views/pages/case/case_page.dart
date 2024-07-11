@@ -5,7 +5,7 @@ import 'package:mobile_anw/services/api_service.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile_anw/state/notifiers/case_notifier.dart'; // Adjust import path as per your project structure
 import '../../../utils/configs/text_theme_config.dart';
-import '../../items/case_item.dart';
+import '../../items/long-case_item.dart';
 
 class CasePage extends ConsumerStatefulWidget {
   const CasePage({
@@ -106,7 +106,7 @@ class _CasePageState extends ConsumerState<CasePage> {
                               return Center(child: Text('Error: ${snapshot.error}'));
                             } else {
                               caseInfo.userCount = snapshot.data ?? 0;
-                              return CaseItem(caseInfo: caseInfo);
+                              return LongCaseItem(caseInfo: caseInfo);
                             }
                           },
                         );

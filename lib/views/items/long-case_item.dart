@@ -5,10 +5,10 @@ import 'package:go_router/go_router.dart';
 
 import '../../utils/configs/text_theme_config.dart';
 
-class CaseItem extends StatelessWidget {
+class LongCaseItem extends StatelessWidget {
   final Case caseInfo;
 
-  const CaseItem({Key? key, required this.caseInfo}) : super(key: key);
+  const LongCaseItem({Key? key, required this.caseInfo}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +45,7 @@ class CaseItem extends StatelessWidget {
                     // Case Name
                     Text(
                       caseInfo.name ?? '',
-                      style: TextThemeConfig.largeCardText
+                      style: TextThemeConfig.primaryLongCaseText
                     ),
                     SizedBox(height: 4),
                     // Company Type
@@ -53,7 +53,7 @@ class CaseItem extends StatelessWidget {
                       caseInfo.companyType ?? 'Kein Unternehmen',
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
-                      style: TextThemeConfig.smallCardText,
+                      style: TextThemeConfig.secondaryLongCaseText,
                     ),
                     SizedBox(height: 8),
                     // Progress Indicator and User Count
