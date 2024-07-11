@@ -56,7 +56,7 @@ class MessageBubble extends StatelessWidget {
               '${timestamp.toLocal().hour.toString().padLeft(2, '0')}:${timestamp.toLocal().minute.toString().padLeft(2, '0')}',
               style: TextStyle(
                 fontSize: 10,
-                color: isMe ? Colors.white60 : Colors.black54,
+                color: isMe ? Colors.white70 : Colors.black54,
               ),
             ),
           ],

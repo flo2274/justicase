@@ -126,7 +126,7 @@ class _CaseDetailsEnrolledState extends ConsumerState<CaseDetailsEnrolled> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(height: 16.0),
-                        Text('Eingetragene User', style: TextThemeConfig.smallHeading,),
+                        Text('Eingetragene Benutzer', style: TextThemeConfig.smallHeading,),
                         const SizedBox(height: 5),
                         _isLoading
                             ? const Center(child: CircularProgressIndicator())
