@@ -12,10 +12,10 @@ class SuggestionsSection extends StatefulWidget {
   const SuggestionsSection({super.key, required this.cases});
 
   @override
-  _SuggestionsSectionState createState() => _SuggestionsSectionState();
+  SuggestionsSectionState createState() => SuggestionsSectionState();
 }
 
-class _SuggestionsSectionState extends State<SuggestionsSection> {
+class SuggestionsSectionState extends State<SuggestionsSection> {
   late Future<List<Case>> _suggestedCases;
 
   @override

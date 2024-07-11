@@ -17,10 +17,10 @@ class AdminPanelPage extends ConsumerStatefulWidget {
   const AdminPanelPage({super.key});
 
   @override
-  _AdminPanelPageState createState() => _AdminPanelPageState();
+  AdminPanelPageState createState() => AdminPanelPageState();
 }
 
-class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
+class AdminPanelPageState extends ConsumerState<AdminPanelPage> {
   String selectedFilter = 'Alle';
 
   @override

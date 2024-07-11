@@ -3,19 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:mobile_anw/models/case.dart';
 import 'package:mobile_anw/models/chat_message.dart';
 import 'package:mobile_anw/services/api_service.dart';
+import '../../../utils/configs/theme_config.dart';
 import '../../../utils/user_preferences.dart';
 import '../../items/message-bubble_item.dart';
 
 class CaseDetailsForum extends StatefulWidget {
   final Case myCase;
 
-  const CaseDetailsForum({super.key, required this.myCase});
+  const CaseDetailsForum({
+    super.key,
+    required this.myCase
+  });
 
   @override
-  _CaseDetailsForumState createState() => _CaseDetailsForumState();
+  CaseDetailsForumState createState() => CaseDetailsForumState();
 }
 
-class _CaseDetailsForumState extends State<CaseDetailsForum> {
+class CaseDetailsForumState extends State<CaseDetailsForum> {
   List<ChatMessage> _messages = [];
   final TextEditingController _messageController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
@@ -64,7 +68,12 @@ class _CaseDetailsForumState extends State<CaseDetailsForum> {
       });
       _scrollToBottom();
     } catch (e) {
-      print('Failed to load messages: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Fehler beim Laden der Nachrichten'),
+          backgroundColor: Colors.red,
+        ),
+      );
     }
   }
 
@@ -88,10 +97,20 @@ class _CaseDetailsForumState extends State<CaseDetailsForum> {
         _messageController.clear();
         _scrollToBottom();
       } else {
-        print('Failed to send message');
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Fehler beim Senden der Nachricht'),
+            backgroundColor: Colors.red,
+          ),
+        );
       }
     } catch (e) {
-      print('Failed to send message: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Fehler beim Senden der Nachricht: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
     }
   }
 
@@ -150,7 +169,7 @@ class _CaseDetailsForumState extends State<CaseDetailsForum> {
                     ),
                     const SizedBox(width: 8),
                     IconButton(
-                      icon: const Icon(Icons.send),
+                      icon: Icon(Icons.send, color: ThemeConfig.darkGreyAccent,),
                       onPressed: _sendMessage,
                     ),
                   ],

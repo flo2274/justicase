@@ -15,10 +15,10 @@ class CasePage extends ConsumerStatefulWidget {
   final String label;
 
   @override
-  _CasePageState createState() => _CasePageState();
+  CasePageState createState() => CasePageState();
 }
 
-class _CasePageState extends ConsumerState<CasePage> {
+class CasePageState extends ConsumerState<CasePage> {
   @override
   void initState() {
     super.initState();

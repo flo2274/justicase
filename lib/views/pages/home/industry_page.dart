@@ -10,10 +10,10 @@ class IndustryCasesPage extends StatefulWidget {
   const IndustryCasesPage({super.key, required this.industry});
 
   @override
-  _IndustryCasesPageState createState() => _IndustryCasesPageState();
+  IndustryCasesPageState createState() => IndustryCasesPageState();
 }
 
-class _IndustryCasesPageState extends State<IndustryCasesPage> {
+class IndustryCasesPageState extends State<IndustryCasesPage> {
   List<Case> cases = [];
   bool isLoading = true;
   String error = '';

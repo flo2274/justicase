@@ -14,10 +14,10 @@ class CaseDetailsEnrolled extends ConsumerStatefulWidget {
   const CaseDetailsEnrolled({super.key, required this.myCase});
 
   @override
-  _CaseDetailsEnrolledState createState() => _CaseDetailsEnrolledState();
+  CaseDetailsEnrolledState createState() => CaseDetailsEnrolledState();
 }
 
-class _CaseDetailsEnrolledState extends ConsumerState<CaseDetailsEnrolled> {
+class CaseDetailsEnrolledState extends ConsumerState<CaseDetailsEnrolled> {
   List<User> enrolledUsers = [];
   late int caseId;
   bool isEnrolled = false;
@@ -46,7 +46,6 @@ class _CaseDetailsEnrolledState extends ConsumerState<CaseDetailsEnrolled> {
       setState(() {
         _isLoading = false;
       });
-      print('Failed to load enrolled users: $e');
     }
   }
 
@@ -59,7 +58,6 @@ class _CaseDetailsEnrolledState extends ConsumerState<CaseDetailsEnrolled> {
     });
   }
 
-
   void _toggleEnrollment() async {
     setState(() {
       _isLoading = true;
@@ -69,12 +67,16 @@ class _CaseDetailsEnrolledState extends ConsumerState<CaseDetailsEnrolled> {
       if (isEnrolled) {
         await _removeFromCase();
       } else {
-        await _enrollUser();
+        await _enrollUserToCase();
       }
       ref.read(caseProvider.notifier).fetchUserCases();
     } catch (e) {
-      print('Failed to toggle enrollment: $e');
-      // Handle error as needed
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Fehler beim Ein-/Ausschreiben'),
+          backgroundColor: Colors.red,
+        ),
+      );
     } finally {
       setState(() {
         _isLoading = false;
@@ -82,13 +84,17 @@ class _CaseDetailsEnrolledState extends ConsumerState<CaseDetailsEnrolled> {
     }
   }
 
-
-  Future<void> _enrollUser() async {
+  Future<void> _enrollUserToCase() async {
     try {
       await APIService.addUserToCase(caseId);
       await _fetchEnrolledUsers();
     } catch (e) {
-      print('Failed to enroll user: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Fehler beim Eintragen des Benutzers in den Fall'),
+          backgroundColor: Colors.red,
+        ),
+      );
     } finally {
       setState(() {
         _isLoading = false;
@@ -101,7 +107,12 @@ class _CaseDetailsEnrolledState extends ConsumerState<CaseDetailsEnrolled> {
       await APIService.removeUserFromCase(caseId);
       await _fetchEnrolledUsers();
     } catch (e) {
-      print('Failed to remove user from case: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Fehler beim Entfernen des Benutzers aus dem Fall'),
+          backgroundColor: Colors.red,
+        ),
+      );
     } finally {
       setState(() {
         _isLoading = false;

@@ -5,10 +5,10 @@ class ImageAnimationHelper extends StatefulWidget {
   const ImageAnimationHelper({super.key});
 
   @override
-  _ImageAnimationHelperState createState() => _ImageAnimationHelperState();
+  ImageAnimationHelperState createState() => ImageAnimationHelperState();
 }
 
-class _ImageAnimationHelperState extends State<ImageAnimationHelper> {
+class ImageAnimationHelperState extends State<ImageAnimationHelper> {
   int _imageIndex = 0;
   final List<String> _imageAssets = [
     'assets/images/logo_icon02.png',

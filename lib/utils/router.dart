@@ -95,14 +95,6 @@ final goRouter = GoRouter(
               ),
               routes: [
                 GoRoute(
-                  path: 'caseDetails',
-                  pageBuilder: (context, state) => NoTransitionPage(
-                    child: CaseDetailsPage(
-                      myCase: state.extra as Case,
-                    ),
-                  ),
-                ),
-                GoRoute(
                   path: 'createCase',
                   pageBuilder: (context, state) => const NoTransitionPage(
                     child: CreateCasePage(),

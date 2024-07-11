@@ -13,13 +13,17 @@ class AdminDetailsPage extends ConsumerStatefulWidget {
   final User? myUser;
   final Case? myCase;
 
-  const AdminDetailsPage({super.key, this.myUser, this.myCase});
+  const AdminDetailsPage({
+    super.key,
+    this.myUser,
+    this.myCase
+  });
 
   @override
-  _AdminDetailsPageState createState() => _AdminDetailsPageState();
+  AdminDetailsPageState createState() => AdminDetailsPageState();
 }
 
-class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
+class AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
   List<Case> userCases = [];
   List<User> caseUsers = [];
 
@@ -40,7 +44,7 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
         userCases = cases;
       });
     } catch (e) {
-      print('Failed to load cases: $e');
+      _showError('Failed to load cases: $e');
     }
   }
 
@@ -51,8 +55,26 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
         caseUsers = users;
       });
     } catch (e) {
-      print('Failed to load users: $e');
+      _showError('Failed to load users: $e');
     }
+  }
+
+  void _showError(String message) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Error'),
+        content: Text(message),
+        actions: <Widget>[
+          TextButton(
+            child: const Text('OK'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -113,6 +135,8 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return _buildErrorWidget(snapshot.error.toString());
                     } else {
                       myCase.userCount = snapshot.data ?? 0;
                       return AdminCaseItem(
@@ -200,6 +224,18 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
     );
   }
 
+  Widget _buildErrorWidget(String errorMessage) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Text(
+          'Error: $errorMessage',
+          style: const TextStyle(color: Colors.red),
+        ),
+      ),
+    );
+  }
+
   void _deleteUser(int userId) async {
     try {
       ref.read(userProvider.notifier).deleteUser(userId);
@@ -211,12 +247,7 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
         ),
       );
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Fehler beim Löschen des Benutzers: $e'),
-          backgroundColor: Colors.red,
-        ),
-      );
+      _showError('Fehler beim Löschen des Benutzers: $e');
     }
   }
 
@@ -232,12 +263,7 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
 
       _fetchUsersByCase(caseId);
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Failed to remove user from case: $e'),
-          backgroundColor: Colors.red,
-        ),
-      );
+      _showError('Failed to remove user from case: $e');
     }
   }
 
@@ -252,12 +278,7 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
         ),
       );
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Fehler beim Löschen des Falls: $e'),
-          backgroundColor: Colors.red,
-        ),
-      );
+      _showError('Fehler beim Löschen des Falls: $e');
     }
   }
 }

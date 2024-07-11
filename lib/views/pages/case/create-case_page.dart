@@ -13,10 +13,10 @@ class CreateCasePage extends ConsumerStatefulWidget {
   const CreateCasePage({super.key});
 
   @override
-  _CreateCasePageState createState() => _CreateCasePageState();
+  CreateCasePageState createState() => CreateCasePageState();
 }
 
-class _CreateCasePageState extends ConsumerState<CreateCasePage> {
+class CreateCasePageState extends ConsumerState<CreateCasePage> {
   final _formKey = GlobalKey<FormState>();
   String _yourCaseDescription = '';
   final Case _newCase = Case(companyType: '', industry: '');

@@ -14,10 +14,10 @@ class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
 
   @override
-  _HomePageState createState() => _HomePageState();
+  HomePageState createState() => HomePageState();
 }
 
-class _HomePageState extends ConsumerState<HomePage> {
+class HomePageState extends ConsumerState<HomePage> {
   String _username = '';
   bool _isAdmin = false;
 
@@ -57,6 +57,7 @@ class _HomePageState extends ConsumerState<HomePage> {
         leading: _isAdmin
             ? IconButton(
           icon: const Icon(Icons.admin_panel_settings_outlined),
+          color: ThemeConfig.darkGreyAccent,
           onPressed: _navigateToAdminPanel,
           tooltip: 'Admin Panel',
         )

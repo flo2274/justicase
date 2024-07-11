@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mobile_anw/data/constants/case_data.dart';
 import 'package:mobile_anw/models/case.dart';
 import 'package:mobile_anw/utils/helpers/emoji_helper.dart';
-import 'package:go_router/go_router.dart';
-
 import '../../utils/configs/text_theme_config.dart';
+import '../pages/case/case-details_page.dart';
 
 class LongCaseItem extends StatelessWidget {
   final Case caseInfo;
@@ -18,7 +17,12 @@ class LongCaseItem extends StatelessWidget {
     return Card(
       child: InkWell(
         onTap: () {
-          context.go('/case/caseDetails', extra: caseInfo);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => CaseDetailsPage(myCase: caseInfo),
+            ),
+          );
         },
         child: Container(
           height: 110.0, // Feste Höhe für den CaseItem
