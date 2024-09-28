@@ -1,7 +1,7 @@
 // lib/services/api_config.dart
 
 class ApiConfig {
-  static const String baseUrl = 'http://localhost:3000';
+  static const String baseUrl = 'http://192.168.2.218:3000';
   static const String registerURL = '$baseUrl/auth/register';
   static const String loginURL = '$baseUrl/auth/login';
   static const String usersURL = '$baseUrl/users';

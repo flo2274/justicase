@@ -9,11 +9,11 @@ class AdminCaseItem extends StatelessWidget {
   final Function onGetUsersByCase;
 
   const AdminCaseItem({
-    Key? key,
+    super.key,
     required this.caseItem,
     required this.onDelete,
     required this.onGetUsersByCase,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +24,9 @@ class AdminCaseItem extends StatelessWidget {
     return GestureDetector(
       onTap: () => onGetUsersByCase(caseItem),
       child: Card(
-        margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+        margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
         child: Padding(
-          padding: EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -43,15 +43,15 @@ class AdminCaseItem extends StatelessWidget {
                       ),
                       title: Text(
                         '${caseItem.name}',
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 18.0, fontWeight: FontWeight.bold),
                       ),
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(height: 8.0),
+                          const SizedBox(height: 8.0),
                           Text('ID: ${caseItem.id}'),
-                          SizedBox(height: 8.0),
+                          const SizedBox(height: 8.0),
                           Text('Unternehmensform: ${caseItem.companyType}'),
                         ],
                       ),
@@ -65,7 +65,7 @@ class AdminCaseItem extends StatelessWidget {
                       GestureDetector(
                         onTap: () => _showDeleteConfirmationDialog(context),
                         child: Padding(
-                          padding: EdgeInsets.only(top: 0.0),
+                          padding: const EdgeInsets.only(top: 0.0),
                           // Adjust top padding
                           child: Icon(
                             Icons.delete_outline_rounded,
@@ -74,7 +74,7 @@ class AdminCaseItem extends StatelessWidget {
                           ),
                         ),
                       ),
-                      SizedBox(height: 15.0), // Add space between icons
+                      const SizedBox(height: 15.0), // Add space between icons
                       GestureDetector(
                         onTap: () => onGetUsersByCase(caseItem),
                         child: Icon(
@@ -83,14 +83,14 @@ class AdminCaseItem extends StatelessWidget {
                           size: 25.0,
                         ),
                       ),
-                      SizedBox(height: 20.0),
+                      const SizedBox(height: 20.0),
                     ],
                   ),
                 ],
               ),
-              SizedBox(height: 8.0),
+              const SizedBox(height: 8.0),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 // Horizontal padding
                 child: LinearProgressIndicator(
                   value: progress,
@@ -113,17 +113,17 @@ class AdminCaseItem extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Löschen bestätigen"),
-          content: Text("Möchten Sie diesen Fall wirklich löschen?"),
+          title: const Text("Löschen bestätigen"),
+          content: const Text("Möchten Sie diesen Fall wirklich löschen?"),
           actions: <Widget>[
             TextButton(
-              child: Text("Abbrechen"),
+              child: const Text("Abbrechen"),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text(
+              child: const Text(
                 "Löschen",
                 style: TextStyle(color: Colors.red),
               ),

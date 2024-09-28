@@ -5,7 +5,7 @@ import '../../../services/api_service.dart';
 class IndustryCasesPage extends StatefulWidget {
   final String industry;
 
-  IndustryCasesPage({required this.industry});
+  const IndustryCasesPage({super.key, required this.industry});
 
   @override
   _IndustryCasesPageState createState() => _IndustryCasesPageState();
@@ -44,20 +44,22 @@ class _IndustryCasesPageState extends State<IndustryCasesPage> {
         title: Text('Cases by Industry: ${widget.industry}'),
       ),
       body: isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : error.isNotEmpty
-          ? Center(child: Text(error))
-          : ListView.builder(
-        itemCount: cases.length,
-        itemBuilder: (context, index) {
-          var caseItem = cases[index];
-          return ListTile(
-            title: Text(caseItem['name']), // Adjust based on your case object structure
-            subtitle: Text(caseItem['companyType']), // Adjust based on your case object structure
-            // Add more widgets to display other case details as needed
-          );
-        },
-      ),
+              ? Center(child: Text(error))
+              : ListView.builder(
+                  itemCount: cases.length,
+                  itemBuilder: (context, index) {
+                    var caseItem = cases[index];
+                    return ListTile(
+                      title: Text(caseItem[
+                          'name']), // Adjust based on your case object structure
+                      subtitle: Text(caseItem[
+                          'companyType']), // Adjust based on your case object structure
+                      // Add more widgets to display other case details as needed
+                    );
+                  },
+                ),
     );
   }
 }

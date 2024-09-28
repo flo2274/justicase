@@ -8,7 +8,7 @@ import 'package:go_router/go_router.dart';
 import '../../../data/constants/case_data.dart';
 
 class CreateCasePage extends ConsumerStatefulWidget {
-  const CreateCasePage({Key? key}) : super(key: key);
+  const CreateCasePage({super.key});
 
   @override
   _CreateCasePageState createState() => _CreateCasePageState();
@@ -17,13 +17,13 @@ class CreateCasePage extends ConsumerStatefulWidget {
 class _CreateCasePageState extends ConsumerState<CreateCasePage> {
   final _formKey = GlobalKey<FormState>();
   String _yourCaseDescription = '';
-  Case _newCase = Case(companyType: '', industry: '');
+  final Case _newCase = Case(companyType: '', industry: '');
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('JUSTICASE'),
+        title: const Text('JUSTICASE'),
         centerTitle: true,
       ),
       body: Consumer(
@@ -31,7 +31,7 @@ class _CreateCasePageState extends ConsumerState<CreateCasePage> {
           final caseState = ref.watch(caseProvider);
 
           if (caseState.isLoading) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
 
           return Column(
@@ -229,12 +229,13 @@ class _CreateCasePageState extends ConsumerState<CreateCasePage> {
     try {
       await ref.read(caseProvider.notifier).createCase(_newCase);
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: const Text('Fall erfolgreich erstellt'),
+        content: Text('Fall erfolgreich erstellt'),
         backgroundColor: Colors.green,
       ));
       // Refetch user cases after creating a new case
       ref.read(caseProvider.notifier).fetchUserCases();
-      context.go('/case'); // Navigate back to the previous page (e.g., CasePage)
+      context
+          .go('/case'); // Navigate back to the previous page (e.g., CasePage)
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text('Fehler beim Erstellen des Falls: $e'),

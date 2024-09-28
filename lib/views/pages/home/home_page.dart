@@ -10,7 +10,7 @@ import '../../sections/recent_section.dart';
 import '../../sections/suggestions_section.dart';
 
 class HomePage extends ConsumerStatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -28,7 +28,8 @@ class _HomePageState extends ConsumerState<HomePage> {
   }
 
   Future<void> _fetchUserData() async {
-    await UserPreferences.fetchUserData((int userId, String username, bool isAdmin) {
+    await UserPreferences.fetchUserData(
+        (int userId, String username, bool isAdmin) {
       setState(() {
         _username = username;
         _isAdmin = isAdmin;
@@ -55,60 +56,60 @@ class _HomePageState extends ConsumerState<HomePage> {
         centerTitle: true,
         leading: _isAdmin
             ? IconButton(
-          icon: Icon(Icons.admin_panel_settings_outlined),
-          onPressed: _navigateToAdminPanel,
-          tooltip: 'Admin Panel',
-        )
+                icon: const Icon(Icons.admin_panel_settings_outlined),
+                onPressed: _navigateToAdminPanel,
+                tooltip: 'Admin Panel',
+              )
             : null,
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.logout),
+            icon: const Icon(Icons.logout),
             onPressed: _logout,
             tooltip: 'Logout',
           ),
         ],
       ),
       body: caseState.isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : caseState.errorMessage != null
-          ? Center(
-        child: Text(
-          'Fehler beim Abrufen der Fälle: ${caseState.errorMessage}',
-        ),
-      )
-          : SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            CategorySection(),
-            const SizedBox(height: 20.0),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Row(
-                children: [
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'Willkommen zurück, ',
-                      style: TextThemeConfig.middleHeading1,
-                    ),
+              ? Center(
+                  child: Text(
+                    'Fehler beim Abrufen der Fälle: ${caseState.errorMessage}',
                   ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      _username,
-                      style: TextThemeConfig.middleHeading2,
-                    ),
+                )
+              : SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      CategorySection(),
+                      const SizedBox(height: 20.0),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: Row(
+                          children: [
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                'Willkommen zurück, ',
+                                style: TextThemeConfig.middleHeading1,
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                _username,
+                                style: TextThemeConfig.middleHeading2,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SuggestionsSection(cases: caseState.allCases),
+                      RecentSection(cases: caseState.allCases),
+                      const SizedBox(height: 20.0),
+                    ],
                   ),
-                ],
-              ),
-            ),
-            SuggestionsSection(cases: caseState.allCases),
-            RecentSection(cases: caseState.allCases),
-            const SizedBox(height: 20.0),
-          ],
-        ),
-      ),
+                ),
     );
   }
 }

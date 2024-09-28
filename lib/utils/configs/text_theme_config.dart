@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class TextThemeConfig {
-
   static const Color textPrimary = Colors.black;
-  static const Color textSecondary = Color(0xFF2C2C2C);//0xFF5E5E5E
-  static const Color? textBlueAccent = Colors.blue;
+  static const Color textSecondary = Color(0xFF2C2C2C); //0xFF5E5E5E
+  static const Color textBlueAccent = Colors.blue;
 
-  static TextStyle largeHeading = GoogleFonts.barlow( // Changed from headlineLarge to headline6
+  static TextStyle largeHeading = GoogleFonts.barlow(
+    // Changed from headlineLarge to headline6
     fontSize: 20.0,
     fontWeight: FontWeight.bold,
     color: textPrimary,
@@ -107,4 +107,3 @@ class TextThemeConfig {
     color: textSecondary,
   );
 }
-

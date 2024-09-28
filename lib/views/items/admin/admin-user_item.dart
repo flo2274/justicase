@@ -9,12 +9,12 @@ class AdminUserItem extends StatelessWidget {
   final Function(int)? onRemoveUserFromCase; // Optional parameter
 
   const AdminUserItem({
-    Key? key,
+    super.key,
     required this.user,
     required this.onDeleteUser,
     required this.onGetCasesByUser,
     this.onRemoveUserFromCase, // Optional parameter
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +23,9 @@ class AdminUserItem extends StatelessWidget {
         onGetCasesByUser(user.id); // Invoke onGetCasesByUser callback
       },
       child: Card(
-        margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+        margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
         child: Padding(
-          padding: EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -35,24 +35,24 @@ class AdminUserItem extends StatelessWidget {
                   Expanded(
                     child: ListTile(
                       contentPadding: EdgeInsets.zero,
-                      leading: Icon(
+                      leading: const Icon(
                         Icons.person,
                         size: 40.0,
                         color: Colors.blue,
                       ),
                       title: Text(
-                        '${user.username}',
-                        style: TextStyle(
+                        user.username,
+                        style: const TextStyle(
                             fontSize: 18.0, fontWeight: FontWeight.bold),
                       ),
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(height: 8.0),
+                          const SizedBox(height: 8.0),
                           Text('Id: ${user.id}'),
-                          SizedBox(height: 8.0),
+                          const SizedBox(height: 8.0),
                           Text('Name: ${user.firstName} ${user.lastName}'),
-                          SizedBox(height: 8.0),
+                          const SizedBox(height: 8.0),
                           Text('Email: ${user.email}'),
                         ],
                       ),
@@ -72,7 +72,7 @@ class AdminUserItem extends StatelessWidget {
                           size: 30.0,
                         ),
                       ),
-                      SizedBox(height: 20.0), // Add space between icons
+                      const SizedBox(height: 20.0), // Add space between icons
                       GestureDetector(
                         onTap: () {
                           onGetCasesByUser(user.id);
@@ -83,11 +83,13 @@ class AdminUserItem extends StatelessWidget {
                           size: 25.0,
                         ),
                       ),
-                      SizedBox(height: 20.0), // Add space between icons
-                      if (onRemoveUserFromCase != null) // Conditionally show the button
+                      const SizedBox(height: 20.0), // Add space between icons
+                      if (onRemoveUserFromCase !=
+                          null) // Conditionally show the button
                         GestureDetector(
                           onTap: () {
-                            _showRemoveUserFromCaseConfirmationDialog(context, user.id);
+                            _showRemoveUserFromCaseConfirmationDialog(
+                                context, user.id);
                           },
                           child: Icon(
                             Icons.person_remove_outlined,
@@ -111,17 +113,17 @@ class AdminUserItem extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Löschung bestätigen"),
-          content: Text("Möchten Sie diesen Benutzer wirklich löschen?"),
+          title: const Text("Löschung bestätigen"),
+          content: const Text("Möchten Sie diesen Benutzer wirklich löschen?"),
           actions: <Widget>[
             TextButton(
-              child: Text("Abbrechen"),
+              child: const Text("Abbrechen"),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text(
+              child: const Text(
                 "Löschen",
                 style: TextStyle(color: Colors.red),
               ),
@@ -136,22 +138,24 @@ class AdminUserItem extends StatelessWidget {
     );
   }
 
-  void _showRemoveUserFromCaseConfirmationDialog(BuildContext context, int userId) {
+  void _showRemoveUserFromCaseConfirmationDialog(
+      BuildContext context, int userId) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Entfernen bestätigen"),
-          content: Text("Möchten Sie diesen Benutzer wirklich aus dem Fall entfernen?"),
+          title: const Text("Entfernen bestätigen"),
+          content: const Text(
+              "Möchten Sie diesen Benutzer wirklich aus dem Fall entfernen?"),
           actions: <Widget>[
             TextButton(
-              child: Text("Abbrechen"),
+              child: const Text("Abbrechen"),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text(
+              child: const Text(
                 "Entfernen",
                 style: TextStyle(color: Colors.red),
               ),

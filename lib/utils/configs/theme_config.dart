@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-
-
 class ThemeConfig {
   // Farben für das Theme
-  static const Color background = Color(0xFFF1F1F3); // Leicht dunkleres Weiß0xFFF1F1F3
+  static const Color background =
+      Color(0xFFF1F1F3); // Leicht dunkleres Weiß0xFFF1F1F3
   static Color primary = Colors.white;
   static Color blueAccent = Colors.blue; // Elegantes Dunkelblau
   static Color blackAccent = Colors.black;
-  static Color lightGreyAccent = Color(0xFFA2A1A1);
-  static Color darkGreyAccent = Color(0xFF5E5E5E);
+  static Color lightGreyAccent = const Color(0xFFA2A1A1);
+  static Color darkGreyAccent = const Color(0xFF5E5E5E);
   static Color yellowAccent = Colors.yellow;
   static const Color textPrimary = Colors.black;
   static const Color textSecondary = Color(0xFF5E5E5E);
-  static const Color? textBlueAccent = Colors.blue;
+  static const Color textBlueAccent = Colors.blue;
 
   static ThemeData lightTheme = ThemeData(
-    primaryColor: Color(0xFF6E0F53),
+    primaryColor: const Color(0xFF6E0F53),
     scaffoldBackgroundColor: background, // Haupthintergrundfarbe
     appBarTheme: AppBarTheme(
       backgroundColor: Colors.white,
@@ -54,35 +53,42 @@ class ThemeConfig {
         fontWeight: FontWeight.bold,
         color: textSecondary,
       ),*/
-      bodyMedium: TextStyle( // This is the default text style for DropdownMenuItem
+      bodyMedium: TextStyle(
+        // This is the default text style for DropdownMenuItem
         fontSize: 16.0,
         fontWeight: FontWeight.normal,
         color: textPrimary,
       ),
       //HeadlineMedium is Text of Dropdown
-      headlineMedium: TextStyle(fontSize: 16.0, fontWeight: FontWeight.normal, color: textPrimary),
+      headlineMedium: TextStyle(
+          fontSize: 16.0, fontWeight: FontWeight.normal, color: textPrimary),
       //Login Title
-
     ),
     inputDecorationTheme: InputDecorationTheme(
-      hintStyle: const TextStyle(color: textSecondary), // Hinweisfarbe für Textfelder
+      hintStyle:
+          const TextStyle(color: textSecondary), // Hinweisfarbe für Textfelder
       border: OutlineInputBorder(
-        borderSide: BorderSide(color: lightGreyAccent), // Umrandungsfarbe für Textfelder (Gelb)
+        borderSide: BorderSide(
+            color: lightGreyAccent), // Umrandungsfarbe für Textfelder (Gelb)
       ),
       focusedBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: lightGreyAccent), // Umrandungsfarbe im Fokus
+        borderSide:
+            BorderSide(color: lightGreyAccent), // Umrandungsfarbe im Fokus
       ),
       enabledBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: lightGreyAccent), // Umrandungsfarbe im Standardzustand
+        borderSide: BorderSide(
+            color: lightGreyAccent), // Umrandungsfarbe im Standardzustand
       ),
       filled: true,
       fillColor: background, // Hintergrundfarbe für Textfelder
     ),
 
     dialogTheme: DialogTheme(
-      backgroundColor: Colors.white, // Hier die gewünschte Hintergrundfarbe setzen
+      backgroundColor:
+          Colors.white, // Hier die gewünschte Hintergrundfarbe setzen
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0), // Optional: Runde die Ecken des Dialogs
+        borderRadius: BorderRadius.circular(
+            10.0), // Optional: Runde die Ecken des Dialogs
       ),
     ),
 
@@ -91,7 +97,7 @@ class ThemeConfig {
       secondary: Colors.white,
       surface: Colors.white, // Füllt Vorschläge bei der Searchbar
       onPrimary: Colors.white, // Füllt Schaltfläche bei Create Case
-      onSecondary: Color(0xFFE308A7),
+      onSecondary: const Color(0xFFE308A7),
       onSurface: textPrimary, // Schriftfarbe bei Homepage-Case-Elementen
     ),
 

@@ -5,6 +5,8 @@ import 'package:mobile_anw/utils/helpers/image-animation_helper.dart';
 import 'package:mobile_anw/utils/configs/text_theme_config.dart';
 
 class RegistrationPage extends StatefulWidget {
+  const RegistrationPage({super.key});
+
   @override
   _RegistrationPageState createState() => _RegistrationPageState();
 }
@@ -25,21 +27,22 @@ class _RegistrationPageState extends State<RegistrationPage> {
     final String password = _passwordController.text.trim();
 
     try {
-      final success = await APIService.register(firstName, lastName, username, email, password);
+      final success = await APIService.register(
+          firstName, lastName, username, email, password);
       if (success) {
         // After successful registration, automatically login
         await _login(email, password);
       } else {
         // Handle registration failure
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Registration failed')),
+          const SnackBar(content: Text('Registration failed')),
         );
       }
     } catch (e) {
       // Handle registration failure
       print('Registration failed: $e');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Registration failed')),
+        const SnackBar(content: Text('Registration failed')),
       );
     }
   }
@@ -54,14 +57,14 @@ class _RegistrationPageState extends State<RegistrationPage> {
       } else {
         // Handle login failure
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Login failed')),
+          const SnackBar(content: Text('Login failed')),
         );
       }
     } catch (e) {
       // Handle login failure
       print('Login failed: $e');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Login failed')),
+        const SnackBar(content: Text('Login failed')),
       );
     }
   }
@@ -75,39 +78,42 @@ class _RegistrationPageState extends State<RegistrationPage> {
             Container(
               color: Colors.grey[300],
               width: double.infinity,
-              padding: EdgeInsets.all(20.0),
+              padding: const EdgeInsets.all(20.0),
               child: Column(
                 children: [
                   Text(
                     'JUSTICE FOR YOUR CASE',
                     style: TextThemeConfig.authLargeHeading,
                   ),
-                  SizedBox(height: 10.0),
-                  Text(
+                  const SizedBox(height: 10.0),
+                  const Text(
                       'WERDEN SIE TEIL UNSERER BEWEGUNG FÜR GERECHTIGKEIT',
-                      style: TextThemeConfig.authSmallHeading
-                  ),
+                      style: TextThemeConfig.authSmallHeading),
                 ],
               ),
             ),
             const SizedBox(height: 70.0),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.0),
-              child: Text('Registrieren,', style: TextThemeConfig.authWelcome1Text),
+              child: Text('Registrieren,',
+                  style: TextThemeConfig.authWelcome1Text),
             ),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.0),
-              child: Text('denn gemeinsam Recht haben', style: TextThemeConfig.authWelcome2Text),
+              child: Text('denn gemeinsam Recht haben',
+                  style: TextThemeConfig.authWelcome2Text),
             ),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.0),
-              child: Text('war nie einfacher!', style: TextThemeConfig.authWelcome2Text),
+              child: Text('war nie einfacher!',
+                  style: TextThemeConfig.authWelcome2Text),
             ),
             Padding(
-              padding: EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16.0),
               child: Card(
                 elevation: 2.0,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0)),
                 child: Padding(
                   padding: const EdgeInsets.all(24.0),
                   child: Column(
@@ -154,10 +160,12 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         obscureText: !_passwordVisible,
                         decoration: InputDecoration(
                           labelText: 'Dein Passwort',
-                          prefixIcon: Icon(Icons.lock_outlined),
-                          border: OutlineInputBorder(),
+                          prefixIcon: const Icon(Icons.lock_outlined),
+                          border: const OutlineInputBorder(),
                           suffixIcon: IconButton(
-                            icon: Icon(_passwordVisible ? Icons.visibility : Icons.visibility_off),
+                            icon: Icon(_passwordVisible
+                                ? Icons.visibility
+                                : Icons.visibility_off),
                             onPressed: () {
                               setState(() {
                                 _passwordVisible = !_passwordVisible;
@@ -172,7 +180,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white,
                           backgroundColor: Colors.blue,
-                          padding: EdgeInsets.symmetric(vertical: 16.0),
+                          padding: const EdgeInsets.symmetric(vertical: 16.0),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),

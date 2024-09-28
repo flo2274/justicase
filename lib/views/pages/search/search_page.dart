@@ -7,11 +7,10 @@ import 'package:mobile_anw/models/case.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../state/notifiers/case_notifier.dart';
-import '../../../state/models/case_state.dart';
 import '../../sections/all-cases_section.dart';
 
 class SearchPage extends ConsumerStatefulWidget {
-  const SearchPage({Key? key}) : super(key: key);
+  const SearchPage({super.key});
 
   @override
   _SearchPageState createState() => _SearchPageState();
@@ -30,7 +29,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('JUSTICASE'),
+        title: const Text('JUSTICASE'),
         centerTitle: true,
       ),
       body: Padding(
@@ -46,7 +45,8 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                     return [];
                   }
                   return caseState.allCases
-                      .where((c) => c.name!.toLowerCase().contains(search.toLowerCase()))
+                      .where((c) =>
+                          c.name!.toLowerCase().contains(search.toLowerCase()))
                       .toList();
                 },
                 itemBuilder: (context, Case suggestion) {
@@ -95,7 +95,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           AllCasesSection(),
-                          const SizedBox(height: 16.0),
+                          SizedBox(height: 16.0),
                         ],
                       ),
                     ),
@@ -106,12 +106,12 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                       padding: const EdgeInsets.only(bottom: 16.0),
                       child: FloatingActionButton.extended(
                         onPressed: () {
-                          WidgetsBinding.instance!.addPostFrameCallback((_) {
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
                             context.go('/case/createCase');
                           });
                         },
-                        icon: Icon(Icons.add),
-                        label: Text('Erstelle einen neuen Fall'),
+                        icon: const Icon(Icons.add),
+                        label: const Text('Erstelle einen neuen Fall'),
                       ),
                     ),
                   ),

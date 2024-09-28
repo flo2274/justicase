@@ -8,24 +8,24 @@ import 'package:mobile_anw/utils/configs/text_theme_config.dart';
 import '../items/big-case_item.dart';
 
 class AllCasesSection extends ConsumerWidget {
-  const AllCasesSection({Key? key}) : super(key: key);
+  const AllCasesSection({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final caseState = ref.watch(caseProvider);
 
-
-
     if (caseState.isLoading) {
-      return Center(child: CircularProgressIndicator());
+      return const Center(child: CircularProgressIndicator());
     }
 
     if (caseState.errorMessage != null) {
-      return Center(child: Text('Fehler beim Abrufen der Fälle: ${caseState.errorMessage}'));
+      return Center(
+          child:
+              Text('Fehler beim Abrufen der Fälle: ${caseState.errorMessage}'));
     }
 
     if (caseState.allCases.isEmpty) {
-      return Center(child: Text('Keine Fälle gefunden.'));
+      return const Center(child: Text('Keine Fälle gefunden.'));
     }
 
     return Column(

@@ -5,11 +5,12 @@ import 'package:mobile_anw/utils/helpers/emoji_helper.dart';
 class BigCaseItem extends StatelessWidget {
   final Case caseItem;
 
-  BigCaseItem({required this.caseItem});
+  const BigCaseItem({super.key, required this.caseItem});
 
   @override
   Widget build(BuildContext context) {
-    IconData iconData = EmojiHelper.getIndustryIcon(caseItem.industry!); // Verwende EmojiHelper für das Icon
+    IconData iconData = EmojiHelper.getIndustryIcon(
+        caseItem.industry!); // Verwende EmojiHelper für das Icon
 
     return Card(
       elevation: 2.0,
@@ -32,7 +33,7 @@ class BigCaseItem extends StatelessWidget {
             const SizedBox(height: 8.0),
             Text(
               '${caseItem.companyType}',
-              style: TextStyle(fontSize: 16.0, color: Colors.grey),
+              style: const TextStyle(fontSize: 16.0, color: Colors.grey),
               textAlign: TextAlign.start,
             ),
             const SizedBox(height: 8.0),

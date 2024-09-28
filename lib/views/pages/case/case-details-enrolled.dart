@@ -11,7 +11,7 @@ import '../../../utils/configs/text_theme_config.dart';
 class CaseDetailsEnrolled extends ConsumerStatefulWidget {
   final Case myCase;
 
-  const CaseDetailsEnrolled({Key? key, required this.myCase}) : super(key: key);
+  const CaseDetailsEnrolled({super.key, required this.myCase});
 
   @override
   _CaseDetailsEnrolledState createState() => _CaseDetailsEnrolledState();
@@ -60,7 +60,6 @@ class _CaseDetailsEnrolledState extends ConsumerState<CaseDetailsEnrolled> {
     });
   }
 
-
   void _toggleEnrollment() async {
     setState(() {
       _isLoading = true; // Assuming _isLoading is defined in your state
@@ -83,7 +82,6 @@ class _CaseDetailsEnrolledState extends ConsumerState<CaseDetailsEnrolled> {
       });
     }
   }
-
 
   Future<void> _enrollUser() async {
     try {
@@ -130,16 +128,21 @@ class _CaseDetailsEnrolledState extends ConsumerState<CaseDetailsEnrolled> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Neuen Fall erstellen', style: TextThemeConfig.largeHeading,),
+                        Text(
+                          'Neuen Fall erstellen',
+                          style: TextThemeConfig.largeHeading,
+                        ),
                         Text(
                           'Case Name: ${widget.myCase.name}',
-                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          style: const TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
                         ),
-                        SizedBox(height: 8),
-                        Text('Company Type: ${widget.myCase.companyType ?? 'N/A'}'),
-                        SizedBox(height: 8),
+                        const SizedBox(height: 8),
+                        Text(
+                            'Company Type: ${widget.myCase.companyType ?? 'N/A'}'),
+                        const SizedBox(height: 8),
                         Text('Industry: ${widget.myCase.industry ?? 'N/A'}'),
-                        SizedBox(height: 8),
+                        const SizedBox(height: 8),
                         Text('ID: ${widget.myCase.id ?? 'N/A'}'),
                       ],
                     ),
@@ -151,26 +154,34 @@ class _CaseDetailsEnrolledState extends ConsumerState<CaseDetailsEnrolled> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Eingetragene User', style: TextThemeConfig.smallHeading,),
-                        SizedBox(height: 8),
-                        _isLoading
-                            ? Center(child: CircularProgressIndicator())
-                            : enrolledUsers.isEmpty
-                            ? const Center(child: Text('Kein User ist eingetragen'))
-                            : ListView.builder(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: enrolledUsers.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Card(
-                              child: ListTile(
-                                leading: Icon(Icons.person),
-                                title: Text(enrolledUsers[index].username),
-                                subtitle: Text(enrolledUsers[index].email),
-                              ),
-                            );
-                          },
+                        Text(
+                          'Eingetragene User',
+                          style: TextThemeConfig.smallHeading,
                         ),
+                        const SizedBox(height: 8),
+                        _isLoading
+                            ? const Center(child: CircularProgressIndicator())
+                            : enrolledUsers.isEmpty
+                                ? const Center(
+                                    child: Text('Kein User ist eingetragen'))
+                                : ListView.builder(
+                                    shrinkWrap: true,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    itemCount: enrolledUsers.length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return Card(
+                                        child: ListTile(
+                                          leading: const Icon(Icons.person),
+                                          title: Text(
+                                              enrolledUsers[index].username),
+                                          subtitle:
+                                              Text(enrolledUsers[index].email),
+                                        ),
+                                      );
+                                    },
+                                  ),
                       ],
                     ),
                   ),
@@ -189,7 +200,7 @@ class _CaseDetailsEnrolledState extends ConsumerState<CaseDetailsEnrolled> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
                   foregroundColor: Colors.white,
-                  padding: EdgeInsets.symmetric(vertical: 16.0),
+                  padding: const EdgeInsets.symmetric(vertical: 16.0),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),

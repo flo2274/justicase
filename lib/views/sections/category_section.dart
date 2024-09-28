@@ -6,6 +6,8 @@ import 'package:go_router/go_router.dart';
 import '../items/category-case_item.dart'; // Import der go_router Bibliothek für die Navigation
 
 class CategorySection extends StatelessWidget {
+  const CategorySection({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -18,7 +20,8 @@ class CategorySection extends StatelessWidget {
             'Kategorien',
             style: TextThemeConfig.smallHeading,
           ),
-          const SizedBox(height: 5.0), // Abstand zwischen Überschrift und Karten
+          const SizedBox(
+              height: 5.0), // Abstand zwischen Überschrift und Karten
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(

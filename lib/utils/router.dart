@@ -9,7 +9,7 @@ import 'package:mobile_anw/views/pages/case/case-details_page.dart';
 import 'package:mobile_anw/views/pages/scaffold_with_nested_navigation.dart';
 import 'package:mobile_anw/views/pages/auth/registration_page.dart';
 import 'package:mobile_anw/views/pages/auth/login_page.dart';
-import 'package:mobile_anw/views/pages/chat_screen.dart'; // Import der ChatScreen-Klasse
+// Import der ChatScreen-Klasse
 
 import '../models/case.dart';
 import '../models/user.dart';
@@ -18,9 +18,12 @@ import '../views/pages/home/industry_page.dart';
 
 // private navigators (Unterstrich macht sie privat)
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
-final _shellNavigatorHomeKey = GlobalKey<NavigatorState>(debugLabel: 'shellHome');
-final _shellNavigatorSearchKey = GlobalKey<NavigatorState>(debugLabel: 'shellSearch');
-final _shellNavigatorCaseKey = GlobalKey<NavigatorState>(debugLabel: 'shellCase');
+final _shellNavigatorHomeKey =
+    GlobalKey<NavigatorState>(debugLabel: 'shellHome');
+final _shellNavigatorSearchKey =
+    GlobalKey<NavigatorState>(debugLabel: 'shellSearch');
+final _shellNavigatorCaseKey =
+    GlobalKey<NavigatorState>(debugLabel: 'shellCase');
 
 final goRouter = GoRouter(
   initialLocation: '/registration',
@@ -82,7 +85,8 @@ final goRouter = GoRouter(
             GoRoute(
               path: '/search',
               pageBuilder: (context, state) => const NoTransitionPage(
-                child: SearchPage(/*label: 'SearchP', detailsPath: '/search/details'*/),
+                child: SearchPage(
+                    /*label: 'SearchP', detailsPath: '/search/details'*/),
               ),
             ),
           ],

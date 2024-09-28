@@ -8,7 +8,7 @@ import '../items/big-case_item.dart';
 class RecentSection extends StatelessWidget {
   final List<Case> cases;
 
-  RecentSection({required this.cases});
+  const RecentSection({super.key, required this.cases});
 
   @override
   Widget build(BuildContext context) {
@@ -21,20 +21,24 @@ class RecentSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 20.0),
-          Text('Aktuelles', style: TextThemeConfig.smallHeading,),
-          const SizedBox(height: 5.0), // Abstand zwischen Überschrift und Karten
+          Text(
+            'Aktuelles',
+            style: TextThemeConfig.smallHeading,
+          ),
+          const SizedBox(
+              height: 5.0), // Abstand zwischen Überschrift und Karten
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: displayCases
                 .take(2) // Zwei Karten in einer Reihe
                 .map((caseItem) => Expanded(
-              child: GestureDetector(
-                onTap: () {
-                  context.go('/case/caseDetails', extra: caseItem);
-                },
-                child: BigCaseItem(caseItem: caseItem),
-              ),
-            ))
+                      child: GestureDetector(
+                        onTap: () {
+                          context.go('/case/caseDetails', extra: caseItem);
+                        },
+                        child: BigCaseItem(caseItem: caseItem),
+                      ),
+                    ))
                 .toList(),
           ),
           const SizedBox(height: 5.0), // Abstand zwischen den Reihen
@@ -44,13 +48,13 @@ class RecentSection extends StatelessWidget {
                 .skip(2)
                 .take(2) // Zwei Karten in einer Reihe
                 .map((caseItem) => Expanded(
-              child: GestureDetector(
-                onTap: () {
-                  context.go('/case/caseDetails', extra: caseItem);
-                },
-                child: BigCaseItem(caseItem: caseItem),
-              ),
-            ))
+                      child: GestureDetector(
+                        onTap: () {
+                          context.go('/case/caseDetails', extra: caseItem);
+                        },
+                        child: BigCaseItem(caseItem: caseItem),
+                      ),
+                    ))
                 .toList(),
           ),
         ],

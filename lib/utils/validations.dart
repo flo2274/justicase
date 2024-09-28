@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class Validations {
   static bool isValidEmail(String email) {
     final RegExp emailRegex = RegExp(

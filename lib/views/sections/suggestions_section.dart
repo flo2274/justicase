@@ -10,7 +10,7 @@ import '../items/big-case_item.dart';
 class SuggestionsSection extends StatefulWidget {
   final List<Case> cases; // Hier muss der Parameter hinzugefügt werden
 
-  SuggestionsSection({Key? key, required this.cases}) : super(key: key);
+  const SuggestionsSection({super.key, required this.cases});
 
   @override
   _SuggestionsSectionState createState() => _SuggestionsSectionState();
@@ -39,11 +39,11 @@ class _SuggestionsSectionState extends State<SuggestionsSection> {
             future: _suggestedCases,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return CircularProgressIndicator();
+                return const CircularProgressIndicator();
               } else if (snapshot.hasError) {
                 return Text('Error: ${snapshot.error}');
               } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return Text('Keine Vorschläge verfügbar.');
+                return const Text('Keine Vorschläge verfügbar.');
               }
 
               final displayCases = snapshot.data!;
@@ -55,13 +55,14 @@ class _SuggestionsSectionState extends State<SuggestionsSection> {
                     children: displayCases
                         .take(2)
                         .map((caseItem) => Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          context.go('/case/caseDetails', extra: caseItem);
-                        },
-                        child: BigCaseItem(caseItem: caseItem),
-                      ),
-                    ))
+                              child: GestureDetector(
+                                onTap: () {
+                                  context.go('/case/caseDetails',
+                                      extra: caseItem);
+                                },
+                                child: BigCaseItem(caseItem: caseItem),
+                              ),
+                            ))
                         .toList(),
                   ),
                   const SizedBox(height: 5.0),
@@ -71,13 +72,14 @@ class _SuggestionsSectionState extends State<SuggestionsSection> {
                         .skip(2)
                         .take(2)
                         .map((caseItem) => Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          context.go('/case/caseDetails', extra: caseItem);
-                        },
-                        child: BigCaseItem(caseItem: caseItem),
-                      ),
-                    ))
+                              child: GestureDetector(
+                                onTap: () {
+                                  context.go('/case/caseDetails',
+                                      extra: caseItem);
+                                },
+                                child: BigCaseItem(caseItem: caseItem),
+                              ),
+                            ))
                         .toList(),
                   ),
                 ],

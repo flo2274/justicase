@@ -14,7 +14,7 @@ import '../../items/admin/admin-user_item.dart';
 import 'admin-details_page.dart';
 
 class AdminPanelPage extends ConsumerStatefulWidget {
-  const AdminPanelPage({Key? key}) : super(key: key);
+  const AdminPanelPage({super.key});
 
   @override
   _AdminPanelPageState createState() => _AdminPanelPageState();
@@ -26,8 +26,12 @@ class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
   @override
   void initState() {
     super.initState();
-    ref.read(caseProvider.notifier).fetchAllCases(); // Trigger fetching all cases on widget initialization
-    ref.read(userProvider.notifier).getAllUsers(); // Trigger fetching all users on widget initialization
+    ref
+        .read(caseProvider.notifier)
+        .fetchAllCases(); // Trigger fetching all cases on widget initialization
+    ref
+        .read(userProvider.notifier)
+        .getAllUsers(); // Trigger fetching all users on widget initialization
   }
 
   @override
@@ -41,7 +45,7 @@ class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
         appBar: AppBar(
           title: const Text('ADMIN PANEL'),
           centerTitle: true,
-          bottom: TabBar(
+          bottom: const TabBar(
             tabs: [
               Tab(text: 'Users'),
               Tab(text: 'Cases'),
@@ -49,13 +53,13 @@ class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
           ),
         ),
         body: userState.isLoading || caseState.isLoading
-            ? Center(child: CircularProgressIndicator())
+            ? const Center(child: CircularProgressIndicator())
             : TabBarView(
-          children: [
-            _buildUsersTab(context, userState),
-            _buildCasesTab(context, caseState),
-          ],
-        ),
+                children: [
+                  _buildUsersTab(context, userState),
+                  _buildCasesTab(context, caseState),
+                ],
+              ),
       ),
     );
   }
@@ -81,7 +85,7 @@ class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
   Widget _buildUsersList(BuildContext context, UserState userState) {
     return ListView.builder(
       shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       itemCount: userState.allUsers.length,
       itemBuilder: (context, index) {
         final user = userState.allUsers[index];
@@ -97,9 +101,11 @@ class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
   void _deleteUser(int userId) async {
     try {
       await APIService.deleteUser(userId);
-      ref.read(userProvider.notifier).refreshAllUsers(); // Refresh user list after deletion
+      ref
+          .read(userProvider.notifier)
+          .refreshAllUsers(); // Refresh user list after deletion
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('User deleted successfully'),
           backgroundColor: Colors.green,
         ),
@@ -122,16 +128,15 @@ class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 8.0),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child:
-          Wrap(
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Wrap(
               spacing: 8.0,
               children: CaseData.filterOptions.map((option) {
                 return ChoiceChip(
                   label: Text(
                     option,
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                   ),
                   selected: selectedFilter == option,
                   selectedColor: Colors.blue,
@@ -143,10 +148,10 @@ class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
                 );
               }).toList(),
             ),
-      ),
-
+          ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
             child: Text(
               'Es gibt insgesamt ${filteredCases.length} ${filteredCases.length == 1 ? "Fall" : "Fälle"}',
               style: TextThemeConfig.smallHeading,
@@ -174,7 +179,7 @@ class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
   Widget _buildCasesList(BuildContext context, List<Case> filteredCases) {
     return ListView.builder(
       shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       itemCount: filteredCases.length,
       itemBuilder: (context, index) {
         final caseInfo = filteredCases[index];
@@ -182,7 +187,7 @@ class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
           future: APIService.getEnrolledUsersCount(caseInfo.id!),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
               return Center(child: Text('Error: ${snapshot.error}'));
             } else {
@@ -225,9 +230,11 @@ class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
   void _deleteCase(int caseId) async {
     try {
       await ref.read(caseProvider.notifier).deleteCase(caseId);
-      await ref.read(caseProvider.notifier).fetchAllCases(); // Refresh case list after deletion
+      await ref
+          .read(caseProvider.notifier)
+          .fetchAllCases(); // Refresh case list after deletion
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Case deleted successfully'),
           backgroundColor: Colors.green,
         ),

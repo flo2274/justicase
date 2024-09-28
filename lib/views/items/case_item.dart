@@ -7,14 +7,13 @@ import 'package:go_router/go_router.dart';
 class CaseItem extends StatefulWidget {
   final Case caseInfo;
 
-  const CaseItem({Key? key, required this.caseInfo}) : super(key: key);
+  const CaseItem({super.key, required this.caseInfo});
 
   @override
   _CaseItemState createState() => _CaseItemState();
 }
 
 class _CaseItemState extends State<CaseItem> {
-
   @override
   void initState() {
     super.initState();
@@ -23,7 +22,8 @@ class _CaseItemState extends State<CaseItem> {
   @override
   Widget build(BuildContext context) {
     double progress = widget.caseInfo.userCount != null
-        ? widget.caseInfo.userCount / 50.0 // Todo: make 50 constant global variable
+        ? widget.caseInfo.userCount /
+            50.0 // Todo: make 50 constant global variable
         : 0.0;
 
     return Card(
@@ -44,17 +44,19 @@ class _CaseItemState extends State<CaseItem> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(widget.caseInfo.companyType ?? 'Kein Unternehmen'),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 LinearProgressIndicator(
                   value: progress,
                   backgroundColor: Colors.grey[300],
                   minHeight: 10,
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                      progress >= 1.0 ? Colors.green : Colors.blue), // Adjust colors as needed
+                  valueColor: AlwaysStoppedAnimation<Color>(progress >= 1.0
+                      ? Colors.green
+                      : Colors.blue), // Adjust colors as needed
                 ),
               ],
             ),
-            trailing: Icon(Icons.arrow_forward_ios, size: 16), // Small arrow icon
+            trailing: const Icon(Icons.arrow_forward_ios,
+                size: 16), // Small arrow icon
           ),
         ),
       ),

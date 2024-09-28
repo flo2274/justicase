@@ -4,19 +4,21 @@ import 'package:mobile_anw/utils/helpers/emoji_helper.dart'; // Importiere die E
 class CategoryCaseItem extends StatelessWidget {
   final String name;
 
-CategoryCaseItem({required this.name});
+  const CategoryCaseItem({super.key, required this.name});
 
   @override
   Widget build(BuildContext context) {
     return Card(
       //elevation: 2.0, // Höhe des Schattens
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8.0), // Optionale Abrundung der Ecken
+        borderRadius:
+            BorderRadius.circular(8.0), // Optionale Abrundung der Ecken
       ),
       child: Container(
         width: 120,
         height: 35,
-        padding: const EdgeInsets.symmetric(horizontal: 12.0), // Padding für den Inhalt der Karte
+        padding: const EdgeInsets.symmetric(
+            horizontal: 12.0), // Padding für den Inhalt der Karte
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

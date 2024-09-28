@@ -14,7 +14,7 @@ class AdminDetailsPage extends ConsumerStatefulWidget {
   final User? myUser;
   final Case? myCase;
 
-  const AdminDetailsPage({Key? key, this.myUser, this.myCase}) : super(key: key);
+  const AdminDetailsPage({super.key, this.myUser, this.myCase});
 
   @override
   _AdminDetailsPageState createState() => _AdminDetailsPageState();
@@ -67,9 +67,9 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
     } else {
       return Scaffold(
         appBar: AppBar(
-          title: Text('Admin Details'),
+          title: const Text('Admin Details'),
         ),
-        body: Center(
+        body: const Center(
           child: Text('No data available'),
         ),
       );
@@ -81,68 +81,74 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('ADMIN PANEL'),
+        title: const Text('ADMIN PANEL'),
         centerTitle: true,
       ),
       body: caseState.isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : caseState.errorMessage != null
-          ? Center(child: Text(caseState.errorMessage!))
-          : Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 8.0),
-                  Text(
-                    '${widget.myUser?.username} ist in ${userCases.length} ${userCases.length == 1 ? "Fall" : "Fällen"} eingeschrieben',
-                    style: TextThemeConfig.smallHeading,
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: userCases.length,
-              itemBuilder: (context, index) {
-                final myCase = userCases[index];
-                return FutureBuilder<int>( // Todo muss das doppelt? war ja in admin panel schon
-                  future: APIService.getEnrolledUsersCount(myCase.id!),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator());
-                    } else if (snapshot.hasError) {
-                      return Center(child: Text('Error: ${snapshot.error}'));
-                    } else {
-                      // Update the caseItem.userCount with the enrolled users count
-                      myCase.userCount = snapshot.data ?? 0;
-                      return AdminCaseItem(
-                        caseItem: myCase,
-                        onDelete: () {
-                          _deleteCase(myCase.id!);
-                        },
-                        onGetUsersByCase: (myCase) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => AdminDetailsPage(myCase: myCase),
+              ? Center(child: Text(caseState.errorMessage!))
+              : Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 8.0),
+                            Text(
+                              '${widget.myUser?.username} ist in ${userCases.length} ${userCases.length == 1 ? "Fall" : "Fällen"} eingeschrieben',
+                              style: TextThemeConfig.smallHeading,
                             ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: userCases.length,
+                        itemBuilder: (context, index) {
+                          final myCase = userCases[index];
+                          return FutureBuilder<int>(
+                            // Todo muss das doppelt? war ja in admin panel schon
+                            future:
+                                APIService.getEnrolledUsersCount(myCase.id!),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const Center(
+                                    child: CircularProgressIndicator());
+                              } else if (snapshot.hasError) {
+                                return Center(
+                                    child: Text('Error: ${snapshot.error}'));
+                              } else {
+                                // Update the caseItem.userCount with the enrolled users count
+                                myCase.userCount = snapshot.data ?? 0;
+                                return AdminCaseItem(
+                                  caseItem: myCase,
+                                  onDelete: () {
+                                    _deleteCase(myCase.id!);
+                                  },
+                                  onGetUsersByCase: (myCase) {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            AdminDetailsPage(myCase: myCase),
+                                      ),
+                                    );
+                                  },
+                                );
+                              }
+                            },
                           );
                         },
-                      );
-                    }
-                  },
-                );
-              },
-            ),
-          ),
-        ],
-      ),
+                      ),
+                    ),
+                  ],
+                ),
     );
   }
 
@@ -151,58 +157,60 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('ADMIN PANEL'),
+        title: const Text('ADMIN PANEL'),
         centerTitle: true,
       ),
       body: userState.isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : userState.errorMessage != null
-          ? Center(child: Text(userState.errorMessage!))
-          : Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 8.0),
-                  Text(
-                    'In ${widget.myCase?.name} ${caseUsers.length == 1 ? "ist" : "sind"} ${caseUsers.length} ${caseUsers.length == 1 ? "Person" : "Personen"} eingeschrieben',
-                    style: TextThemeConfig.smallHeading,
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: caseUsers.length,
-              itemBuilder: (context, index) {
-                final userItem = caseUsers[index];
-                return AdminUserItem(
-                  user: userItem,
-                  onDeleteUser: (userId) {
-                    _deleteUser(userId);
-                  },
-                  onRemoveUserFromCase: (userId) {
-                    _removeUserFromCase(context, widget.myCase!.id!, userId: userId);
-                  },
-                  onGetCasesByUser: (userItem) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => AdminDetailsPage(myUser: caseUsers[index]),
+              ? Center(child: Text(userState.errorMessage!))
+              : Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 8.0),
+                            Text(
+                              'In ${widget.myCase?.name} ${caseUsers.length == 1 ? "ist" : "sind"} ${caseUsers.length} ${caseUsers.length == 1 ? "Person" : "Personen"} eingeschrieben',
+                              style: TextThemeConfig.smallHeading,
+                            ),
+                          ],
+                        ),
                       ),
-                    );
-                  },
-                );
-              },
-            ),
-          ),
-        ],
-      ),
+                    ),
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: caseUsers.length,
+                        itemBuilder: (context, index) {
+                          final userItem = caseUsers[index];
+                          return AdminUserItem(
+                            user: userItem,
+                            onDeleteUser: (userId) {
+                              _deleteUser(userId);
+                            },
+                            onRemoveUserFromCase: (userId) {
+                              _removeUserFromCase(context, widget.myCase!.id!,
+                                  userId: userId);
+                            },
+                            onGetCasesByUser: (userItem) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => AdminDetailsPage(
+                                      myUser: caseUsers[index]),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
     );
   }
 
@@ -214,7 +222,7 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
       });
       ref.read(userProvider.notifier).refreshAllUsers();
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('User deleted successfully'),
           backgroundColor: Colors.green,
         ),
@@ -229,11 +237,12 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
     }
   }
 
-  void _removeUserFromCase(BuildContext context, int caseId, {int? userId}) async {
+  void _removeUserFromCase(BuildContext context, int caseId,
+      {int? userId}) async {
     try {
       await APIService.removeUserFromCase(caseId, userId: userId);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('User removed from case successfully'),
           backgroundColor: Colors.green,
         ),
@@ -259,7 +268,7 @@ class _AdminDetailsPageState extends ConsumerState<AdminDetailsPage> {
       });
       ref.read(caseProvider.notifier).fetchAllCases();
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Case deleted successfully'),
           backgroundColor: Colors.green,
         ),

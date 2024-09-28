@@ -17,14 +17,19 @@ class APIService {
   static const String casesByUsersURL = '$casesURL/user';
   static const String usersByCaseURL = '$usersURL/case';
 
-  static final storage = FlutterSecureStorage();
+  static final storage = const FlutterSecureStorage();
 
-  static Future<bool> register(String firstName, String lastName, String username, String email, String password) async {
-    if (!Validations.isNotEmpty(firstName)) throw Exception('First name cannot be empty');
-    if (!Validations.isNotEmpty(lastName)) throw Exception('Last name cannot be empty');
-    if (!Validations.isValidUsername(username)) throw Exception('Invalid username');
+  static Future<bool> register(String firstName, String lastName,
+      String username, String email, String password) async {
+    if (!Validations.isNotEmpty(firstName))
+      throw Exception('First name cannot be empty');
+    if (!Validations.isNotEmpty(lastName))
+      throw Exception('Last name cannot be empty');
+    if (!Validations.isValidUsername(username))
+      throw Exception('Invalid username');
     if (!Validations.isValidEmail(email)) throw Exception('Invalid email');
-    if (!Validations.isValidPassword(password)) throw Exception('Invalid password');
+    if (!Validations.isValidPassword(password))
+      throw Exception('Invalid password');
 
     try {
       final response = await http.post(
@@ -61,7 +66,8 @@ class APIService {
 
   static Future<bool> login(String email, String password) async {
     if (!Validations.isValidEmail(email)) throw Exception('Invalid email');
-    if (!Validations.isValidPassword(password)) throw Exception('Invalid password');
+    if (!Validations.isValidPassword(password))
+      throw Exception('Invalid password');
 
     final response = await http.post(
       Uri.parse(loginURL),
@@ -72,7 +78,11 @@ class APIService {
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
 
-      if (data != null && data.containsKey('token') && data['user'] != null && data['user'].containsKey('username') && data['user'].containsKey('role')) {
+      if (data != null &&
+          data.containsKey('token') &&
+          data['user'] != null &&
+          data['user'].containsKey('username') &&
+          data['user'].containsKey('role')) {
         final String token = data['token'];
         final int userId = data['user']['id'];
         final String username = data['user']['username'];
@@ -344,8 +354,6 @@ class APIService {
       throw Exception('Failed to load chat messages');
     }
   }
-
-
 
   static Future<bool> sendMessageToCase(int caseId, ChatMessage message) async {
     final token = await getToken();

@@ -1,5 +1,3 @@
-import 'user.dart';
-
 class Case {
   final int? id;
   String? name;
@@ -23,7 +21,8 @@ class Case {
       name: json['name'],
       companyType: json['companyType'],
       industry: json['industry'],
-      createdAt: json['createdAt'] != null ? DateTime.parse(json['createdAt']) : null,
+      createdAt:
+          json['createdAt'] != null ? DateTime.parse(json['createdAt']) : null,
     );
   }
 
@@ -37,4 +36,3 @@ class Case {
     };
   }
 }
-

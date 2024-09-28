@@ -3,13 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:mobile_anw/models/case.dart';
 import 'package:mobile_anw/models/chat_message.dart';
 import 'package:mobile_anw/services/api_service.dart';
-import '../../../utils/configs/text_theme_config.dart';
 import '../../../utils/user_preferences.dart';
 
 class CaseDetailsForum extends StatefulWidget {
   final Case myCase;
 
-  const CaseDetailsForum({Key? key, required this.myCase}) : super(key: key);
+  const CaseDetailsForum({super.key, required this.myCase});
 
   @override
   _CaseDetailsForumState createState() => _CaseDetailsForumState();
@@ -32,7 +31,7 @@ class _CaseDetailsForumState extends State<CaseDetailsForum> {
   }
 
   void _startMessageLoading() {
-    _timer = Timer.periodic(Duration(seconds: 10), (Timer t) {
+    _timer = Timer.periodic(const Duration(seconds: 10), (Timer t) {
       if (_isUserDataLoaded) {
         _loadMessages();
       }
@@ -103,20 +102,21 @@ class _CaseDetailsForumState extends State<CaseDetailsForum> {
         children: [
           Expanded(
             child: _messages.isEmpty
-                ? Center(child: Text('Im Forum gibt es bisher keine Nachrichten...'))
+                ? const Center(
+                    child: Text('Im Forum gibt es bisher keine Nachrichten...'))
                 : ListView.builder(
-              itemCount: _messages.length,
-              itemBuilder: (ctx, index) {
-                final message = _messages[index];
-                return MessageBubble(
-                  key: ValueKey(message.id),
-                  message: message.text,
-                  sender: message.username,
-                  timestamp: message.timestamp,
-                  isMe: message.username == _username,
-                );
-              },
-            ),
+                    itemCount: _messages.length,
+                    itemBuilder: (ctx, index) {
+                      final message = _messages[index];
+                      return MessageBubble(
+                        key: ValueKey(message.id),
+                        message: message.text,
+                        sender: message.username,
+                        timestamp: message.timestamp,
+                        isMe: message.username == _username,
+                      );
+                    },
+                  ),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -125,12 +125,13 @@ class _CaseDetailsForumState extends State<CaseDetailsForum> {
                 Expanded(
                   child: TextField(
                     controller: _messageController,
-                    decoration: InputDecoration(labelText: 'Send a message...'),
+                    decoration:
+                        const InputDecoration(labelText: 'Send a message...'),
                   ),
                 ),
-                SizedBox(width: 8),
+                const SizedBox(width: 8),
                 IconButton(
-                  icon: Icon(Icons.send),
+                  icon: const Icon(Icons.send),
                   onPressed: _sendMessage,
                 ),
               ],
@@ -149,27 +150,27 @@ class MessageBubble extends StatelessWidget {
   final bool isMe;
 
   const MessageBubble({
-    Key? key,
+    super.key,
     required this.message,
     required this.sender,
     required this.timestamp,
     required this.isMe,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return Align(
       alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
-        margin: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+        margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
         decoration: BoxDecoration(
           color: isMe ? Colors.blue : Colors.grey[300],
           borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(12),
-            topRight: Radius.circular(12),
-            bottomLeft: isMe ? Radius.circular(12) : Radius.zero,
-            bottomRight: isMe ? Radius.zero : Radius.circular(12),
+            topLeft: const Radius.circular(12),
+            topRight: const Radius.circular(12),
+            bottomLeft: isMe ? const Radius.circular(12) : Radius.zero,
+            bottomRight: isMe ? Radius.zero : const Radius.circular(12),
           ),
         ),
         child: Column(
@@ -182,14 +183,14 @@ class MessageBubble extends StatelessWidget {
                 color: isMe ? Colors.white : Colors.black,
               ),
             ),
-            SizedBox(height: 4),
+            const SizedBox(height: 4),
             Text(
               message,
               style: TextStyle(
                 color: isMe ? Colors.white : Colors.black,
               ),
             ),
-            SizedBox(height: 4),
+            const SizedBox(height: 4),
             Text(
               '${timestamp.hour}:${timestamp.minute}',
               style: TextStyle(
